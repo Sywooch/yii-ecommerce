@@ -1,1 +1,1 @@
-# EComerce модуль для Yii 2
+# E-commerce модуль для Yii 2
