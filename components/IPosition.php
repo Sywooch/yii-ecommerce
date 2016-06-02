@@ -1,10 +1,10 @@
 <?php
 
-namespace shockedbear\shop\components;
+namespace webdoka\yiiecommerce\components;
 
 /**
  * Interface IPosition
- * @package shockedbear\shop\components
+ * @package webdoka\yiiecommerce\components
  */
 interface IPosition
 {

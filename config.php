@@ -3,7 +3,7 @@
 return [
     'components' => [
         'cart' => [
-            'class' => 'shockedbear\shop\components\Cart',
+            'class' => 'webdoka\yiiecommerce\components\Cart',
         ],
     ],
 ];

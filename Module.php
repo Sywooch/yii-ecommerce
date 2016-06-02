@@ -1,6 +1,6 @@
 <?php
 
-namespace shockedbear\shop;
+namespace webdoka\yiiecommerce;
 
 use \yii\base\Module;
 

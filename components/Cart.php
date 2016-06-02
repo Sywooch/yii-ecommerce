@@ -1,6 +1,6 @@
 <?php
 
-namespace shockedbear\shop\components;
+namespace webdoka\yiiecommerce\components;
 
 use yii\base\Component;
 use yii\di\Instance;
@@ -8,7 +8,7 @@ use yii\web\Session;
 
 /**
  * Class Cart
- * @package shockedbear\shop\components
+ * @package webdoka\yiiecommerce\components
  */
 class Cart extends Component
 {
