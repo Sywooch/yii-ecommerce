@@ -114,6 +114,9 @@ class Cart extends Component
     {
         $id = $position->getId();
 
+        if ($position->getQuantity() == 0)
+            $position->setQuantity(1);
+
         if (isset($this->_positions[$id]))
             $this->_positions[$id]->setQuantity($this->_positions[$id]->getQuantity() + $position->getQuantity());
         else

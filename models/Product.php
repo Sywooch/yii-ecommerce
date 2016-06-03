@@ -2,6 +2,7 @@
 
 namespace webdoka\yiiecommerce\models;
 
+use webdoka\yiiecommerce\components\IPosition;
 use Yii;
 
 /**
@@ -16,8 +17,10 @@ use Yii;
  * @property OrderItem[] $orderItems
  * @property Category $category
  */
-class Product extends \yii\db\ActiveRecord
+class Product extends \yii\db\ActiveRecord implements IPosition
 {
+    private $quantity;
+
     /**
      * @inheritdoc
      */
@@ -69,5 +72,45 @@ class Product extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
     }
 }

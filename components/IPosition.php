@@ -33,8 +33,9 @@ interface IPosition
     public function getQuantity();
 
     /**
-     * Sets position quantity
+     * Sets quantity
+     * @param $quantity
      * @return mixed
      */
-    public function setQuantity();
+    public function setQuantity($quantity);
 }

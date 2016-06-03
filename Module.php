@@ -2,9 +2,7 @@
 
 namespace webdoka\yiiecommerce;
 
-use \yii\base\Module;
-
-class ShopModule extends Module
+class Module extends \yii\base\Module
 {
     public function init()
     {
