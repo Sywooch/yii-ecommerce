@@ -2,9 +2,11 @@
 
 namespace webdoka\yiiecommerce\controllers;
 
+use webdoka\yiiecommerce\models\OrderItem;
 use Yii;
 use webdoka\yiiecommerce\models\Order;
 use yii\data\ActiveDataProvider;
+use yii\db\Transaction;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,29 +67,40 @@ class OrderController extends Controller
     {
         $model = new Order();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            $transaction = Yii::$app->db->beginTransaction();
+            $positions = Yii::$app->cart->getPositions();
+
+            if ($model->save() && !empty($positions)) {
+
+                $allOrderItemsSaved = true;
+
+                foreach ($positions as $position) {
+                    $orderItem = new OrderItem();
+                    $orderItem->order_id = $model->id;
+                    $orderItem->product_id = $position->getId();
+                    $orderItem->quantity = $position->getQuantity();
+                    $allOrderItemsSaved &= $orderItem->save();
+                }
+
+                if ($allOrderItemsSaved) {
+                    $transaction->commit();
+                    Yii::$app->cart->removeAll();
+                    Yii::$app->session->setFlash('order_success', 'Order is created successful, check your email for details.');
+
+                    // Send email
+
+                    return $this->redirect(['catalog/index']);
+                }
+            }
+
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('order_failure', 'Order is failed. Check your cart details.');
+
+            return $this->redirect(['cart/list']);
         } else {
             return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing Order model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
                 'model' => $model,
             ]);
         }

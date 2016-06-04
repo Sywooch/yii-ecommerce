@@ -3,6 +3,7 @@
 namespace webdoka\yiiecommerce\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "orders".
@@ -20,6 +21,21 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+    const STATUS_NEW = 'New';
+    const STATUS_IN_PROGRESS = 'In progress';
+    const STATUS_DONE = 'Done';
+
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -35,6 +51,7 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['phone', 'email', 'status'], 'required'],
+            [['email'], 'email'],
             [['notes'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
             [['phone', 'email', 'address', 'status'], 'string', 'max' => 255],
@@ -56,6 +73,15 @@ class Order extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord) {
+            $this->status = self::STATUS_NEW;
+        }
+
+        return parent::beforeValidate();
     }
 
     /**
