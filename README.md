@@ -33,7 +33,7 @@ Add default route for module:
         ],
     ],
 ```
-To change theme you can use Yii2 view component for this:
+To change theme you can use Yii2 view component for this `config/web.php`:
 ```
 'components' => [
     ...,
