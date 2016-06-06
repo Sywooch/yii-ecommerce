@@ -33,3 +33,15 @@ Add default route for module:
         ],
     ],
 ```
+To change theme you can use Yii2 view component for this:
+```
+'components' => [
+    ...,
+    'view' => [
+        'theme' => [
+            'pathMap' => [
+                '@vendor/webdoka/yii-ecommerce/views' => '@app/views',
+            ],
+        ],
+    ],
+```
