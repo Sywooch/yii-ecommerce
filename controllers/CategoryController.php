@@ -2,6 +2,7 @@
 
 namespace webdoka\yiiecommerce\controllers;
 
+use webdoka\yiiecommerce\forms\CategoryForm;
 use Yii;
 use webdoka\yiiecommerce\models\Category;
 use yii\data\ActiveDataProvider;
@@ -63,7 +64,7 @@ class CategoryController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Category();
+        $model = new CategoryForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -82,7 +83,10 @@ class CategoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = CategoryForm::find()->where(['id' => $id])->one();
+
+        if (!Yii::$app->request->isPost)
+            CategoryForm::populateRecord($model, ['relFeatures' => $model->features]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

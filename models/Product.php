@@ -4,6 +4,7 @@ namespace webdoka\yiiecommerce\models;
 
 use webdoka\yiiecommerce\components\IPosition;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "products".
@@ -12,7 +13,6 @@ use Yii;
  * @property integer $category_id
  * @property string $name
  * @property double $price
- * @property string $features
  *
  * @property OrderItem[] $orderItems
  * @property Category $category
@@ -38,7 +38,6 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             [['category_id'], 'integer'],
             [['name', 'price'], 'required'],
             [['price'], 'number'],
-            [['features'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
@@ -54,7 +53,6 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'category_id' => 'Category ID',
             'name' => 'Name',
             'price' => 'Price',
-            'features' => 'Features',
         ];
     }
 
@@ -112,5 +110,66 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * Returns product features with source features
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getFullFeatures()
+    {
+        return $this->hasMany(FeatureProduct::className(), ['product_id' => 'id'])->with('feature');
+    }
+
+    /**
+     * Returns product features
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductFeatures()
+    {
+        return $this->hasMany(FeatureProduct::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * Returns features by category and product
+     * @return array
+     */
+    public function getFeaturesWithCategories()
+    {
+        $data = [];
+
+        if ($category = Category::find()->where(['id' => $this->category_id])->one()) {
+            foreach ($category->features as $feature) {
+                $featureProduct = FeatureProduct::find()->where([
+                    'feature_id' => $feature->id,
+                    'product_id' => $this->id,
+                ])->one();
+
+                $data[] = [
+                    'id' => $feature->id,
+                    'name' => $feature->name,
+                    'value' => $featureProduct ? $featureProduct->value : ''
+                ];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * After save get related records, and unlink/link them if it needs.
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $relatedRecords = $this->getRelatedRecords();
+
+        if (array_key_exists('productFeatures', $relatedRecords)) {
+            $this->unlinkAll('productFeatures', true);
+            foreach ($relatedRecords['productFeatures'] as $feature) {
+                $this->link('productFeatures', $feature);
+            }
+        }
     }
 }

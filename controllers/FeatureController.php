@@ -2,20 +2,17 @@
 
 namespace webdoka\yiiecommerce\controllers;
 
-use webdoka\yiiecommerce\forms\ProductForm;
 use Yii;
-use webdoka\yiiecommerce\models\Product;
+use webdoka\yiiecommerce\models\Feature;
 use yii\data\ActiveDataProvider;
-use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
 
 /**
- * ProductController implements the CRUD actions for Product model.
+ * FeatureController implements the CRUD actions for Feature model.
  */
-class ProductController extends Controller
+class FeatureController extends Controller
 {
     /**
      * @inheritdoc
@@ -33,13 +30,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Lists all Product models.
+     * Lists all Feature models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
+            'query' => Feature::find(),
         ]);
 
         return $this->render('index', [
@@ -48,7 +45,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Displays a single Product model.
+     * Displays a single Feature model.
      * @param integer $id
      * @return mixed
      */
@@ -60,50 +57,44 @@ class ProductController extends Controller
     }
 
     /**
-     * Creates a new Product model.
+     * Creates a new Feature model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ProductForm();
-        $model->category_id = Yii::$app->request->get('category_id') ?: null;
-
-        $dataProvider = new ArrayDataProvider([
-            'pagination' => false,
-            'allModels' => $model->featuresWithCategories,
-        ]);
+        $model = new Feature();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', compact('model', 'dataProvider'));
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
     }
 
     /**
-     * Updates an existing Product model.
+     * Updates an existing Feature model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
-        $model = ProductForm::find()->where(['id' => $id])->one();
-        $model->category_id = Yii::$app->request->get('category_id') ?: $model->category_id;
-
-        $dataProvider = new ArrayDataProvider();
-        $dataProvider->allModels = $model->featuresWithCategories;
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', compact('model', 'dataProvider'));
+            return $this->render('update', [
+                'model' => $model,
+            ]);
         }
     }
 
     /**
-     * Deletes an existing Product model.
+     * Deletes an existing Feature model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -116,15 +107,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Feature model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Product the loaded model
+     * @return Feature the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = Feature::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

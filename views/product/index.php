@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Products';
+$this->params['breadcrumbs'][] = ['url' => ['catalog/index'], 'label' => 'Shop'];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
@@ -18,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'summaryOptions' => ['class' => 'well'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -25,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'category_id',
             'name',
             'price',
-            'features:ntext',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

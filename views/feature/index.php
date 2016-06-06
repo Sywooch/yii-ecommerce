@@ -6,31 +6,24 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Orders';
-$this->params['breadcrumbs'][] = ['url' => ['catalog/index'], 'label' => 'Shop'];
+$this->title = 'Features';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="order-index">
+<div class="feature-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Order', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Feature', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'summaryOptions' => ['class' => 'well'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'phone',
-            'email:email',
-            'address',
-            'notes:ntext',
-            // 'status',
-            // 'created_at',
-            // 'updated_at',
+            'name',
+            'slug',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

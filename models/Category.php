@@ -2,6 +2,8 @@
 
 namespace webdoka\yiiecommerce\models;
 
+use webdoka\yiiecommerce\models\Feature;
+use webdoka\yiiecommerce\models\FeatureCategory;
 use Yii;
 
 /**
@@ -71,8 +73,41 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getFeatures()
+    {
+        return $this->hasMany(Feature::className(), ['id' => 'feature_id'])->via('featureCategory');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFeatureCategory()
+    {
+        return $this->hasMany(FeatureCategory::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getProducts()
     {
         return $this->hasMany(Product::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * After save get related records, and unlink/link them if it needs.
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $relatedRecords = $this->getRelatedRecords();
+
+        if (array_key_exists('features', $relatedRecords)) {
+            $this->unlinkAll('features', true);
+            foreach ($relatedRecords['features'] as $feature) {
+                $this->link('features', $feature);
+            }
+        }
     }
 }

@@ -11,7 +11,14 @@ use yii\helpers\Markdown;
 <div class="col-xs-12 well">
     <div class="col-xs-6">
         <h2><?= Html::encode($model->name) ?></h2>
-        <div><?= Markdown::process($model->features, 'gfm-comment') ?></div>
+        <table class="table table-striped features">
+            <?php foreach ($model->fullFeatures as $featureProduct) { ?>
+                <tr>
+                    <td><?= Html::encode($featureProduct->feature->name) ?></td>
+                    <td><?= Html::encode($featureProduct->value) ?></td>
+                </tr>
+            <?php } ?>
+        </table>
     </div>
 
     <div class="col-xs-6 price">
