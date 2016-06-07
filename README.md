@@ -1,6 +1,24 @@
 # E-commerce модуль для Yii 2
 ### Installing
 
+Add following to `composer.json`:
+
+```
+"repositories": [
+    {
+      "url": "https://github.com/webdoka/yii-ecommerce",
+      "type": "git"
+    },
+    ...
+  ],
+```
+```
+"require-dev": {
+    "webdoka/yii-ecommerce": "*",
+    ...
+  },
+```
+
 Run migrations `yii migrate --migrationPath=vendor/webdoka/yii-ecommerce/migrations`
 
 Add module to `config/web.php`:
@@ -33,14 +51,14 @@ Add default route for module:
         ],
     ],
 ```
-To change theme you can use Yii2 view component for this `config/web.php`:
+To change theme you can use Yii2 view component, added to `config/web.php` following:
 ```
 'components' => [
     ...,
     'view' => [
         'theme' => [
             'pathMap' => [
-                '@vendor/webdoka/yii-ecommerce/views' => '@app/views',
+                '@vendor/webdoka/yii-ecommerce/views' => '@app/views', // "@app/view" You can specify path to your theme path
             ],
         ],
     ],
