@@ -45,7 +45,7 @@ if ($currentCategory) {
                 <div class="panel-body">
                     <p>
                         Summary:
-                        <strong><?= Yii::$app->getModule('shop')->formatter->asCurrency(Yii::$app->cart->getCost()) ?></strong>
+                        <strong><?= Yii::$app->formatter->asCurrency(Yii::$app->cart->getCost()) ?></strong>
                     </p>
                     <p>Quantity: <?= Yii::$app->cart->getCount() ?></p>
                 </div>

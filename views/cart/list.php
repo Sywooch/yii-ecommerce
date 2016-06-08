@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = 'Cart';
     <?php } ?>
 </p>
 <div class="well">
-    <h4>Summary cost: <?= Yii::$app->formatter->asCurrency(Yii::$app->cart->getCost(), '$') ?></h4>
+    <h4>Summary cost: <?= Yii::$app->formatter->asCurrency(Yii::$app->cart->getCost()) ?></h4>
     <h4>Quantity: <?= Yii::$app->cart->getCount() ?></h4>
 </div>
 <h2>Positions:</h2>

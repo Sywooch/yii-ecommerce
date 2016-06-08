@@ -23,7 +23,7 @@ use yii\helpers\Markdown;
 
     <div class="col-xs-6 price">
         <div class="row">
-            <div class="col-xs-12"><h2><?= Yii::$app->getModule('shop')->formatter->asCurrency($model->getPrice()) ?></h2></div>
+            <div class="col-xs-12"><h2><?= Yii::$app->formatter->asCurrency($model->getPrice()) ?></h2></div>
             <div class="col-xs-12">
                 <?= Html::a('Add to cart', ['cart/add', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
             </div>

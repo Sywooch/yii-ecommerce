@@ -51,6 +51,15 @@ Add default route for module:
         ],
     ],
 ```
+If php has not installed ext_intl, specify currency symbol manually:
+```
+'formatter' => [
+    'class' => 'yii\i18n\Formatter',
+    'numberFormatterSymbols' => [
+        NumberFormatter::CURRENCY_SYMBOL => '&dollar; ',
+    ]
+],
+```
 To change theme you can use Yii2 view component, added to `config/web.php` following:
 ```
 'components' => [
@@ -63,3 +72,4 @@ To change theme you can use Yii2 view component, added to `config/web.php` follo
         ],
     ],
 ```
+Now can access url `http://example/shop/`
