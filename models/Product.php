@@ -122,6 +122,15 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     }
 
     /**
+     * Return CartProduct list
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCartProducts()
+    {
+        return $this->hasMany(CartProduct::className(), ['cart_id' => 'id']);
+    }
+
+    /**
      * Returns product features
      * @return \yii\db\ActiveQuery
      */

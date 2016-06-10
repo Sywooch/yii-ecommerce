@@ -2,9 +2,11 @@
 
 namespace webdoka\yiiecommerce\components;
 
+use webdoka\yiiecommerce\models\CartProduct;
 use yii\base\Component;
 use yii\di\Instance;
 use yii\web\Session;
+use webdoka\yiiecommerce\models\Cart as CartModel;
 
 /**
  * Class Cart
@@ -34,9 +36,42 @@ class Cart extends Component
      */
     public function loadFromSession()
     {
+        // Default load from session
         $this->session = Instance::ensure($this->session, Session::className());
-        if ($this->session[$this->id])
+        if ($this->session[$this->id]) {
             $this->_positions = unserialize($this->session[$this->id]);
+        }
+
+        // Load from db
+        if (!\Yii::$app->user->isGuest) {
+            if (!$cart = CartModel::find()->where(['user_id' => \Yii::$app->user->id])->one()) {
+                // Create Cart if this is not exists
+                $cart = new CartModel();
+                $cart->user_id = \Yii::$app->user->id;
+                $cart->save();
+            }
+
+            if (empty($cart->products) && !empty($this->_positions)) {
+                // Synch session -> db
+                $this->saveToSession();
+
+            } elseif (!empty($cart->products)) {
+                // Synch db -> session
+                $this->_positions = [];
+
+                foreach ($cart->products as $product) {
+                    if ($cartProduct = CartProduct::find()->where(['cart_id' => $cart->id, 'product_id' => $product->id])->one()) {
+                        $product->setQuantity($cartProduct->quantity);
+
+                        if (!isset($this->_positions[$product->id])) {
+                            $this->_positions[$product->id] = $product;
+                        }
+                    }
+                }
+
+                $this->session[$this->id] = serialize($this->_positions);
+            }
+        }
     }
 
     /**
@@ -44,7 +79,22 @@ class Cart extends Component
      */
     public function saveToSession()
     {
+        // Default save to session
         $this->session[$this->id] = serialize($this->_positions);
+
+        if (!\Yii::$app->user->isGuest) {
+            if ($cart = CartModel::find()->where(['user_id' => \Yii::$app->user->id])->one()) {
+                $cart->unlinkAll('cartProducts', true);
+
+                foreach ($this->_positions as $position) {
+                    $cartProduct = new CartProduct();
+                    $cartProduct->cart_id = $cart->id;
+                    $cartProduct->product_id = $position->id;
+                    $cartProduct->quantity = $position->quantity;
+                    $cartProduct->save();
+                }
+            }
+        }
     }
 
     /**
