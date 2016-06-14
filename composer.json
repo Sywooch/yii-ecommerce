@@ -14,8 +14,9 @@
   },
   "autoload": {
     "psr-4": {
-      "webdoka\\yiiecommerce\\backend\\": "",
-      "webdoka\\yiiecommerce\\frontend\\": ""
+      "webdoka\\yiiecommerce\\common\\": "common/",
+      "webdoka\\yiiecommerce\\backend\\": "backend/",
+      "webdoka\\yiiecommerce\\frontend\\": "frontend/"
     }
   }
 }
