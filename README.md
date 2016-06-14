@@ -51,6 +51,18 @@ Add default route for module:
         ],
     ],
 ```
+Shop module uses formatting, install intl if not yet `sudo apt-get install php5-intl` and restart server. Add following to `config/web.php`:
+```
+'components' => [
+    ...,
+    'formatter' => [
+        'class' => 'yii\i18n\Formatter',
+        'numberFormatterSymbols' => [
+            NumberFormatter::CURRENCY_SYMBOL => '&dollar; ',
+        ]
+    ],
+],
+```
 To change theme you can use Yii2 view component, added to `config/web.php` following:
 ```
 'components' => [
@@ -63,3 +75,26 @@ To change theme you can use Yii2 view component, added to `config/web.php` follo
         ],
     ],
 ```
+For RBAC need add to `config/web.php` and `config/console.php` following:
+```
+'components' => [
+    ...,
+    'authManager' => [
+        'class' => 'yii\rbac\DbManager', // Or you can use PhpManager
+    ],
+],
+```
+If you still use DbManager need run migration `yii migrate --migrationPath=@yii/rbac/migrations`.
+After that, you need set module `shop` in your `config/console.php`:
+```
+'bootstrap' => [
+        ...,
+        'shop'
+    ],
+'modules' => [
+    'shop' => [
+        'class' => 'webdoka\yiiecommerce\Module',
+    ],
+],
+```
+And now run command `yii shop/rbac/init`.
