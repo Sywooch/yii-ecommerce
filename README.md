@@ -19,13 +19,16 @@ Add following to `composer.json`:
   },
 ```
 
-Run migrations `yii migrate --migrationPath=vendor/webdoka/yii-ecommerce/migrations`
+Run migrations `yii migrate --migrationPath=vendor/webdoka/yii-ecommerce/common/migrations`
 
 Add module to `config/web.php`:
 ```
 'modules' => [
+    'shop-admin' => [
+        'class' => 'webdoka\yiiecommerce\backend\Module',
+    ],
     'shop' => [
-        'class' => 'webdoka\yiiecommerce\Module',
+        'class' => 'webdoka\yiiecommerce\frontend\Module',
     ],
 ],
 ```
@@ -33,7 +36,7 @@ Add component cart to `config/web.php`:
 ```
 'components' => [
     'cart' => [
-        'class' => 'webdoka\yiiecommerce\components\Cart'
+        'class' => 'webdoka\yiiecommerce\common\components\Cart'
     ],
     ...
 ]
@@ -70,7 +73,7 @@ To change theme you can use Yii2 view component, added to `config/web.php` follo
     'view' => [
         'theme' => [
             'pathMap' => [
-                '@vendor/webdoka/yii-ecommerce/views' => '@app/views', // "@app/view" You can specify path to your theme path
+                '@vendor/webdoka/yii-ecommerce/frontend/views' => '@app/views', // "@app/views" You can specify path to your theme path
             ],
         ],
     ],
@@ -93,8 +96,11 @@ After that, you need set module `shop` in your `config/console.php`:
     ],
 'modules' => [
     'shop' => [
-        'class' => 'webdoka\yiiecommerce\Module',
+        'class' => 'webdoka\yiiecommerce\backend\Module',
     ],
 ],
 ```
 And now run command `yii shop/rbac/init`.
+
+Now can access url `http://example/shop/`
+Admin access url `http://example/shop-admin/`
