@@ -7,7 +7,6 @@ use yii\widgets\DetailView;
 /* @var $model webdoka\yiiecommerce\common\models\Order */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-view">

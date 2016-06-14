@@ -7,7 +7,6 @@ use yii\helpers\Html;
 /* @var $model webdoka\yiiecommerce\common\models\Order */
 
 $this->title = 'Order';
-$this->params['breadcrumbs'][] = ['label' => 'Shop', 'url' => ['catalog/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Cart', 'url' => ['cart/list']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

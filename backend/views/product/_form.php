@@ -18,7 +18,7 @@ $this->registerJs('
 
         $category.change(function () {
             $.pjax.reload({
-                url: "/shop/product/" + $("[name=\"action\"]").val() + "/",
+                url: "/shop-admin/product/" + $("[name=\"action\"]").val() + "/",
                 data: {
                     id: $("#productform-id").val(),
                     category_id: $(this).val(),

@@ -7,7 +7,6 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Products';
-$this->params['breadcrumbs'][] = ['url' => ['catalog/index'], 'label' => 'Shop'];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">

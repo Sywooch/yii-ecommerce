@@ -49,6 +49,7 @@ Add default route for module:
         ...,
         'suffix' => '/',
         'rules' => [
+            '<module:shop-admin>/' => '<module>/category/index',
             '<module:shop>/' => '<module>/catalog/index',
             '<module:shop>/catalog/<category:\w+>' => '<module>/catalog/index',
         ],
