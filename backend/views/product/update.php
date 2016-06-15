@@ -9,11 +9,13 @@ $this->title = 'Update Product: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
+
+$action = 'update';
 ?>
 <div class="product-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', compact('model', 'dataProvider')) ?>
+    <?= $this->render('_form', compact('model', 'dataProvider', 'action')) ?>
 
 </div>

@@ -24,9 +24,6 @@ Run migrations `yii migrate --migrationPath=vendor/webdoka/yii-ecommerce/common/
 Add module to `config/web.php`:
 ```
 'modules' => [
-    'shop-admin' => [
-        'class' => 'webdoka\yiiecommerce\backend\Module',
-    ],
     'shop' => [
         'class' => 'webdoka\yiiecommerce\frontend\Module',
     ],
@@ -49,7 +46,6 @@ Add default route for module:
         ...,
         'suffix' => '/',
         'rules' => [
-            '<module:shop-admin>/' => '<module>/category/index',
             '<module:shop>/' => '<module>/catalog/index',
             '<module:shop>/catalog/<category:\w+>' => '<module>/catalog/index',
         ],
@@ -104,4 +100,16 @@ After that, you need set module `shop` in your `config/console.php`:
 And now run command `yii shop-rbac/init`.
 
 Now can access url `http://example/shop/`
-Admin access url `http://example/shop-admin/`
+
+### Shop admin
+Shop is divided to two modules (frontend, backend). Usually, admin panel is in a separate module `admin`, where you can integrate our shop admin.
+```
+public function init()
+{
+    parent::init();
+   ...
+    $this->setModule('shop', 'webdoka\yiiecommerce\backend\Module');
+}
+```
+And now, it's access in `/admin/shop/`, `/admin/shop/feature/`, `/admin/shop/feature/create` and so on.
+

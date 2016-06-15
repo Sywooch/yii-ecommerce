@@ -10,6 +10,11 @@ use yii\widgets\ListView;
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Product */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $action string */
+
+use \yii\helpers\Url;
+
+$pjaxUrl = Url::to([$action]);
 
 $this->registerJs('
     $(function () {
@@ -18,7 +23,7 @@ $this->registerJs('
 
         $category.change(function () {
             $.pjax.reload({
-                url: "/shop-admin/product/" + $("[name=\"action\"]").val() + "/",
+                url: "' . $pjaxUrl . '",
                 data: {
                     id: $("#productform-id").val(),
                     category_id: $(this).val(),
