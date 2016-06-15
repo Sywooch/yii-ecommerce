@@ -101,7 +101,7 @@ After that, you need set module `shop` in your `config/console.php`:
     ],
 ],
 ```
-And now run command `yii shop/rbac/init`.
+And now run command `yii shop-rbac/init`.
 
 Now can access url `http://example/shop/`
 Admin access url `http://example/shop-admin/`

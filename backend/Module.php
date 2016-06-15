@@ -16,8 +16,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof \yii\console\Application) {
-            $app->controllerMap['rbac'] = [
-                'class' => 'webdoka\yiiecommerce\backend\commands\RbacController',
+            $app->controllerMap['shop-rbac'] = [
+                'class' => 'webdoka\yiiecommerce\backend\commands\ShopRbacController',
                 'module' => $this,
             ];
         }

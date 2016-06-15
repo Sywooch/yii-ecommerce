@@ -19,6 +19,12 @@ use yii\helpers\ArrayHelper;
  */
 class Product extends \yii\db\ActiveRecord implements IPosition
 {
+    const LIST_PRODUCT = 'shopListProduct';
+    const VIEW_PRODUCT = 'shopViewProduct';
+    const CREATE_PRODUCT = 'shopCreateProduct';
+    const UPDATE_PRODUCT = 'shopUpdateProduct';
+    const DELETE_PRODUCT = 'shopDeleteProduct';
+    
     private $quantity;
 
     /**

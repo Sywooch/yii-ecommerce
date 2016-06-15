@@ -20,6 +20,12 @@ use Yii;
  */
 class Category extends \yii\db\ActiveRecord
 {
+    const LIST_CATEGORY = 'shopListCategory';
+    const VIEW_CATEGORY = 'shopViewCategory';
+    const CREATE_CATEGORY = 'shopCreateCategory';
+    const UPDATE_CATEGORY = 'shopUpdateCategory';
+    const DELETE_CATEGORY = 'shopDeleteCategory';
+
     /**
      * @inheritdoc
      */

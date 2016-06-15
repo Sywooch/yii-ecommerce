@@ -16,6 +16,12 @@ use Yii;
  */
 class Feature extends \yii\db\ActiveRecord
 {
+    const LIST_FEATURE = 'shopListFeature';
+    const VIEW_FEATURE = 'shopViewFeature';
+    const CREATE_FEATURE = 'shopCreateFeature';
+    const UPDATE_FEATURE = 'shopUpdateFeature';
+    const DELETE_FEATURE = 'shopDeleteFeature';
+    
     /**
      * @inheritdoc
      */

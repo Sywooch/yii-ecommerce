@@ -4,7 +4,7 @@ namespace webdoka\yiiecommerce\backend\commands;
 
 use yii\console\Controller;
 
-class RbacController extends Controller
+class ShopRbacController extends Controller
 {
     public function actionInit()
     {
@@ -12,6 +12,8 @@ class RbacController extends Controller
 
         $actions = [];
 
+        $listFeature = $auth->createPermission('shopListFeature');
+        $listFeature->description = 'List shop features';
         $viewFeature = $auth->createPermission('shopViewFeature');
         $viewFeature->description = 'View shop feature';
         $createFeature = $auth->createPermission('shopCreateFeature');
@@ -21,11 +23,14 @@ class RbacController extends Controller
         $deleteFeature = $auth->createPermission('shopDeleteFeature');
         $deleteFeature->description = 'Delete shop feature';
         
+        $actions[] = $listFeature;
         $actions[] = $viewFeature;
         $actions[] = $createFeature;
         $actions[] = $updateFeature;
         $actions[] = $deleteFeature;
 
+        $listCategory = $auth->createPermission('shopListCategory');
+        $listCategory->description = 'List shop categories';
         $viewCategory = $auth->createPermission('shopViewCategory');
         $viewCategory->description = 'View shop category';
         $createCategory = $auth->createPermission('shopCreateCategory');
@@ -35,11 +40,14 @@ class RbacController extends Controller
         $deleteCategory = $auth->createPermission('shopDeleteCategory');
         $deleteCategory->description = 'Delete shop category';
 
+        $actions[] = $listCategory;
         $actions[] = $viewCategory;
         $actions[] = $createCategory;
         $actions[] = $updateCategory;
         $actions[] = $deleteCategory;
 
+        $listProduct = $auth->createPermission('shopListProduct');
+        $listProduct->description = 'List shop products';
         $viewProduct = $auth->createPermission('shopViewProduct');
         $viewProduct->description = 'View shop product';
         $createProduct = $auth->createPermission('shopCreateProduct');
@@ -49,6 +57,7 @@ class RbacController extends Controller
         $deleteProduct = $auth->createPermission('shopDeleteProduct');
         $deleteProduct->description = 'Delete shop product';
 
+        $actions[] = $listProduct;
         $actions[] = $viewProduct;
         $actions[] = $createProduct;
         $actions[] = $updateProduct;
