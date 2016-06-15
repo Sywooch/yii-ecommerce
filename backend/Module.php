@@ -10,7 +10,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function init()
     {
         parent::init();
-        Yii::configure($this, require __DIR__ . '/config.php');
+
+        $this->defaultRoute = 'category/index';
     }
 
     public function bootstrap($app)
