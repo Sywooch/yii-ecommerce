@@ -12,6 +12,23 @@ class ShopRbacController extends Controller
 
         $actions = [];
 
+        $listLocation = $auth->createPermission('shopListLocation');
+        $listLocation->description = 'List shop locations';
+        $viewLocation = $auth->createPermission('shopViewLocation');
+        $viewLocation->description = 'View shop location';
+        $createLocation = $auth->createPermission('shopCreateLocation');
+        $createLocation->description = 'Create shop location';
+        $updateLocation = $auth->createPermission('shopUpdateLocation');
+        $updateLocation->description = 'Update shop location';
+        $deleteLocation = $auth->createPermission('shopDeleteLocation');
+        $deleteLocation->description = 'Delete shop location';
+
+        $actions[] = $listLocation;
+        $actions[] = $viewLocation;
+        $actions[] = $createLocation;
+        $actions[] = $updateLocation;
+        $actions[] = $deleteLocation;
+        
         $listFeature = $auth->createPermission('shopListFeature');
         $listFeature->description = 'List shop features';
         $viewFeature = $auth->createPermission('shopViewFeature');
@@ -22,7 +39,7 @@ class ShopRbacController extends Controller
         $updateFeature->description = 'Update shop feature';
         $deleteFeature = $auth->createPermission('shopDeleteFeature');
         $deleteFeature->description = 'Delete shop feature';
-        
+
         $actions[] = $listFeature;
         $actions[] = $viewFeature;
         $actions[] = $createFeature;
