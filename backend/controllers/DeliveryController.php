@@ -2,18 +2,20 @@
 
 namespace webdoka\yiiecommerce\backend\controllers;
 
+use webdoka\yiiecommerce\common\forms\DeliveryForm;
 use Yii;
-use webdoka\yiiecommerce\common\models\Location;
+use webdoka\yiiecommerce\common\models\Delivery;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * LocationController implements the CRUD actions for Location model.
+ * DeliveryController implements the CRUD actions for Delivery model.
  */
-class LocationController extends Controller
+class DeliveryController extends Controller
 {
     /**
      * @inheritdoc
@@ -28,27 +30,27 @@ class LocationController extends Controller
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => [Location::LIST_LOCATION]
+                        'roles' => [Delivery::LIST_DELIVERY]
                     ],
                     [
                         'actions' => ['view'],
                         'allow' => true,
-                        'roles' => [Location::VIEW_LOCATION]
+                        'roles' => [Delivery::VIEW_DELIVERY]
                     ],
                     [
                         'actions' => ['create'],
                         'allow' => true,
-                        'roles' => [Location::CREATE_LOCATION]
+                        'roles' => [Delivery::CREATE_DELIVERY]
                     ],
                     [
                         'actions' => ['update'],
                         'allow' => true,
-                        'roles' => [Location::UPDATE_LOCATION]
+                        'roles' => [Delivery::UPDATE_DELIVERY]
                     ],
                     [
                         'actions' => ['delete'],
                         'allow' => true,
-                        'roles' => [Location::DELETE_LOCATION]
+                        'roles' => [Delivery::DELETE_DELIVERY]
                     ]
                 ],
             ],
@@ -62,13 +64,13 @@ class LocationController extends Controller
     }
 
     /**
-     * Lists all Location models.
+     * Lists all Delivery models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Location::find(),
+            'query' => Delivery::find(),
         ]);
 
         return $this->render('index', [
@@ -77,7 +79,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Displays a single Location model.
+     * Displays a single Delivery model.
      * @param integer $id
      * @return mixed
      */
@@ -89,44 +91,56 @@ class LocationController extends Controller
     }
 
     /**
-     * Creates a new Location model.
+     * Creates a new Delivery model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Location();
+        $model = new DeliveryForm();
+        $model->country = Yii::$app->request->get('country');
+        $model->city = Yii::$app->request->get('city');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $url = Url::to(['create']);
+            return $this->render('create', compact('model', 'url'));
         }
     }
 
     /**
-     * Updates an existing Location model.
+     * Updates an existing Delivery model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = DeliveryForm::findOne($id);
+
+        $location = $model->storage && $model->storage->location ? $model->storage->location : false;
+
+        $model->country = $location ? $location->country : '';
+        if (Yii::$app->request->get('country') !== null) {
+            $model->country = Yii::$app->request->get('country');
+        }
+
+        $model->city = $location ? $location->city : '';
+        if (Yii::$app->request->get('city') !== null) {
+            $model->city = Yii::$app->request->get('city');
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $url = Url::to(['update', 'id' => $id]);
+            return $this->render('update', compact('model', 'url'));
         }
     }
 
     /**
-     * Deletes an existing Location model.
+     * Deletes an existing Delivery model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -139,15 +153,15 @@ class LocationController extends Controller
     }
 
     /**
-     * Finds the Location model based on its primary key value.
+     * Finds the Delivery model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Location the loaded model
+     * @return Delivery the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Location::findOne($id)) !== null) {
+        if (($model = Delivery::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

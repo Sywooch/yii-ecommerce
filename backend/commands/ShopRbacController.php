@@ -12,6 +12,40 @@ class ShopRbacController extends Controller
 
         $actions = [];
 
+        $listDelivery = $auth->createPermission('shopListDelivery');
+        $listDelivery->description = 'List shop delivery';
+        $viewDelivery = $auth->createPermission('shopViewDelivery');
+        $viewDelivery->description = 'View shop delivery';
+        $createDelivery = $auth->createPermission('shopCreateDelivery');
+        $createDelivery->description = 'Create shop delivery';
+        $updateDelivery = $auth->createPermission('shopUpdateDelivery');
+        $updateDelivery->description = 'Update shop delivery';
+        $deleteDelivery = $auth->createPermission('shopDeleteDelivery');
+        $deleteDelivery->description = 'Delete shop delivery';
+
+        $actions[] = $listDelivery;
+        $actions[] = $viewDelivery;
+        $actions[] = $createDelivery;
+        $actions[] = $updateDelivery;
+        $actions[] = $deleteDelivery;
+        
+        $listStorage = $auth->createPermission('shopListStorage');
+        $listStorage->description = 'List shop storage';
+        $viewStorage = $auth->createPermission('shopViewStorage');
+        $viewStorage->description = 'View shop storage';
+        $createStorage = $auth->createPermission('shopCreateStorage');
+        $createStorage->description = 'Create shop storage';
+        $updateStorage = $auth->createPermission('shopUpdateStorage');
+        $updateStorage->description = 'Update shop storage';
+        $deleteStorage = $auth->createPermission('shopDeleteStorage');
+        $deleteStorage->description = 'Delete shop storage';
+
+        $actions[] = $listStorage;
+        $actions[] = $viewStorage;
+        $actions[] = $createStorage;
+        $actions[] = $updateStorage;
+        $actions[] = $deleteStorage;
+        
         $listLocation = $auth->createPermission('shopListLocation');
         $listLocation->description = 'List shop locations';
         $viewLocation = $auth->createPermission('shopViewLocation');

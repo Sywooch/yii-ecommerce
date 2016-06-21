@@ -2,8 +2,6 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
-use webdoka\yiiecommerce\common\models\Feature;
-use webdoka\yiiecommerce\common\models\FeatureCategory;
 use Yii;
 
 /**

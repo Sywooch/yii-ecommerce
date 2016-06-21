@@ -2,8 +2,8 @@
 
 namespace webdoka\yiiecommerce\backend\controllers;
 
-use webdoka\yiiecommerce\common\forms\ProductForm;
 use Yii;
+use webdoka\yiiecommerce\common\forms\ProductForm;
 use webdoka\yiiecommerce\common\models\Product;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;

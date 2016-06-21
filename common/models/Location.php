@@ -15,7 +15,7 @@ use Yii;
  * @property string $address
  * @property string $index
  */
-class Location extends \yii\db\ActiveRecord
+class Location extends UidModel
 {
     const LIST_LOCATION = 'shopListLocation';
     const VIEW_LOCATION = 'shopViewLocation';
@@ -54,6 +54,7 @@ class Location extends \yii\db\ActiveRecord
             'country' => 'Country',
             'city' => 'City',
             'address' => 'Address',
+            'full' => 'Full address',
             'index' => 'Index',
         ];
     }
@@ -68,16 +69,11 @@ class Location extends \yii\db\ActiveRecord
     }
 
     /**
-     * Sets uid
-     * @param bool $insert
-     * @return bool
+     * Returns full address
+     * @return string
      */
-    public function beforeSave($insert)
+    public function getFull()
     {
-        if ($insert) {
-            $this->uid = md5(microtime());
-        }
-
-        return parent::beforeSave($insert);
+        return sprintf('%s, %s, %s', $this->country, $this->city, $this->address);
     }
 }

@@ -10,7 +10,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function init()
     {
         parent::init();
-
+        $this->setAliases(['@webdoka' => realpath($this->basePath . '/../')]);
         $this->defaultRoute = 'category/index';
     }
 
