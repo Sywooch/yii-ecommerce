@@ -38,11 +38,11 @@ class Delivery extends UidModel
     public function rules()
     {
         return [
-            [['name', 'cost', 'storage_id'], 'required'],
+            [['name', 'cost'], 'required'],
             [['cost'], 'number'],
             [['storage_id'], 'integer'],
             [['uid', 'name'], 'string', 'max' => 255],
-            [['storage_id'], 'exist', 'skipOnError' => false, 'targetClass' => Storage::className(), 'targetAttribute' => ['storage_id' => 'id']],
+            [['storage_id'], 'exist', 'skipOnError' => true, 'targetClass' => Storage::className(), 'targetAttribute' => ['storage_id' => 'id']],
         ];
     }
 

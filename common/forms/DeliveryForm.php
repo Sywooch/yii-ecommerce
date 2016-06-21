@@ -22,7 +22,6 @@ class DeliveryForm extends Delivery
     public function rules()
     {
         return ArrayHelper::merge([
-            [['country', 'city'], 'required'],
             [['country', 'city'], 'string', 'max' => 255],
         ], parent::rules());
     }
