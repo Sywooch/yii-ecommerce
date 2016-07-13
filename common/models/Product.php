@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $category_id
  * @property string $name
  * @property double $price
+ * @property integer $unit_id
  *
  * @property OrderItem[] $orderItems
  * @property Category $category
@@ -41,8 +42,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function rules()
     {
         return [
-            [['category_id'], 'integer'],
-            [['name', 'price'], 'required'],
+            [['category_id', 'unit_id'], 'integer'],
+            [['name', 'price', 'unit_id'], 'required'],
             [['price'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
@@ -57,6 +58,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         return [
             'id' => 'ID',
             'category_id' => 'Category ID',
+            'unit_id' => 'Unit',
             'name' => 'Name',
             'price' => 'Price',
         ];
@@ -116,6 +118,15 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * Returns unit
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getUnit()
+    {
+        return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
     }
 
     /**

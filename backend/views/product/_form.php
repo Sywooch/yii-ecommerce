@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Category;
+use webdoka\yiiecommerce\common\models\Unit;
 use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
 use yii\widgets\ListView;
@@ -47,6 +48,8 @@ $this->registerJs('
     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
+
+    <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Unit::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
