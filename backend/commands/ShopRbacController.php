@@ -12,6 +12,40 @@ class ShopRbacController extends Controller
 
         $actions = [];
 
+        $listAccount = $auth->createPermission('shopListAccount');
+        $listAccount->description = 'List shop account';
+        $viewAccount = $auth->createPermission('shopViewAccount');
+        $viewAccount->description = 'View shop account';
+        $createAccount = $auth->createPermission('shopCreateAccount');
+        $createAccount->description = 'Create shop account';
+        $updateAccount = $auth->createPermission('shopUpdateAccount');
+        $updateAccount->description = 'Update shop account';
+        $deleteAccount = $auth->createPermission('shopDeleteAccount');
+        $deleteAccount->description = 'Delete shop account';
+
+        $actions[] = $listAccount;
+        $actions[] = $viewAccount;
+        $actions[] = $createAccount;
+        $actions[] = $updateAccount;
+        $actions[] = $deleteAccount;
+        
+        $listCurrency = $auth->createPermission('shopListCurrency');
+        $listCurrency->description = 'List shop currency';
+        $viewCurrency = $auth->createPermission('shopViewCurrency');
+        $viewCurrency->description = 'View shop currency';
+        $createCurrency = $auth->createPermission('shopCreateCurrency');
+        $createCurrency->description = 'Create shop currency';
+        $updateCurrency = $auth->createPermission('shopUpdateCurrency');
+        $updateCurrency->description = 'Update shop currency';
+        $deleteCurrency = $auth->createPermission('shopDeleteCurrency');
+        $deleteCurrency->description = 'Delete shop currency';
+
+        $actions[] = $listCurrency;
+        $actions[] = $viewCurrency;
+        $actions[] = $createCurrency;
+        $actions[] = $updateCurrency;
+        $actions[] = $deleteCurrency;
+        
         $listDelivery = $auth->createPermission('shopListDelivery');
         $listDelivery->description = 'List shop delivery';
         $viewDelivery = $auth->createPermission('shopViewDelivery');
