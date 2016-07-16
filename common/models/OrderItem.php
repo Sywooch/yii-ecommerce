@@ -32,8 +32,8 @@ class OrderItem extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'product_id', 'quantity'], 'integer'],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['order_id' => 'id']],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => false, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['order_id'], 'exist', 'skipOnError' => false, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
         ];
     }
 
@@ -53,7 +53,7 @@ class OrderItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder()
+    public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'order_id']);
     }
@@ -61,7 +61,7 @@ class OrderItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder0()
+    public function getOrder()
     {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }

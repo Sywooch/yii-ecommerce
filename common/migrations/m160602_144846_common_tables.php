@@ -44,7 +44,7 @@ class m160602_144846_common_tables extends Migration
         ]);
 
         $this->addForeignKey('fk_order_items_order_id', 'order_items', 'order_id', 'orders', 'id', 'CASCADE');
-        $this->addForeignKey('fk_order_items_product_id', 'order_items', 'order_id', 'products', 'id', 'CASCADE');
+        $this->addForeignKey('fk_order_items_product_id', 'order_items', 'product_id', 'products', 'id', 'CASCADE');
     }
 
     public function safeDown()

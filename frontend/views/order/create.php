@@ -17,8 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Return to cart', ['cart/list'], ['class' => 'btn btn-default']) ?>
     </p>
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?= $this->render('_form', compact('model', 'properties')) ?>
 
 </div>

@@ -50,7 +50,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['phone', 'email', 'status'], 'required'],
+            [['status'], 'required'],
             [['email'], 'email'],
             [['notes'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
@@ -90,5 +90,51 @@ class Order extends \yii\db\ActiveRecord
     public function getOrderItems()
     {
         return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdersProperties()
+    {
+        return $this->hasMany(OrderProperty::className(), ['order_id' => 'id']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function getProperties()
+    {
+        return $this->hasMany(Property::className(), ['id' => 'property_id'])->via('ordersProperties');
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $relatedRecords = $this->getRelatedRecords();
+
+        if ($this->isRelationPopulated('orderItems')) {
+            if ($this->isNewRecord) {
+                $this->unlinkAll('orderItems');
+            }
+            foreach ($relatedRecords['orderItems'] as $relatedRecord) {
+                $this->link('orderItems', $relatedRecord);
+            }
+        }
+
+        if ($this->isRelationPopulated('ordersProperties')) {
+            if ($this->isNewRecord) {
+                $this->unlinkAll('ordersProperties');
+            }
+            foreach ($relatedRecords['ordersProperties'] as $relatedRecord) {
+
+                $this->link('ordersProperties', $relatedRecord, ['value' => $relatedRecord->value]);
+            }
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 }
