@@ -2,6 +2,7 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
+use app\models\User;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -16,6 +17,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $user_id
  *
  * @property OrderItem[] $orderItems
  */
@@ -50,11 +52,10 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'required'],
-            [['email'], 'email'],
-            [['notes'], 'string'],
-            [['created_at', 'updated_at'], 'integer'],
-            [['phone', 'email', 'address', 'status'], 'string', 'max' => 255],
+            [['status', 'user_id'], 'required'],
+            [['created_at', 'updated_at', 'user_id'], 'integer'],
+            [['status'], 'string', 'max' => 255],
+            [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -65,11 +66,8 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'phone' => 'Phone',
-            'email' => 'Email',
-            'address' => 'Address',
-            'notes' => 'Notes',
             'status' => 'Status',
+            'user_id' => 'User',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -82,6 +80,14 @@ class Order extends \yii\db\ActiveRecord
         }
 
         return parent::beforeValidate();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

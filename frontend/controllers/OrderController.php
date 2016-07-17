@@ -59,6 +59,7 @@ class OrderController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $orderModel = new Order();
+            $orderModel->user_id = Yii::$app->user->id;
             $transaction = Yii::$app->db->beginTransaction();
 
             // Order items

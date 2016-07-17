@@ -2,24 +2,24 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use webdoka\yiiecommerce\common\models\Account;
+use webdoka\yiiecommerce\common\models\Transaction;
 
 /* @var $this yii\web\View */
-/* @var $model \webdoka\yiiecommerce\common\models\Account */
+/* @var $model webdoka\yiiecommerce\common\models\Transaction */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Accounts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Transactions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="account-view">
+<div class="transaction-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if (Yii::$app->user->can(Account::UPDATE_ACCOUNT)) { ?>
+        <?php if (Yii::$app->user->can(Transaction::UPDATE_TRANSACTION)) { ?>
             <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
-        <?php if (Yii::$app->user->can(Account::DELETE_ACCOUNT)) { ?>
+        <?php if (Yii::$app->user->can(Transaction::DELETE_TRANSACTION)) { ?>
             <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -34,10 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
-            'balance',
-            'currency.symbol',
-            'user.username',
+            'amount',
+            'account.user.username',
+            'account.name',
+            'type',
+            'created_at:datetime',
         ],
     ]) ?>
 

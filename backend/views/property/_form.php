@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use webdoka\yiiecommerce\common\models\Property;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Property */
@@ -16,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->dropDownList([ 'input' => 'Input', 'checkbox' => 'Checkbox', 'textarea' => 'Textarea', ]) ?>
+    <?= $form->field($model, 'type')->dropDownList(Property::getTypes()) ?>
 
     <?= $form->field($model, 'required')->checkbox() ?>
 

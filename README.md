@@ -29,11 +29,14 @@ Add module to `config/web.php`:
     ],
 ],
 ```
-Add component cart to `config/web.php`:
+Add components cart and billing to `config/web.php`:
 ```
 'components' => [
     'cart' => [
         'class' => 'webdoka\yiiecommerce\common\components\Cart'
+    ],
+    'billing' => [
+        'class' => 'webdoka\yiiecommerce\common\components\Billing'
     ],
     ...
 ]

@@ -9,6 +9,7 @@ use app\models\User;
  * This is the model class for table "accounts".
  *
  * @property integer $id
+ * @property integer $name
  * @property double $balance
  * @property integer $currency_id
  * @property integer $user_id
@@ -38,8 +39,9 @@ class Account extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['currency_id', 'user_id', 'name'], 'required'],
             [['balance'], 'number'],
-            [['currency_id', 'user_id'], 'required'],
+            [['name'], 'string', 'max' => 255],
             [['currency_id', 'user_id'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
@@ -53,6 +55,7 @@ class Account extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'name' => 'Name',
             'balance' => 'Balance',
             'currency_id' => 'Currency ID',
             'user_id' => 'User ID',

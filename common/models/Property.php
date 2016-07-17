@@ -22,6 +22,10 @@ use yii\widgets\ActiveForm;
  */
 class Property extends \yii\db\ActiveRecord
 {
+    const INPUT_TYPE = 'input';
+    const CHECKBOX_TYPE = 'checkbox';
+    const TEXTAREA_TYPE = 'textarea';
+
     const LIST_PROPERTY = 'shopListProperty';
     const VIEW_PROPERTY = 'shopViewProperty';
     const CREATE_PROPERTY = 'shopCreateProperty';
@@ -78,5 +82,17 @@ class Property extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PropertyQuery(get_called_class());
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypes()
+    {
+        return [
+            self::INPUT_TYPE => ucfirst(self::INPUT_TYPE),
+            self::CHECKBOX_TYPE => ucfirst(self::CHECKBOX_TYPE),
+            self::TEXTAREA_TYPE => ucfirst(self::TEXTAREA_TYPE),
+        ];
     }
 }

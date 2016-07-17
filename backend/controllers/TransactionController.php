@@ -2,18 +2,22 @@
 
 namespace webdoka\yiiecommerce\backend\controllers;
 
+use webdoka\yiiecommerce\common\forms\TransactionForm;
 use Yii;
-use webdoka\yiiecommerce\common\models\Account;
+use webdoka\yiiecommerce\common\models\Transaction;
+use yii\base\Exception;
+use yii\base\InvalidParamException;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AccountController implements the CRUD actions for Account model.
+ * TransactionController implements the CRUD actions for Transaction model.
  */
-class AccountController extends Controller
+class TransactionController extends Controller
 {
     /**
      * @inheritdoc
@@ -28,27 +32,27 @@ class AccountController extends Controller
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => [Account::LIST_ACCOUNT]
+                        'roles' => [Transaction::LIST_TRANSACTION]
                     ],
                     [
                         'actions' => ['view'],
                         'allow' => true,
-                        'roles' => [Account::VIEW_ACCOUNT]
+                        'roles' => [Transaction::VIEW_TRANSACTION]
                     ],
                     [
                         'actions' => ['create'],
                         'allow' => true,
-                        'roles' => [Account::CREATE_ACCOUNT]
+                        'roles' => [Transaction::CREATE_TRANSACTION]
                     ],
                     [
                         'actions' => ['update'],
                         'allow' => true,
-                        'roles' => [Account::UPDATE_ACCOUNT]
+                        'roles' => [Transaction::UPDATE_TRANSACTION]
                     ],
                     [
                         'actions' => ['delete'],
                         'allow' => true,
-                        'roles' => [Account::DELETE_ACCOUNT]
+                        'roles' => [Transaction::DELETE_TRANSACTION]
                     ]
                 ],
             ],
@@ -62,13 +66,13 @@ class AccountController extends Controller
     }
 
     /**
-     * Lists all Account models.
+     * Lists all Transaction models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Account::find(),
+            'query' => Transaction::find(),
         ]);
 
         return $this->render('index', [
@@ -77,7 +81,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Displays a single Account model.
+     * Displays a single Transaction model.
      * @param integer $id
      * @return mixed
      */
@@ -89,25 +93,39 @@ class AccountController extends Controller
     }
 
     /**
-     * Creates a new Account model.
+     * Creates a new Transaction model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Account();
+        $model = new TransactionForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->type = Yii::$app->request->get('type');
+        $model->user = Yii::$app->request->get('user');
+        $model->order = Yii::$app->request->get('order');
+        $model->amount = Yii::$app->request->get('amount');
+        $model->account_id = Yii::$app->request->get('account_id');
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->type == Transaction::CHARGE_TYPE) {
+                Yii::$app->billing->charge($model->account_id, $model->amount, $model->description);
+            } elseif ($model->type == Transaction::WITHDRAW_TYPE) {
+                Yii::$app->billing->withdraw($model->account_id, $model->amount, $model->description, $model->order);
+            } elseif ($model->type == Transaction::ROLLBACK_TYPE) {
+                Yii::$app->billing->rollback($model->transaction, $model->description);
+            } else {
+                throw new InvalidParamException('Invalid transaction type.');
+            }
+            return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $url = Url::to(['create']);
+            return $this->render('create', compact('model', 'url'));
         }
     }
 
     /**
-     * Updates an existing Account model.
+     * Updates an existing Transaction model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -126,7 +144,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Deletes an existing Account model.
+     * Deletes an existing Transaction model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -139,15 +157,15 @@ class AccountController extends Controller
     }
 
     /**
-     * Finds the Account model based on its primary key value.
+     * Finds the Transaction model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Account the loaded model
+     * @return Transaction the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Account::findOne($id)) !== null) {
+        if (($model = TransactionForm::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
