@@ -12,12 +12,12 @@ class m160717_113630_add_user_id_to_orders extends Migration
      */
     public function up()
     {
-//        $this->dropColumn('orders', 'phone');
-//        $this->dropColumn('orders', 'email');
-//        $this->dropColumn('orders', 'address');
-//        $this->dropColumn('orders', 'notes');
+        $this->dropColumn('orders', 'phone');
+        $this->dropColumn('orders', 'email');
+        $this->dropColumn('orders', 'address');
+        $this->dropColumn('orders', 'notes');
 
-//        $this->addColumn('orders', 'user_id', 'INTEGER NOT NULL');
+        $this->addColumn('orders', 'user_id', 'INTEGER NOT NULL');
         $this->addForeignKey('fk-orders-user_id-users-id', 'orders', 'user_id', 'users', 'id');
     }
 
