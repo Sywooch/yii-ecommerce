@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model webdoka\yiiecommerce\common\models\Category */
 /* @var $url string */
 
-$this->title = 'Create Category';
+$this->title = 'Create Transaction';
 $this->params['breadcrumbs'][] = ['label' => 'Transactions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -7,7 +7,7 @@ use webdoka\yiiecommerce\common\models\Transaction;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Categories';
+$this->title = 'Transactions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaction-index">
