@@ -45,11 +45,6 @@ class TransactionController extends Controller
                         'roles' => [Transaction::CREATE_TRANSACTION]
                     ],
                     [
-                        'actions' => ['update'],
-                        'allow' => true,
-                        'roles' => [Transaction::UPDATE_TRANSACTION]
-                    ],
-                    [
                         'actions' => ['delete'],
                         'allow' => true,
                         'roles' => [Transaction::DELETE_TRANSACTION]
@@ -125,25 +120,6 @@ class TransactionController extends Controller
     }
 
     /**
-     * Updates an existing Transaction model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
      * Deletes an existing Transaction model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -165,7 +141,7 @@ class TransactionController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = TransactionForm::findOne($id)) !== null) {
+        if (($model = Transaction::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -34,17 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {delete}',
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                         return Yii::$app->user->can(Transaction::VIEW_TRANSACTION) ?
                             Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                                 'title' => Yii::t('yii', 'View'),
-                            ]) : '';
-                    },
-                    'update' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Transaction::UPDATE_TRANSACTION) ?
-                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                'title' => Yii::t('yii', 'Update'),
                             ]) : '';
                     },
                     'delete' => function ($url, $model, $key) {

@@ -22,7 +22,7 @@ class m160717_085939_create_transactions extends Migration
             'account_id' => $this->integer()->notNull(),
         ]);
 
-        $this->addForeignKey('fk-transactions-account_id-accounts-id', 'transactions', 'account_id', 'accounts', 'id');
+        $this->addForeignKey('fk-transactions-account_id-accounts-id', 'transactions', 'account_id', 'accounts', 'id', 'CASCADE', 'CASCADE');
 
         $this->createTable('orders_transactions', [
             'id' => $this->primaryKey(),
@@ -30,8 +30,8 @@ class m160717_085939_create_transactions extends Migration
             'transaction_id' => $this->integer()->notNull(),
         ]);
 
-        $this->addForeignKey('fk-orders_transactions-order_id-orders-id', 'orders_transactions', 'order_id', 'orders', 'id');
-        $this->addForeignKey('fk-orders_transactions-transaction_id-transactions-id', 'orders_transactions', 'transaction_id', 'transactions', 'id');
+        $this->addForeignKey('fk-orders_transactions-order_id-orders-id', 'orders_transactions', 'order_id', 'orders', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('fk-orders_transactions-transaction_id-transactions-id', 'orders_transactions', 'transaction_id', 'transactions', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

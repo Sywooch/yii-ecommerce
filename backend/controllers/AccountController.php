@@ -5,6 +5,7 @@ namespace webdoka\yiiecommerce\backend\controllers;
 use Yii;
 use webdoka\yiiecommerce\common\models\Account;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -83,9 +84,14 @@ class AccountController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        $dataProvider = new ArrayDataProvider();
+
+        if ($model) {
+            $dataProvider->models = $model->transactions;
+        }
+
+        return $this->render('view', compact('model', 'dataProvider'));
     }
 
     /**

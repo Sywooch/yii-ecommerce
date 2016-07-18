@@ -3,9 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use webdoka\yiiecommerce\common\models\Account;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Account */
+/* @var $dataProvider \yii\data\ActiveDataProvider */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Accounts', 'url' => ['index']];
@@ -40,5 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'user.username',
         ],
     ]) ?>
+
+    <div class="well">
+        <h2>Transactions</h2>
+
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'summaryOptions' => ['class' => 'well'],
+        ]) ?>
+    </div>
 
 </div>

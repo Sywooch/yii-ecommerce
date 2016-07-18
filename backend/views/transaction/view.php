@@ -16,9 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if (Yii::$app->user->can(Transaction::UPDATE_TRANSACTION)) { ?>
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php } ?>
         <?php if (Yii::$app->user->can(Transaction::DELETE_TRANSACTION)) { ?>
             <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
@@ -38,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'account.user.username',
             'account.name',
             'type',
-            'created_at:datetime',
+            'transaction.id:text:Rollback transaction',
         ],
     ]) ?>
 

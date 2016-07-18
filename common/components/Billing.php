@@ -6,6 +6,7 @@ use webdoka\yiiecommerce\common\models\Order;
 use webdoka\yiiecommerce\common\models\OrderTransaction;
 use Yii;
 use yii\base\Component;
+use yii\base\Exception;
 use yii\base\InvalidParamException;
 use webdoka\yiiecommerce\common\models\Account;
 use webdoka\yiiecommerce\common\models\Transaction;
@@ -124,27 +125,19 @@ class Billing extends Component
         $rollbackTransaction->amount = $transaction->amount;
         $rollbackTransaction->description = $description ?: 'Rollback';
         $rollbackTransaction->account_id = $transaction->account_id;
+        $rollbackTransaction->transaction_id = $transaction->id;
 
         $dbTransaction = Yii::$app->db->beginTransaction();
 
         $result = true;
 
         if ($result &= $rollbackTransaction->save()) {
-            if ($transaction->order) {
-                $orderTransaction = new OrderTransaction();
-                $orderTransaction->order_id = $transaction->order->id;
-                $orderTransaction->transaction_id = $rollbackTransaction->id;
-                $result &= $orderTransaction->save();
+            if ($transaction->type == Transaction::CHARGE_TYPE) {
+                $account->balance -= abs($rollbackTransaction->amount);
+            } else {
+                $account->balance += abs($rollbackTransaction->amount);
             }
-
-            if ($result) {
-                if ($transaction->type == Transaction::CHARGE_TYPE) {
-                    $account->balance -= abs($rollbackTransaction->amount);
-                } else {
-                    $account->balance += abs($rollbackTransaction->amount);
-                }
-                $result &= $account->save();
-            }
+            $result &= $account->save();
         }
 
         if ($result) {

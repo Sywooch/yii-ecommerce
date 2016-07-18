@@ -111,7 +111,9 @@ class TransactionForm extends Transaction
     public static function getTransactionsByAccount($account)
     {
         return Transaction::find()
-            ->where(['account_id' => $account])
+            ->andWhere('account_id = :account_id')
+            ->andWhere('type <> :type')
+            ->params([':account_id' => $account, ':type' => self::ROLLBACK_TYPE])
             ->select('id')
             ->indexBy('id')
             ->orderBy(['id' => 'asc'])
