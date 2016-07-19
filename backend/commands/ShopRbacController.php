@@ -12,6 +12,23 @@ class ShopRbacController extends Controller
 
         $actions = [];
 
+        $listPrice = $auth->createPermission('shopListPrice');
+        $listPrice->description = 'List shop price';
+        $viewPrice = $auth->createPermission('shopViewPrice');
+        $viewPrice->description = 'View shop price';
+        $createPrice = $auth->createPermission('shopCreatePrice');
+        $createPrice->description = 'Create shop price';
+        $updatePrice = $auth->createPermission('shopUpdatePrice');
+        $updatePrice->description = 'Update shop price';
+        $deletePrice = $auth->createPermission('shopDeletePrice');
+        $deletePrice->description = 'Delete shop price';
+
+        $actions[] = $listPrice;
+        $actions[] = $viewPrice;
+        $actions[] = $createPrice;
+        $actions[] = $updatePrice;
+        $actions[] = $deletePrice;
+        
         $listTransaction = $auth->createPermission('shopListTransaction');
         $listTransaction->description = 'List shop transaction';
         $viewTransaction = $auth->createPermission('shopViewTransaction');

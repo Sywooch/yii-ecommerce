@@ -150,7 +150,7 @@ class Cart extends Component
         $cost = 0;
 
         foreach ($this->_positions as $position) {
-            $cost += $position->getPrice() * $position->getQuantity();
+            $cost += $position->realPrice * $position->getQuantity();
         }
 
         return $cost;
@@ -233,7 +233,7 @@ class Cart extends Component
         $data = [];
 
         foreach ($this->_positions as $position)
-            $data[] = [$position->getId(), $position->getQuantity(), $position->getPrice()];
+            $data[] = [$position->getId(), $position->getQuantity(), $position->realPrice];
 
         return md5(serialize($data));
     }

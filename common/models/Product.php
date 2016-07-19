@@ -60,24 +60,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'category_id' => 'Category ID',
             'unit_id' => 'Unit',
             'name' => 'Name',
-            'price' => 'Price',
+            'price' => 'Default Price',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrderItems()
-    {
-        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory()
-    {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
     /**
@@ -107,6 +91,18 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     /**
      * @inheritdoc
      */
+    public function getRealPrice()
+    {
+        // Default price
+        $price = $this->price;
+        $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
+
+        return Price::getMinPrice($roles, $this->id) ?: $price;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getQuantity()
     {
         return $this->quantity;
@@ -127,6 +123,62 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function getUnit()
     {
         return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderItems()
+    {
+        return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductPrices()
+    {
+        return $this->hasMany(ProductPrice::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPrices()
+    {
+        return $this->hasMany(Price::className(), ['id' => 'price_id'])->via('productPrices');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPricesWithValues()
+    {
+        $data = [];
+
+        $prices = Price::find()->all();
+        foreach ($prices as $price) {
+            $productPrice = ProductPrice::find()->where([
+                'product_id' => $this->id,
+                'price_id' => $price->id,
+            ])->one();
+
+            $data[] = [
+                'id' => $price->id,
+                'label' => $price->label,
+                'value' => $productPrice ? $productPrice->value : ''
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
     /**
@@ -195,6 +247,13 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             $this->unlinkAll('productFeatures', true);
             foreach ($relatedRecords['productFeatures'] as $feature) {
                 $this->link('productFeatures', $feature);
+            }
+        }
+
+        if (array_key_exists('productPrices', $relatedRecords)) {
+            $this->unlinkAll('productPrices', true);
+            foreach ($relatedRecords['productPrices'] as $price) {
+                $this->link('productPrices', $price);
             }
         }
     }

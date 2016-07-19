@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 
+/* @var $model \webdoka\yiiecommerce\common\models\Feature */
+
 ?>
 <div class="form-group">
     <div class="row">

@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /* @var $model \webdoka\yiiecommerce\common\models\Account */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 
-$this->title = $model->id;
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Accounts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -49,6 +49,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'summaryOptions' => ['class' => 'well'],
+            'columns' => [
+                'id',
+                'type',
+                'amount',
+                'description',
+                'created_at:datetime',
+                'updated_at:datetime',
+                'account.name',
+                'transaction.id:text:Rollback transaction',
+            ]
         ]) ?>
     </div>
 

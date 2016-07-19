@@ -17,6 +17,6 @@ $action = 'create';
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', compact('model', 'dataProvider', 'action')) ?>
+    <?= $this->render('_form', compact('model', 'dataProvider', 'priceDataProvider', 'action')) ?>
 
 </div>

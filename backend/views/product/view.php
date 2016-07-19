@@ -2,10 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 use webdoka\yiiecommerce\common\models\Product;
 
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Product */
+/* @var $dataProvider \yii\data\ArrayDataProvider */
+/* @var $priceDataProvider \yii\data\ArrayDataProvider */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
@@ -40,5 +43,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'unit.name:html:Unit',
         ],
     ]) ?>
+
+    <h2>Prices</h2>
+
+    <?= GridView::widget([
+        'dataProvider' => $priceDataProvider,
+        'summary' => false,
+    ]); ?>
+
+    <h2>Features</h2>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'summary' => false,
+    ]); ?>
 
 </div>

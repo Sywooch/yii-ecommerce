@@ -12,6 +12,8 @@ use yii\widgets\ListView;
 /* @var $model webdoka\yiiecommerce\common\models\Product */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $action string */
+/* @var $dataProvider \yii\data\ArrayDataProvider */
+/* @var $priceDataProvider \yii\data\ArrayDataProvider */
 
 use \yii\helpers\Url;
 
@@ -55,17 +57,29 @@ $this->registerJs('
 
     <?= $form->field($model, 'price')->textInput() ?>
 
-    <?php Pjax::begin(['id' => 'features']) ?>
+    <h2>Prices</h2>
+
+    <div class="well">
+        <?= ListView::widget([
+            'itemView' => '_price',
+            'dataProvider' => $priceDataProvider,
+            'summary' => false,
+        ]); ?>
+    </div>
 
     <h2>Features</h2>
 
-    <?= ListView::widget([
-        'itemView' => '_feature',
-        'dataProvider' => $dataProvider,
-        'summary' => false,
-    ]); ?>
+    <div class="well">
+        <?php Pjax::begin(['id' => 'features']) ?>
 
-    <?php Pjax::end() ?>
+        <?= ListView::widget([
+            'itemView' => '_feature',
+            'dataProvider' => $dataProvider,
+            'summary' => false,
+        ]); ?>
+
+        <?php Pjax::end() ?>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

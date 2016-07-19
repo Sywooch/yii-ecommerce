@@ -3,13 +3,16 @@
 namespace webdoka\yiiecommerce\common\forms;
 
 use webdoka\yiiecommerce\common\models\FeatureProduct;
+use webdoka\yiiecommerce\common\models\Price;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\Feature;
+use webdoka\yiiecommerce\common\models\ProductPrice;
 use yii\helpers\ArrayHelper;
 
 class ProductForm extends Product
 {
     public $_relFeatures = [];
+    public $_relPrices = [];
 
     /**
      * @inheritdoc
@@ -17,7 +20,8 @@ class ProductForm extends Product
     public function rules()
     {
         return ArrayHelper::merge([
-            ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Feature']
+            ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Feature'],
+            ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Price'],
         ], parent::rules());
     }
 
@@ -28,6 +32,7 @@ class ProductForm extends Product
     {
         return ArrayHelper::merge([
             'relFeatures' => 'Features',
+            'relPrices' => 'Prices',
         ], parent::attributeLabels());
     }
 
@@ -50,6 +55,24 @@ class ProductForm extends Product
     }
 
     /**
+     * Buffer variable for related prices
+     * @return array
+     */
+    public function getRelPrices()
+    {
+        return $this->_relPrices;
+    }
+
+    /**
+     * Set related prices
+     * @param $types
+     */
+    public function setRelPrices($prices)
+    {
+        $this->_relPrices = $prices;
+    }
+
+    /**
      * Save relFeatures to relation
      * @param bool $insert
      * @return bool
@@ -58,6 +81,7 @@ class ProductForm extends Product
     {
         if (parent::beforeSave($insert)) {
             $this->saveFeaturesToRelation();
+            $this->savePricesToRelation();
             return true;
         }
 
@@ -82,5 +106,25 @@ class ProductForm extends Product
         }
 
         $this->populateRelation('productFeatures', $features);
+    }
+
+    /**
+     * Populating prices to relation
+     */
+    private function savePricesToRelation()
+    {
+        $prices = [];
+
+        foreach ($this->_relPrices as $relPrice => $value) {
+            if ($price = Price::findOne($relPrice)) {
+                $productPrice = new ProductPrice();
+                $productPrice->price_id = $price->id;
+                $productPrice->value = $value;
+
+                $prices[] = $productPrice;
+            }
+        }
+
+        $this->populateRelation('productPrices', $prices);
     }
 }

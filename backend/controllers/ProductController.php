@@ -85,9 +85,19 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $model = $this->findModel($id);
+
+        $dataProvider = new ArrayDataProvider([
+            'pagination' => false,
+            'allModels' => $model->featuresWithCategories,
         ]);
+
+        $priceDataProvider = new ArrayDataProvider([
+            'pagination' => false,
+            'allModels' => $model->pricesWithValues,
+        ]);
+
+        return $this->render('view', compact('model', 'dataProvider', 'priceDataProvider'));
     }
 
     /**
@@ -105,10 +115,15 @@ class ProductController extends Controller
             'allModels' => $model->featuresWithCategories,
         ]);
 
+        $priceDataProvider = new ArrayDataProvider([
+            'pagination' => false,
+            'allModels' => $model->pricesWithValues,
+        ]);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', compact('model', 'dataProvider'));
+            return $this->render('create', compact('model', 'dataProvider', 'priceDataProvider'));
         }
     }
 
@@ -123,13 +138,20 @@ class ProductController extends Controller
         $model = ProductForm::find()->where(['id' => $id])->one();
         $model->category_id = Yii::$app->request->get('category_id') ?: $model->category_id;
 
-        $dataProvider = new ArrayDataProvider();
-        $dataProvider->allModels = $model->featuresWithCategories;
+        $dataProvider = new ArrayDataProvider([
+            'pagination' => false,
+            'allModels' => $model->featuresWithCategories,
+        ]);
+
+        $priceDataProvider = new ArrayDataProvider([
+            'pagination' => false,
+            'allModels' => $model->pricesWithValues,
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', compact('model', 'dataProvider'));
+            return $this->render('update', compact('model', 'dataProvider', 'priceDataProvider'));
         }
     }
 
