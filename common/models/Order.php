@@ -27,7 +27,12 @@ class Order extends \yii\db\ActiveRecord
     const STATUS_IN_PROGRESS = 'In progress';
     const STATUS_DONE = 'Done';
 
-
+    const LIST_ORDER = 'shopListOrder';
+    const VIEW_ORDER = 'shopViewOrder';
+    const CREATE_ORDER = 'shopCreateOrder';
+    const UPDATE_ORDER = 'shopUpdateOrder';
+    const DELETE_ORDER = 'shopDeleteOrder';
+    
     /**
      * @inheritdoc
      */
@@ -115,6 +120,14 @@ class Order extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdersTransactions()
+    {
+        return $this->hasMany(OrderTransaction::className(), ['order_id' => 'id']);
+    }
+
+    /**
      * @param bool $insert
      * @param array $changedAttributes
      */
@@ -142,5 +155,13 @@ class Order extends \yii\db\ActiveRecord
         }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getStatuses()
+    {
+        return [self::STATUS_NEW, self::STATUS_IN_PROGRESS, self::STATUS_DONE];
     }
 }

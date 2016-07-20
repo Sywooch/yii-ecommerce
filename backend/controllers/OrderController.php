@@ -5,6 +5,8 @@ namespace webdoka\yiiecommerce\backend\controllers;
 use Yii;
 use webdoka\yiiecommerce\common\models\Order;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +22,27 @@ class OrderController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'status'],
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => [Order::LIST_ORDER]
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => [Order::VIEW_ORDER]
+                    ],
+                    [
+                        'actions' => ['status'],
+                        'allow' => true,
+                        'roles' => [Order::UPDATE_ORDER]
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -51,22 +74,42 @@ class OrderController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+
+        $contactDataProvider = new ArrayDataProvider();
+        $contactDataProvider->allModels = $model->ordersProperties;
+        $contactDataProvider->pagination = false;
+
+        $productDataProvider = new ArrayDataProvider();
+        $productDataProvider->allModels = $model->orderItems;
+        $productDataProvider->pagination = false;
+
+        $transactionDataProvider = new ArrayDataProvider();
+        $transactionDataProvider->allModels = $model->ordersTransactions;
+        $transactionDataProvider->pagination = false;
+
+//        echo'<pre>';var_dump($model->ordersTransactions);die;
+
+        return $this->render('view', compact('model', 'contactDataProvider', 'productDataProvider', 'transactionDataProvider'));
     }
 
     /**
-     * Deletes an existing Order model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Updates an existing Order model.
+     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionStatus($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**

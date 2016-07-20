@@ -132,6 +132,14 @@ class Billing extends Component
         $result = true;
 
         if ($result &= $rollbackTransaction->save()) {
+
+            if ($transaction->order) {
+                $orderTransaction = new OrderTransaction();
+                $orderTransaction->transaction_id = $rollbackTransaction->id;
+                $orderTransaction->order_id = $transaction->order->id;
+                $result &= $orderTransaction->save();
+            }
+
             if ($transaction->type == Transaction::CHARGE_TYPE) {
                 $account->balance -= abs($rollbackTransaction->amount);
             } else {

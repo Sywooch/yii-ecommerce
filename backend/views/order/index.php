@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use webdoka\yiiecommerce\common\models\Order;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,15 +21,28 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'phone',
-            'email:email',
-            'address',
-            'notes:ntext',
-            // 'status',
-            // 'created_at',
-            // 'updated_at',
+             'status',
+             'created_at:datetime',
+             'updated_at:datetime',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update}',
+                'buttons' => [
+                    'view' => function ($url, $model, $key) {
+                        return Yii::$app->user->can(Order::VIEW_ORDER) ?
+                            Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                'title' => Yii::t('yii', 'View'),
+                            ]) : '';
+                    },
+                    'update' => function ($url, $model, $key) {
+                        return Yii::$app->user->can(Order::UPDATE_ORDER) ?
+                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => Yii::t('yii', 'Update'),
+                            ]) : '';
+                    },
+                ],
+            ],
         ],
     ]); ?>
 </div>
