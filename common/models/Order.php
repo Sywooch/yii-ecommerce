@@ -87,7 +87,7 @@ class Order extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
         if ($this->isNewRecord) {
-            $this->status = self::STATUS_NEW;
+            $this->status = self::STATUS_AWAITING_PAYMENT;
         }
 
         return parent::beforeValidate();
