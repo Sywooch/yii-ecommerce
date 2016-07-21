@@ -4,7 +4,8 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model webdoka\yiiecommerce\common\models\Order */
+/* @var $model \yii\base\DynamicModel */
+/* @var $orderModel webdoka\yiiecommerce\common\models\Order */
 
 $this->title = 'Order';
 $this->params['breadcrumbs'][] = ['label' => 'Shop', 'url' => ['catalog/index']];
@@ -17,6 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Return to cart', ['cart/list'], ['class' => 'btn btn-default']) ?>
     </p>
-    <?= $this->render('_form', compact('model', 'properties')) ?>
+    <?= $this->render('_form', compact('model', 'orderModel', 'properties')) ?>
 
 </div>

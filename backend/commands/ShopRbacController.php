@@ -12,6 +12,23 @@ class ShopRbacController extends Controller
 
         $actions = [];
 
+        $listPaymentType = $auth->createPermission('shopListPaymentType');
+        $listPaymentType->description = 'List shop payment type';
+        $viewPaymentType = $auth->createPermission('shopViewPaymentType');
+        $viewPaymentType->description = 'View shop payment type';
+        $createPaymentType = $auth->createPermission('shopCreatePaymentType');
+        $createPaymentType->description = 'Create shop payment type';
+        $updatePaymentType = $auth->createPermission('shopUpdatePaymentType');
+        $updatePaymentType->description = 'Update shop payment type';
+        $deletePaymentType = $auth->createPermission('shopDeletePaymentType');
+        $deletePaymentType->description = 'Delete shop payment type';
+
+        $actions[] = $listPaymentType;
+        $actions[] = $viewPaymentType;
+        $actions[] = $createPaymentType;
+        $actions[] = $updatePaymentType;
+        $actions[] = $deletePaymentType;
+        
         $listOrder = $auth->createPermission('shopListOrder');
         $listOrder->description = 'List shop order';
         $viewOrder = $auth->createPermission('shopViewOrder');

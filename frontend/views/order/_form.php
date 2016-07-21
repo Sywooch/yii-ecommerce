@@ -3,9 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Property;
+use webdoka\yiiecommerce\common\models\PaymentType;
 
 /* @var $this yii\web\View */
-/* @var $model webdoka\yiiecommerce\common\models\Order */
+/* @var $model \yii\base\DynamicModel */
+/* @var $orderModel webdoka\yiiecommerce\common\models\Order */
 /* @var $properties webdoka\yiiecommerce\common\models\Property $properties[] */
 /* @var $form yii\widgets\ActiveForm */
 ?>
@@ -29,7 +31,12 @@ use webdoka\yiiecommerce\common\models\Property;
             <?= $form->field($model, $attribute)->textarea()->label($properties[$attribute]->label) ?>
 
         <?php } ?>
+
     <?php } ?>
+
+    <hr>
+
+    <?= $form->field($orderModel, 'payment_type_id')->dropDownList(PaymentType::find()->indexBy('id')->select('name')->column()) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Create', ['class' => 'btn btn-primary']) ?>

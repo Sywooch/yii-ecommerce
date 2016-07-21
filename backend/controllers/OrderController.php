@@ -2,6 +2,9 @@
 
 namespace webdoka\yiiecommerce\backend\controllers;
 
+use webdoka\yiiecommerce\common\models\OrderHistory;
+use webdoka\yiiecommerce\common\models\OrderItem;
+use webdoka\yiiecommerce\common\models\OrderTransaction;
 use Yii;
 use webdoka\yiiecommerce\common\models\Order;
 use yii\data\ActiveDataProvider;
@@ -76,21 +79,26 @@ class OrderController extends Controller
     {
         $model = $this->findModel($id);
 
+        $pageSize = 10;
+
         $contactDataProvider = new ArrayDataProvider();
         $contactDataProvider->allModels = $model->ordersProperties;
-        $contactDataProvider->pagination = false;
+        $contactDataProvider->pagination->pageSize = $pageSize;
 
-        $productDataProvider = new ArrayDataProvider();
-        $productDataProvider->allModels = $model->orderItems;
-        $productDataProvider->pagination = false;
+        $productDataProvider = new ActiveDataProvider();
+        $productDataProvider->query = OrderItem::find()->where(['order_id' => $model->id]);
+        $productDataProvider->pagination->pageSize = $pageSize;
 
-        $transactionDataProvider = new ArrayDataProvider();
-        $transactionDataProvider->allModels = $model->ordersTransactions;
-        $transactionDataProvider->pagination = false;
+        $transactionDataProvider = new ActiveDataProvider();
+        $transactionDataProvider->query = OrderTransaction::find()->where(['order_id' => $model->id]);
+        $transactionDataProvider->pagination->pageSize = $pageSize;
 
-//        echo'<pre>';var_dump($model->ordersTransactions);die;
+        $historyDataProvider = new ActiveDataProvider();
+        $historyDataProvider->query = OrderHistory::find()->where(['order_id' => $model->id]);
+        $historyDataProvider->sort->defaultOrder = ['created_at' => SORT_DESC];
+        $historyDataProvider->pagination->pageSize = $pageSize;
 
-        return $this->render('view', compact('model', 'contactDataProvider', 'productDataProvider', 'transactionDataProvider'));
+        return $this->render('view', compact('model', 'contactDataProvider', 'productDataProvider', 'transactionDataProvider', 'historyDataProvider'));
     }
 
     /**

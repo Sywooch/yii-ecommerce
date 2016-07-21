@@ -11,6 +11,7 @@ use webdoka\yiiecommerce\common\models\Order;
 /* @var $contactDataProvider \yii\data\ArrayDataProvider */
 /* @var $productDataProvider \yii\data\ArrayDataProvider */
 /* @var $transactionDataProvider \yii\data\ArrayDataProvider */
+/* @var $historyDataProvider \yii\data\ArrayDataProvider */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
@@ -27,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <li role="presentation"><a href="#products" aria-controls="products" role="tab" data-toggle="tab">Products</a></li>
 
         <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Transactions</a></li>
+
+        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
 
     </ul>
 
@@ -71,54 +74,84 @@ $this->params['breadcrumbs'][] = $this->title;
                     'status',
                     'created_at:datetime',
                     'updated_at:datetime',
-                    'user.username'
+                    'user.username',
+                    'paymentType.name:text:Payment Type',
                 ],
             ]) ?>
 
             <h2>Details</h2>
 
-            <?= GridView::widget([
-                'dataProvider' => $contactDataProvider,
-                'showHeader' => false,
-                'summary' => false,
-                'columns' => [
-                    'property.label',
-                    'value'
-                ]
-            ]) ?>
+            <?php \yii\widgets\Pjax::begin(['id' => 'details']); ?>
+
+                <?= GridView::widget([
+                    'dataProvider' => $contactDataProvider,
+                    'showHeader' => false,
+                    'summary' => false,
+                    'columns' => [
+                        'property.label',
+                        'value'
+                    ]
+                ]) ?>
+
+            <?php \yii\widgets\Pjax::end(); ?>
 
         </div>
 
         <div role="tabpanel" class="tab-pane fade" id="products">
 
-            <?= GridView::widget([
-                'dataProvider' => $productDataProvider,
-                'summaryOptions' => ['class' => 'well'],
-                'columns' => [
-                    'product.category.name',
-                    'product.name',
-                    'product.realPrice',
-                    'quantity',
-                    'product.unit.name',
-                ]
-            ]) ?>
+            <?php \yii\widgets\Pjax::begin(['id' => 'products']); ?>
 
+                <?= GridView::widget([
+                    'dataProvider' => $productDataProvider,
+                    'summaryOptions' => ['class' => 'well'],
+                    'columns' => [
+                        'product.category.name',
+                        'product.name',
+                        'product.realPrice',
+                        'quantity',
+                        'product.unit.name',
+                    ]
+                ]) ?>
+
+            <?php \yii\widgets\Pjax::end(); ?>
         </div>
 
         <div role="tabpanel" class="tab-pane fade" id="transactions">
 
-            <?= GridView::widget([
-                'dataProvider' => $transactionDataProvider,
-                'summaryOptions' => ['class' => 'well'],
-                'columns' => [
-                    'transaction.created_at:datetime:Created At',
-                    'transaction.type:text:Type',
-                    'transaction.amount:text:Amount',
-                    'transaction.account.currency.symbol:text:Currency',
-                    'transaction.account.user.username:text:User',
-                    'transaction.description:text:Description',
-                ]
-            ]) ?>
+            <?php \yii\widgets\Pjax::begin(['id' => 'transactions']); ?>
+
+                <?= GridView::widget([
+                    'dataProvider' => $transactionDataProvider,
+                    'summaryOptions' => ['class' => 'well'],
+                    'columns' => [
+                        'transaction.created_at:datetime:Created At',
+                        'transaction.type:text:Type',
+                        'transaction.amount:text:Amount',
+                        'transaction.account.currency.symbol:text:Currency',
+                        'transaction.account.user.username:text:User',
+                        'transaction.description:text:Description',
+                    ]
+                ]) ?>
+
+            <?php \yii\widgets\Pjax::end(); ?>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="history">
+
+            <?php \yii\widgets\Pjax::begin(['id' => 'history']); ?>
+
+                <?= GridView::widget([
+                    'dataProvider' => $historyDataProvider,
+                    'summaryOptions' => ['class' => 'well'],
+                    'columns' => [
+                        'id',
+                        'status',
+                        'created_at:datetime',
+                    ]
+                ]) ?>
+
+            <?php \yii\widgets\Pjax::end(); ?>
 
         </div>
 

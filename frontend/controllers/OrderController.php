@@ -48,6 +48,7 @@ class OrderController extends Controller
     public function actionCreate()
     {
         $properties = Property::find()->indexBy('id')->all();
+
         $model = new DynamicModel(array_keys($properties));
         foreach ($properties as $property) {
             if ($property->required) {
@@ -57,9 +58,11 @@ class OrderController extends Controller
             }
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $orderModel = new Order();
-            $orderModel->user_id = Yii::$app->user->id;
+        $orderModel = new Order();
+        $orderModel->load(Yii::$app->request->post());
+        $orderModel->user_id = Yii::$app->user->id;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $orderModel->validate()) {
             $transaction = Yii::$app->db->beginTransaction();
 
             // Order items
@@ -100,7 +103,7 @@ class OrderController extends Controller
 
             return $this->redirect(['cart/list']);
         } else {
-            return $this->render('create', compact('model', 'properties'));
+            return $this->render('create', compact('model', 'orderModel', 'properties'));
         }
     }
 }

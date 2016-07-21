@@ -18,14 +18,18 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $user_id
+ * @property integer $payment_type_id
  *
  * @property OrderItem[] $orderItems
  */
 class Order extends \yii\db\ActiveRecord
 {
-    const STATUS_NEW = 'New';
-    const STATUS_IN_PROGRESS = 'In progress';
+    const STATUS_AWAITING_PAYMENT = 'Awaiting payment';
+    const STATUS_PAID = 'Paid';
+    const STATUS_DELIVERY = 'Delivery';
     const STATUS_DONE = 'Done';
+    const STATUS_CANCEL = 'Cancel';
+    const STATUS_EXPIRED = 'Expired';
 
     const LIST_ORDER = 'shopListOrder';
     const VIEW_ORDER = 'shopViewOrder';
@@ -57,9 +61,10 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'user_id'], 'required'],
-            [['created_at', 'updated_at', 'user_id'], 'integer'],
+            [['status', 'user_id', 'payment_type_id'], 'required'],
+            [['created_at', 'updated_at', 'user_id', 'payment_type_id'], 'integer'],
             [['status'], 'string', 'max' => 255],
+            [['payment_type_id'], 'exist', 'skipOnError' => false, 'targetClass' => PaymentType::className(), 'targetAttribute' => ['payment_type_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -73,6 +78,7 @@ class Order extends \yii\db\ActiveRecord
             'id' => 'ID',
             'status' => 'Status',
             'user_id' => 'User',
+            'payment_type_id' => 'Payment Type',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -98,9 +104,25 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getPaymentType()
+    {
+        return $this->hasOne(PaymentType::className(), ['id' => 'payment_type_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOrderItems()
     {
         return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderHistory()
+    {
+        return $this->hasMany(OrderHistory::className(), ['order_id' => 'id'])->orderBy(['id' => 'ASC']);
     }
 
     /**
@@ -149,9 +171,15 @@ class Order extends \yii\db\ActiveRecord
                 $this->unlinkAll('ordersProperties');
             }
             foreach ($relatedRecords['ordersProperties'] as $relatedRecord) {
-
                 $this->link('ordersProperties', $relatedRecord, ['value' => $relatedRecord->value]);
             }
+        }
+
+        if (array_key_exists('status', $changedAttributes)) {
+            $orderHistory = new OrderHistory();
+            $orderHistory->order_id = $this->id;
+            $orderHistory->status = $this->status;
+            $orderHistory->save();
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -162,6 +190,13 @@ class Order extends \yii\db\ActiveRecord
      */
     public static function getStatuses()
     {
-        return [self::STATUS_NEW, self::STATUS_IN_PROGRESS, self::STATUS_DONE];
+        return [
+            self::STATUS_AWAITING_PAYMENT => self::STATUS_AWAITING_PAYMENT,
+            self::STATUS_PAID => self::STATUS_PAID,
+            self::STATUS_DELIVERY => self::STATUS_DELIVERY,
+            self::STATUS_DONE => self::STATUS_DONE,
+            self::STATUS_CANCEL => self::STATUS_CANCEL,
+            self::STATUS_EXPIRED => self::STATUS_EXPIRED,
+        ];
     }
 }
