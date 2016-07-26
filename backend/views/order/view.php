@@ -72,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     'id',
                     'status',
+                    'total:currency',
                     'created_at:datetime',
                     'updated_at:datetime',
                     'user.username',

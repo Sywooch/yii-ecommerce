@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use webdoka\yiiecommerce\common\models\Product;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Product */
@@ -41,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'price',
             'unit.name:html:Unit',
+            'discountImplode:text:Discounts',
         ],
     ]) ?>
 

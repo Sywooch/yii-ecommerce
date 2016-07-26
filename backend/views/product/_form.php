@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Category;
 use webdoka\yiiecommerce\common\models\Unit;
+use webdoka\yiiecommerce\common\models\Discount;
 use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
 use yii\widgets\ListView;
@@ -56,6 +57,8 @@ $this->registerJs('
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'price')->textInput() ?>
+
+    <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
 
     <h2>Prices</h2>
 

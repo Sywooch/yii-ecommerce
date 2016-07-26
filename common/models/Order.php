@@ -19,6 +19,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $updated_at
  * @property integer $user_id
  * @property integer $payment_type_id
+ * @property float $total
  *
  * @property OrderItem[] $orderItems
  */
@@ -66,6 +67,7 @@ class Order extends \yii\db\ActiveRecord
             [['status'], 'string', 'max' => 255],
             [['payment_type_id'], 'exist', 'skipOnError' => false, 'targetClass' => PaymentType::className(), 'targetAttribute' => ['payment_type_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['total'], 'safe']
         ];
     }
 
@@ -79,6 +81,7 @@ class Order extends \yii\db\ActiveRecord
             'status' => 'Status',
             'user_id' => 'User',
             'payment_type_id' => 'Payment Type',
+            'total' => 'Total',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

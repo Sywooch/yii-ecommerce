@@ -150,7 +150,7 @@ class Cart extends Component
         $cost = 0;
 
         foreach ($this->_positions as $position) {
-            $cost += $position->realPrice * $position->getQuantity();
+            $cost += $position->getCostWithDiscounters($position->getQuantity());
         }
 
         return $cost;

@@ -2,10 +2,12 @@
 
 namespace webdoka\yiiecommerce\common\forms;
 
+use webdoka\yiiecommerce\common\models\Discount;
 use webdoka\yiiecommerce\common\models\FeatureProduct;
 use webdoka\yiiecommerce\common\models\Price;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\Feature;
+use webdoka\yiiecommerce\common\models\ProductDiscount;
 use webdoka\yiiecommerce\common\models\ProductPrice;
 use yii\helpers\ArrayHelper;
 
@@ -13,6 +15,7 @@ class ProductForm extends Product
 {
     public $_relFeatures = [];
     public $_relPrices = [];
+    public $_relDiscounts = [];
 
     /**
      * @inheritdoc
@@ -22,6 +25,7 @@ class ProductForm extends Product
         return ArrayHelper::merge([
             ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Feature'],
             ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Price'],
+            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => 'Specify Discount'],
         ], parent::rules());
     }
 
@@ -33,6 +37,7 @@ class ProductForm extends Product
         return ArrayHelper::merge([
             'relFeatures' => 'Features',
             'relPrices' => 'Prices',
+            'relDiscounts' => 'Discounts',
         ], parent::attributeLabels());
     }
 
@@ -51,7 +56,7 @@ class ProductForm extends Product
      */
     public function setRelFeatures($features)
     {
-        $this->_relFeatures = $features;
+        $this->_relFeatures = $features ?: [];
     }
 
     /**
@@ -69,7 +74,25 @@ class ProductForm extends Product
      */
     public function setRelPrices($prices)
     {
-        $this->_relPrices = $prices;
+        $this->_relPrices = $prices ?: [];
+    }
+
+    /**
+     * Buffer variable for related discounts
+     * @return array
+     */
+    public function getRelDiscounts()
+    {
+        return $this->_relDiscounts;
+    }
+
+    /**
+     * Set related discounts
+     * @param $types
+     */
+    public function setRelDiscounts($discounts)
+    {
+        $this->_relDiscounts = $discounts ?: [];
     }
 
     /**
@@ -82,6 +105,7 @@ class ProductForm extends Product
         if (parent::beforeSave($insert)) {
             $this->saveFeaturesToRelation();
             $this->savePricesToRelation();
+            $this->saveDiscountsToRelation();
             return true;
         }
 
@@ -126,5 +150,24 @@ class ProductForm extends Product
         }
 
         $this->populateRelation('productPrices', $prices);
+    }
+
+    /**
+     * Populating discounts to relation
+     */
+    private function saveDiscountsToRelation()
+    {
+        $discounts = [];
+
+        foreach ($this->_relDiscounts as $relDiscount) {
+            if ($discount = Discount::findOne($relDiscount)) {
+                $productDiscount = new ProductDiscount();
+                $productDiscount->discount_id = $discount->id;
+
+                $discounts[] = $productDiscount;
+            }
+        }
+
+        $this->populateRelation('productDiscounts', $discounts);
     }
 }

@@ -138,6 +138,9 @@ class ProductController extends Controller
         $model = ProductForm::find()->where(['id' => $id])->one();
         $model->category_id = Yii::$app->request->get('category_id') ?: $model->category_id;
 
+        if (!Yii::$app->request->isPost)
+            $model->populateRelation('relDiscounts', $model->discounts);
+
         $dataProvider = new ArrayDataProvider([
             'pagination' => false,
             'allModels' => $model->featuresWithCategories,

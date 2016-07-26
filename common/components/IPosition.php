@@ -27,6 +27,19 @@ interface IPosition
     public function getPrice();
 
     /**
+     * Returns position real price
+     * @return float
+     */
+    public function getRealPrice();
+
+    /**
+     * Returns cost after discounts applied
+     * @param $quantity
+     * @return mixed
+     */
+    public function getCostWithDiscounters($quantity);
+
+    /**
      * Returns position quantity
      * @return mixed
      */

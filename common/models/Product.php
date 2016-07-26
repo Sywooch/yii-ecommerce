@@ -3,7 +3,9 @@
 namespace webdoka\yiiecommerce\common\models;
 
 use webdoka\yiiecommerce\common\components\IPosition;
+use webdoka\yiiecommerce\common\queries\ProductQuery;
 use Yii;
+use yii\db\mysql\QueryBuilder;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -98,6 +100,33 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
 
         return Price::getMinPrice($roles, $this->id) ?: $price;
+    }
+
+    /**
+     * Returns calculated cost after discounts applied
+     * @param $quantity
+     * @return float|int|mixed
+     */
+    public function getCostWithDiscounters($quantity)
+    {
+        $price = $this->realPrice;
+        $discounts = $this->availableDiscounts;
+
+        foreach ($discounts as $discount) {
+            if ($discount->dimension == Discount::FIXED_DIMENSION) {
+                $delta = $discount->value;
+            } else {
+                $delta = $price * $discount->value / 100;
+            }
+
+            if ($discount->count) {
+                $price -= $discount->count <= $quantity ? $delta : 0;
+            } else {
+                $price -= $delta;
+            }
+        }
+
+        return $price * $quantity;
     }
 
     /**
@@ -209,6 +238,25 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     }
 
     /**
+     * Returns product discounts
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductDiscounts()
+    {
+        return $this->hasMany(ProductDiscount::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * Returns discounts
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDiscounts()
+    {
+        return $this->hasMany(Discount::className(), ['id' => 'discount_id'])
+            ->via('productDiscounts');
+    }
+
+    /**
      * Returns features by category and product
      * @return array
      */
@@ -235,6 +283,44 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     }
 
     /**
+     * Returns discounts inline
+     * @return string
+     */
+    public function getDiscountImplode()
+    {
+        $discountNames = [];
+
+        foreach ($this->discounts as $discount) {
+            $discountNames[] = $discount->name;
+        }
+
+        return implode(', ', $discountNames);
+    }
+
+    /**
+     * Returns available discounts
+     * @return array|Discount[]
+     */
+    public function getAvailableDiscounts()
+    {
+        $productDiscountIDs = $this->getProductDiscounts()->select('discount_id')->column();
+
+        return Discount::find()
+            ->andWhere(['id' => $productDiscountIDs])
+            ->available()
+            ->all();
+    }
+
+    /**
+     * @inheritdoc
+     * @return ProductQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ProductQuery(get_called_class());
+    }
+
+    /**
      * After save get related records, and unlink/link them if it needs.
      * @param bool $insert
      * @param array $changedAttributes
@@ -254,6 +340,13 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             $this->unlinkAll('productPrices', true);
             foreach ($relatedRecords['productPrices'] as $price) {
                 $this->link('productPrices', $price);
+            }
+        }
+
+        if (array_key_exists('productDiscounts', $relatedRecords)) {
+            $this->unlinkAll('productDiscounts', true);
+            foreach ($relatedRecords['productDiscounts'] as $discount) {
+                $this->link('productDiscounts', $discount);
             }
         }
     }

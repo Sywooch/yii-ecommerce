@@ -73,6 +73,12 @@ class Price extends \yii\db\ActiveRecord
         return new PriceQuery(get_called_class());
     }
 
+    /**
+     * Returns min price
+     * @param $roles
+     * @param $productId
+     * @return mixed
+     */
     public static function getMinPrice($roles, $productId)
     {
         return self::find()
