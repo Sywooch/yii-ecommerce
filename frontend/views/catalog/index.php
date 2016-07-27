@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Breadcrumbs;
+use webdoka\yiiecommerce\common\models\Country;
 
 /*
  * @var $this yii\web\View
@@ -13,6 +14,7 @@ use yii\widgets\Breadcrumbs;
 
 $title = 'Shop';
 $this->title = Html::encode($title);
+
 if ($currentCategory) {
     $this->params['breadcrumbs'][] = [
         'label' => $this->title,
@@ -22,6 +24,10 @@ if ($currentCategory) {
 } else {
     $this->params['breadcrumbs'][] = $this->title;
 }
+
+// VAT included
+$vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one();
+
 ?>
 
 <div class="container-fluid">
@@ -67,6 +73,7 @@ if ($currentCategory) {
                 'dataProvider' => $dataProvider,
                 'summaryOptions' => ['class' => 'well well-sm'],
                 'itemView' => '_product',
+                'viewParams' => compact('vatIncluded')
             ]) ?>
         </div>
     </div>

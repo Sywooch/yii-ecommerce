@@ -12,6 +12,23 @@ class ShopRbacController extends Controller
 
         $actions = [];
 
+        $listCountry = $auth->createPermission('shopListCountry');
+        $listCountry->description = 'List shop country';
+        $viewCountry = $auth->createPermission('shopViewCountry');
+        $viewCountry->description = 'View shop country';
+        $createCountry = $auth->createPermission('shopCreateCountry');
+        $createCountry->description = 'Create shop country';
+        $updateCountry = $auth->createPermission('shopUpdateCountry');
+        $updateCountry->description = 'Update shop country';
+        $deleteCountry = $auth->createPermission('shopDeleteCountry');
+        $deleteCountry->description = 'Delete shop country';
+
+        $actions[] = $listCountry;
+        $actions[] = $viewCountry;
+        $actions[] = $createCountry;
+        $actions[] = $updateCountry;
+        $actions[] = $deleteCountry;
+        
         $listDiscount = $auth->createPermission('shopListDiscount');
         $listDiscount->description = 'List shop discount';
         $viewDiscount = $auth->createPermission('shopViewDiscount');

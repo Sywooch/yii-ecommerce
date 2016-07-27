@@ -77,6 +77,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'updated_at:datetime',
                     'user.username',
                     'paymentType.name:text:Payment Type',
+                    'country',
+                    [
+                        'attribute' => 'tax',
+                        'value' => $model->tax ? $model->tax . '%' : null,
+                    ]
                 ],
             ]) ?>
 

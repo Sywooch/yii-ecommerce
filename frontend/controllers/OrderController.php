@@ -3,6 +3,7 @@
 namespace webdoka\yiiecommerce\frontend\controllers;
 
 use webdoka\yiiecommerce\common\forms\OrderForm;
+use webdoka\yiiecommerce\common\models\Country;
 use webdoka\yiiecommerce\common\models\OrderProperty;
 use webdoka\yiiecommerce\common\models\Property;
 use Yii;
@@ -62,6 +63,13 @@ class OrderController extends Controller
         $orderModel->load(Yii::$app->request->post());
         $orderModel->user_id = Yii::$app->user->id;
         $orderModel->total = Yii::$app->cart->getCost();
+
+        if ($country = Country::find()->where(['id' => Yii::$app->session->get('country')])->one()) {
+            $orderModel->country = $country->name;
+            if ($country->exists_tax) {
+                $orderModel->tax = $country->tax;
+            }
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $orderModel->validate()) {
             $transaction = Yii::$app->db->beginTransaction();

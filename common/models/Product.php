@@ -99,7 +99,15 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         $price = $this->price;
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
 
-        return Price::getMinPrice($roles, $this->id) ?: $price;
+        // Get min price
+        $price = Price::getMinPrice($roles, $this->id) ?: $price;
+
+        // Price + VAT
+        if ($country = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one()) {
+            $price += $price * $country->tax / 100;
+        }
+
+        return $price;
     }
 
     /**
