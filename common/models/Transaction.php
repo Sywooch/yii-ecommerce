@@ -15,7 +15,8 @@ use yii\db\Expression;
  * @property integer $account_id
  * @property string $type
  * @property string $description
- * @property string $created_at
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property integer $transaction_id
  *
  * @property Account $account

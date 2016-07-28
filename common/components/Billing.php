@@ -2,7 +2,9 @@
 
 namespace webdoka\yiiecommerce\common\components;
 
+use webdoka\yiiecommerce\common\models\Invoice;
 use webdoka\yiiecommerce\common\models\Order;
+use webdoka\yiiecommerce\common\models\OrderHistory;
 use webdoka\yiiecommerce\common\models\OrderTransaction;
 use Yii;
 use yii\base\Component;
@@ -155,5 +157,41 @@ class Billing extends Component
 
         $dbTransaction->rollBack();
         return false;
+    }
+
+    public function createInvoice($amount, $accountId, $description, $orderId = false)
+    {
+        if (!$account = Account::findOne($accountId)) {
+            throw new InvalidParamException('Invalid $accountId.');
+        }
+
+        if ($orderId && !$order = Order::findOne($orderId)) {
+            throw new InvalidParamException('Invalid $orderId.');
+        }
+
+        $invoice = new Invoice();
+        $invoice->amount = abs($amount);
+        $invoice->account_id = $accountId;
+        $invoice->description = $description;
+        $invoice->order_id = $orderId;
+
+        return $invoice->save();
+    }
+
+    public function changeInvoice($invoiceId, $status)
+    {
+        if (!$invoice = Invoice::find()->where(['id' => $invoiceId])->one()) {
+            throw new InvalidParamException('Invalid $invoiceId.');
+        }
+
+        if (!in_array($status, array_keys(Invoice::getStatuses()))) {
+            throw new InvalidParamException('Invalid $status.');
+        }
+
+        if ($invoice->status !== Invoice::PENDING_STATUS) {
+            throw new Exception('Invoice is already defined.');
+        }
+
+        
     }
 }
