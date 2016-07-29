@@ -20,6 +20,8 @@ use app\models\User;
 
     <?= $form->field($model, 'currency_id')->dropDownList(Currency::find()->select('symbol')->indexBy('id')->column()) ?>
 
+    <?= $form->field($model, 'default')->checkbox() ?>
+
     <?= $form->field($model, 'user_id')->dropDownList(User::find()->select('username')->indexBy('id')->column()) ?>
 
     <div class="form-group">

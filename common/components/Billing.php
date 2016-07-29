@@ -159,6 +159,14 @@ class Billing extends Component
         return false;
     }
 
+    /**
+     * Creates invoices
+     * @param $amount
+     * @param $accountId
+     * @param $description
+     * @param bool|false $orderId
+     * @return bool
+     */
     public function createInvoice($amount, $accountId, $description, $orderId = false)
     {
         if (!$account = Account::findOne($accountId)) {
@@ -175,9 +183,20 @@ class Billing extends Component
         $invoice->description = $description;
         $invoice->order_id = $orderId;
 
-        return $invoice->save();
+        if ($invoice->save()) {
+            return $invoice->id;
+        }
+
+        return false;
     }
 
+    /**
+     * Change invoice status with transaction logic
+     * @param $invoiceId
+     * @param $status
+     * @return bool
+     * @throws Exception
+     */
     public function changeInvoice($invoiceId, $status)
     {
         if (!$invoice = Invoice::find()->where(['id' => $invoiceId])->one()) {
@@ -192,6 +211,26 @@ class Billing extends Component
             throw new Exception('Invoice is already defined.');
         }
 
-        
+        $invoice->status = $status;
+        if (!$invoice->save()) {
+            return false;
+        }
+
+        if ($invoice->status == Invoice::SUCCESS_STATUS) {
+            // Create charge transaction
+            if (!$this->charge($invoice->account_id, $invoice->amount, $invoice->description)) {
+                return false;
+            }
+
+            // If invoice has order_id, and account balance is enough, then create withdraw transaction
+            $order = $invoice->order;
+            $account = $invoice->account;
+
+            if ($order && $account && $account->balance > $order->total) {
+                return $this->withdraw($invoice->account_id, $order->total, 'Order #' . $order->id, $order->id);
+            }
+        }
+
+        return true;
     }
 }

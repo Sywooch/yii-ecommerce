@@ -33,4 +33,19 @@ class PaymentController extends Controller
             ],
         ];
     }
+
+    public function actionResult()
+    {
+
+    }
+
+    public function actionSuccess()
+    {
+
+    }
+
+    public function actionFail()
+    {
+
+    }
 }

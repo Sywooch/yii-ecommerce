@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $symbol
+ * @property string $abbr
  *
  * @property Account[] $accounts
  */
@@ -35,8 +36,8 @@ class Currency extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'symbol'], 'required'],
-            [['name', 'symbol'], 'string', 'max' => 255],
+            [['name', 'symbol', 'abbr'], 'required'],
+            [['name', 'symbol', 'abbr'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,6 +50,7 @@ class Currency extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'symbol' => 'Symbol',
+            'abbr' => 'Abbr',
         ];
     }
 

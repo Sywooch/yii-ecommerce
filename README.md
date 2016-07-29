@@ -38,6 +38,14 @@ Add components cart and billing to `config/web.php`:
     'billing' => [
         'class' => 'webdoka\yiiecommerce\common\components\Billing'
     ],
+    'robokassa' => [
+        'class' => 'webdoka\yiiecommerce\common\components\Robokassa',
+        'shopId' => 'SHOP_ID',
+        'password1' => 'PASSWORD1',
+        'password2' => PASSWORD2'',
+        'testPassword1' => 'TEST_PASSWORD1',
+        'testPassword2' => 'TEST_PASSWORD2',
+    ],
     ...
 ]
 ```
