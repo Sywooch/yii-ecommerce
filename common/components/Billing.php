@@ -234,6 +234,13 @@ class Billing extends Component
             if ($order && $account && $account->balance > $order->total) {
                 return $this->withdraw($invoice->account_id, $order->total, 'Order #' . $order->id, $order->id);
             }
+        } elseif ($invoice->status == Invoice::FAIL_STATUS) {
+            if ($invoice->order) {
+                $order = $invoice->order;
+                $order->status = Order::STATUS_CANCEL;
+
+                return $order->save();
+            }
         }
 
         return true;
