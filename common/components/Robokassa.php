@@ -97,7 +97,7 @@ class Robokassa extends Component implements IPaymentSystem
 
         // Check invoice
         if ($invoice = Invoice::find()->where(['id' => $invoiceId])->pending()->one()) {
-            if (Yii::$app->billing->updateInvoice($invoice, Invoice::FAIL_STATUS)) {
+            if (Yii::$app->billing->changeInvoice($invoice, Invoice::FAIL_STATUS)) {
                 Yii::$app->session->addFlash('order_failure', 'Invoice #' . $invoiceId . ' payment has been declined.');
             } else {
                 Yii::$app->session->addFlash('order_failure', 'Unable to decline invoice #' . $invoiceId . '.');
