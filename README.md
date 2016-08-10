@@ -31,20 +31,19 @@ Add module to `config/web.php`:
 ```
 Add components cart and billing to `config/web.php`:
 ```
+require(__DIR__ . '/robokassa.php'); // Renamed /config/robokassa.php.example
+...
 'components' => [
     'cart' => [
         'class' => 'webdoka\yiiecommerce\common\components\Cart'
     ],
     'billing' => [
-        'class' => 'webdoka\yiiecommerce\common\components\Billing'
-    ],
-    'robokassa' => [
-        'class' => 'webdoka\yiiecommerce\common\components\Robokassa',
-        'shopId' => 'SHOP_ID',
-        'password1' => 'PASSWORD1',
-        'password2' => PASSWORD2'',
-        'testPassword1' => 'TEST_PASSWORD1',
-        'testPassword2' => 'TEST_PASSWORD2',
+        'class' => 'webdoka\yiiecommerce\common\components\Billing',
+        'paymentSystems' => [
+            'robokassa' => array_merge([
+                'class' => 'webdoka\yiiecommerce\common\components\Robokassa',
+            ], $robokassa),
+        ],
     ],
     ...
 ]
@@ -58,6 +57,7 @@ Add default route for module:
         'suffix' => '/',
         'rules' => [
             '<module:shop>/catalog/<category:\w+>' => '<module>/catalog/index',
+            '<module:shop>/payment/<system:\w+>/<action:\w+>' => '<module>/payment/<action>',
         ],
     ],
 ```
