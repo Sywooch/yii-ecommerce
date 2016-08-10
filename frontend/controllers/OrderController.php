@@ -104,16 +104,19 @@ class OrderController extends Controller
                 Yii::$app->session->setFlash('order_success', 'Order is created successful.');
 
                 // Create invoice to pay
-                $account = Account::find()->where(['user_id' => $orderModel->user_id])->default1()->one();
-                if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->total, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
-                    // Redirect to pay
-                    if (!$paymentSystem = Yii::$app->billing->load($orderModel->paymentType->name)) {
-                        throw new InvalidParamException('Invalid payment type.');
-                    }
+                if ($account = Account::find()->where(['user_id' => $orderModel->user_id])->default1()->one()) {
+                    if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->total, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
+                        // Redirect to pay
+                        if (!$paymentSystem = Yii::$app->billing->load($orderModel->paymentType->name)) {
+                            throw new InvalidParamException('Invalid payment type.');
+                        }
 
-                    return $paymentSystem->requestPayment($invoiceId);
+                        return $paymentSystem->requestPayment($invoiceId);
+                    } else {
+                        Yii::$app->session->setFlash('order_failure', 'Unable to create invoice.');
+                    }
                 } else {
-                    Yii::$app->session->setFlash('order_failure', 'Unable to create invoice.');
+                    Yii::$app->session->setFlash('order_failure', 'Unable to get default account.');
                 }
 
                 return $this->redirect(['catalog/index']);
