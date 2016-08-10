@@ -85,7 +85,10 @@ class Billing extends Component
                 $orderTransaction = new OrderTransaction();
                 $orderTransaction->order_id = $order->id;
                 $orderTransaction->transaction_id = $transaction->id;
-                $result &= $orderTransaction->save();
+                if ($result &= $orderTransaction->save()) {
+                    $order->status = Order::STATUS_PAID;
+                    $result &= $order->save();
+                }
             }
 
             if ($result) {
