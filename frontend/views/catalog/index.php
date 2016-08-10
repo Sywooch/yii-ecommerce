@@ -31,19 +31,43 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
 ?>
 
 <div class="container-fluid">
+
     <?php if (Yii::$app->session->hasFlash('order_success')) { ?>
-        <div class="alert alert-success alert-dismissible fade in" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span></button>
-            <strong><?= Yii::$app->session->getFlash('order_success') ?></strong>
-        </div>
-    <?php } elseif (Yii::$app->session->hasFlash('order_failure')) { ?>
-        <div class="alert alert-danger alert-dismissible fade in" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span></button>
-            <strong><?= Yii::$app->session->getFlash('order_failure') ?></strong>
-        </div>
+        <?php if (is_array(Yii::$app->session->getFlash('order_success'))) { ?>
+            <?php foreach (Yii::$app->session->getFlash('order_success') as $message) { ?>
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <strong><?= Html::encode($message) ?></strong>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <strong><?= Html::encode(Yii::$app->session->getFlash('order_success')) ?></strong>
+            </div>
+        <?php } ?>
     <?php } ?>
+
+    <?php if (Yii::$app->session->hasFlash('order_failure')) { ?>
+        <?php if (is_array(Yii::$app->session->getFlash('order_failure'))) { ?>
+            <?php foreach (Yii::$app->session->getFlash('order_failure') as $message) { ?>
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <strong><?= Html::encode($message) ?></strong>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <strong><?= Html::encode(Yii::$app->session->getFlash('order_failure')) ?></strong>
+            </div>
+        <?php } ?>
+    <?php } ?>
+
     <div class="row">
         <div class="col-xs-3">
             <div class="panel panel-primary">

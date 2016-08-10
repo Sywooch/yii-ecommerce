@@ -85,9 +85,9 @@ class Robokassa extends Component implements IPaymentSystem
 
         // Check invoice
         if ($invoice = Invoice::find()->where(['id' => $invoiceId])->success()->one()) {
-            Yii::$app->session->addFlash('success', 'Order #' . $invoice->order->id . ' has been paid successfully.');
+            Yii::$app->session->addFlash('order_success', 'Order #' . $invoice->order->id . ' has been paid successfully.');
         } else {
-            Yii::$app->session->addFlash('error', 'Invoice #' . $invoiceId . ' not found. Please contact our technical support.');
+            Yii::$app->session->addFlash('order_failure', 'Invoice #' . $invoiceId . ' not found. Please contact our technical support.');
         }
     }
 
@@ -98,12 +98,12 @@ class Robokassa extends Component implements IPaymentSystem
         // Check invoice
         if ($invoice = Invoice::find()->where(['id' => $invoiceId])->pending()->one()) {
             if (Yii::$app->billing->updateInvoice($invoice, Invoice::FAIL_STATUS)) {
-                Yii::$app->session->addFlash('error', 'Invoice #' . $invoiceId . ' payment has been declined.');
+                Yii::$app->session->addFlash('order_failure', 'Invoice #' . $invoiceId . ' payment has been declined.');
             } else {
-                Yii::$app->session->addFlash('error', 'Unable to decline invoice #' . $invoiceId . '.');
+                Yii::$app->session->addFlash('order_failure', 'Unable to decline invoice #' . $invoiceId . '.');
             }
         } else {
-            Yii::$app->session->addFlash('error', 'Invoice #' . $invoiceId . ' not found. Please contact our technical support.');
+            Yii::$app->session->addFlash('order_failure', 'Invoice #' . $invoiceId . ' not found. Please contact our technical support.');
         }
     }
 }

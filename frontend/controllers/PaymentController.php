@@ -40,6 +40,7 @@ class PaymentController extends Controller
     /**
      * Handle success from payment system.
      * @param $system
+     * @return \yii\web\Response
      */
     public function actionSuccess($system)
     {
@@ -49,12 +50,13 @@ class PaymentController extends Controller
 
         Yii::$app->billing->load($system)->handleSuccess();
 
-        $this->goHome();
+        return $this->redirect(['catalog/index']);
     }
 
     /**
      * Handle fail from payment system.
      * @param $system
+     * @return \yii\web\Response
      */
     public function actionFail($system)
     {
@@ -64,6 +66,6 @@ class PaymentController extends Controller
 
         Yii::$app->billing->load($system)->handleFail();
 
-        $this->goHome();
+        return $this->redirect(['catalog/index']);
     }
 }
