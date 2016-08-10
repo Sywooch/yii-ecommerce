@@ -2,7 +2,6 @@
 
 namespace webdoka\yiiecommerce\frontend\controllers;
 
-use webdoka\yiiecommerce\common\forms\OrderForm;
 use webdoka\yiiecommerce\common\models\Account;
 use webdoka\yiiecommerce\common\models\Country;
 use webdoka\yiiecommerce\common\models\OrderProperty;
@@ -12,6 +11,7 @@ use webdoka\yiiecommerce\common\models\OrderItem;
 use webdoka\yiiecommerce\common\models\Order;
 use yii\base\DynamicModel;
 use yii\base\Exception;
+use yii\base\InvalidParamException;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -101,15 +101,19 @@ class OrderController extends Controller
             if ($orderModel->save()) {
                 $transaction->commit();
                 Yii::$app->cart->removeAll();
-                Yii::$app->session->setFlash('order_success', 'Order is created successful, check your email for details.');
+                Yii::$app->session->setFlash('order_success', 'Order is created successful.');
 
                 // Create invoice to pay
-                if (strtolower($orderModel->paymentType->name) == 'robokassa') {
-                    $account = Account::find()->where(['user_id' => $orderModel->user_id])->default1()->one();
-                    if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->amount, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
-                        // Redirect to pay
-
+                $account = Account::find()->where(['user_id' => $orderModel->user_id])->default1()->one();
+                if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->total, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
+                    // Redirect to pay
+                    if (!$paymentSystem = Yii::$app->billing->load($orderModel->paymentType->name)) {
+                        throw new InvalidParamException('Invalid payment type.');
                     }
+
+                    return $paymentSystem->requestPayment($invoiceId);
+                } else {
+                    Yii::$app->session->setFlash('order_failure', 'Unable to create invoice.');
                 }
 
                 return $this->redirect(['catalog/index']);

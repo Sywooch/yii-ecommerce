@@ -15,6 +15,8 @@ use webdoka\yiiecommerce\common\models\Transaction;
 
 class Billing extends Component
 {
+    public $paymentSystems = [];
+
     /**
      * Creates charge for account
      * @param $accountId
@@ -232,5 +234,19 @@ class Billing extends Component
         }
 
         return true;
+    }
+
+    /**
+     * Returns instance of passed $system or false, if not exists.
+     * @param $system
+     * @return object the created object
+     */
+    public function load($system)
+    {
+        if (array_key_exists($system, $this->paymentSystems)) {
+            return Yii::createObject($this->paymentSystems[$system]);
+        }
+
+        return false;
     }
 }

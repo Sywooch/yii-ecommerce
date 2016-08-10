@@ -10,6 +10,7 @@ use webdoka\yiiecommerce\common\queries\PaymentTypeQuery;
  *
  * @property integer $id
  * @property string $name
+ * @property string $label
  *
  * @property Order[] $orders
  */
@@ -35,8 +36,8 @@ class PaymentType extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'label'], 'required'],
+            [['name', 'label'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,6 +49,7 @@ class PaymentType extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'label' => 'Label',
         ];
     }
 

@@ -33,4 +33,28 @@ class InvoiceQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * @return $this
+     */
+    public function pending()
+    {
+        return $this->andWhere(['status' => Invoice::PENDING_STATUS]);
+    }
+
+    /**
+     * @return $this
+     */
+    public function success()
+    {
+        return $this->andWhere(['status' => Invoice::SUCCESS_STATUS]);
+    }
+
+    /**
+     * @return $this
+     */
+    public function fail()
+    {
+        return $this->andWhere(['status' => Invoice::FAIL_STATUS]);
+    }
 }

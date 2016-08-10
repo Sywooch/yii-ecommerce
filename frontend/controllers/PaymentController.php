@@ -3,49 +3,67 @@
 namespace webdoka\yiiecommerce\frontend\controllers;
 
 use Yii;
-use yii\base\Exception;
-use yii\db\ActiveRecord;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
+use webdoka\yiiecommerce\common\models\PaymentType;
+use yii\base\InvalidParamException;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
- * PaymentController.
+ * Class PaymentController
+ * @package app\controllers
  */
 class PaymentController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     /**
-     * @inheritdoc
+     * Test action
      */
-    public function behaviors()
+    public function actionTest()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['result', 'success', 'fail'],
-                'rules' => [
-                    [
-                        'actions' => ['success', 'fail'],
-                        'allow' => true,
-                        'roles' => ['@']
-                    ],
-                ],
-            ],
-        ];
+        return Yii::$app->billing->load('robokassa')->requestPayment(2);
     }
 
-    public function actionResult()
+    /**
+     * Handles result from payment system.
+     * @param $system
+     */
+    public function actionResult($system)
     {
+        if (!$paymentSystem = PaymentType::find()->where(['name' => $system])->one()) {
+            throw new InvalidParamException('Invalid $system.');
+        }
 
+        Yii::$app->billing->load($system)->handleResult();
     }
 
-    public function actionSuccess()
+    /**
+     * Handle success from payment system.
+     * @param $system
+     */
+    public function actionSuccess($system)
     {
+        if (!$paymentSystem = PaymentType::find()->where(['name' => $system])->one()) {
+            throw new InvalidParamException('Invalid $system.');
+        }
 
+        Yii::$app->billing->load($system)->handleSuccess();
+
+        $this->goHome();
     }
 
-    public function actionFail()
+    /**
+     * Handle fail from payment system.
+     * @param $system
+     */
+    public function actionFail($system)
     {
+        if (!$paymentSystem = PaymentType::find()->where(['name' => $system])->one()) {
+            throw new InvalidParamException('Invalid $system.');
+        }
 
+        Yii::$app->billing->load($system)->handleFail();
+
+        $this->goHome();
     }
 }

@@ -7,7 +7,7 @@ use webdoka\yiiecommerce\common\models\PaymentType;
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\PaymentType */
 
-$this->title = $model->name;
+$this->title = $model->label;
 $this->params['breadcrumbs'][] = ['label' => 'Payment Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            'label',
         ],
     ]) ?>
 
