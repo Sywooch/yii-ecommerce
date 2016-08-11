@@ -97,7 +97,7 @@ class TransactionController extends Controller
         $model = new TransactionForm();
 
         $model->type = Yii::$app->request->get('type');
-        $model->user = Yii::$app->request->get('user');
+        $model->profile = Yii::$app->request->get('profile');
         $model->order = Yii::$app->request->get('order');
         $model->amount = Yii::$app->request->get('amount');
         $model->account_id = Yii::$app->request->get('account_id');

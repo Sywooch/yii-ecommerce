@@ -3,7 +3,7 @@
 namespace webdoka\yiiecommerce\common\models;
 
 use Yii;
-use app\models\User;
+use app\models\Profile;
 use webdoka\yiiecommerce\common\queries\AccountQuery;
 
 /**
@@ -13,10 +13,9 @@ use webdoka\yiiecommerce\common\queries\AccountQuery;
  * @property integer $name
  * @property double $balance
  * @property integer $currency_id
- * @property integer $user_id
- * @property integer $default
+ * @property integer $profile_id
  *
- * @property User $user
+ * @property Profile $profile
  * @property Currency $currency
  */
 class Account extends \yii\db\ActiveRecord
@@ -41,13 +40,12 @@ class Account extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['currency_id', 'user_id', 'name'], 'required'],
+            [['currency_id', 'profile_id', 'name'], 'required'],
             [['balance'], 'number'],
             [['name'], 'string', 'max' => 255],
-            [['currency_id', 'user_id'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['currency_id', 'profile_id'], 'integer'],
+            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profile::className(), 'targetAttribute' => ['profile_id' => 'id']],
             [['currency_id'], 'exist', 'skipOnError' => true, 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
-            [['default'], 'validateDefault'],
         ];
     }
 
@@ -61,29 +59,16 @@ class Account extends \yii\db\ActiveRecord
             'name' => 'Name',
             'balance' => 'Balance',
             'currency_id' => 'Currency ID',
-            'user_id' => 'User ID',
+            'profile_id' => 'Profile ID',
         ];
-    }
-
-    /**
-     * Validates $default
-     */
-    public function validateDefault()
-    {
-        // Only one account can be default
-        if ($this->default == 0) {
-            if (!self::find()->andWhere(['user_id' => $this->user_id])->andWhere(['<>', 'id', $this->id])->default1()->one()) {
-                $this->addError('default', 'At least one account must be in default.');
-            }
-        }
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getProfile()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
 
     /**

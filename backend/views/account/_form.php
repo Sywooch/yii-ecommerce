@@ -2,8 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 use webdoka\yiiecommerce\common\models\Currency;
-use app\models\User;
+use webdoka\yiiecommerce\common\forms\TransactionForm;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Account */
@@ -20,9 +21,7 @@ use app\models\User;
 
     <?= $form->field($model, 'currency_id')->dropDownList(Currency::find()->select('symbol')->indexBy('id')->column()) ?>
 
-    <?= $form->field($model, 'default')->checkbox() ?>
-
-    <?= $form->field($model, 'user_id')->dropDownList(User::find()->select('username')->indexBy('id')->column()) ?>
+    <?= $form->field($model, 'profile_id')->dropDownList(ArrayHelper::map(TransactionForm::getUsers(), 'profile.id', 'username')) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

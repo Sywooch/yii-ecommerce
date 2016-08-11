@@ -2,7 +2,7 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
-use app\models\User;
+use app\models\Profile;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -17,7 +17,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $status
  * @property integer $created_at
  * @property integer $updated_at
- * @property integer $user_id
+ * @property integer $profile_id
  * @property integer $payment_type_id
  * @property float $total
  *
@@ -62,11 +62,11 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'user_id', 'payment_type_id'], 'required'],
-            [['created_at', 'updated_at', 'user_id', 'payment_type_id'], 'integer'],
+            [['status', 'profile_id', 'payment_type_id'], 'required'],
+            [['created_at', 'updated_at', 'profile_id', 'payment_type_id'], 'integer'],
             [['status'], 'string', 'max' => 255],
             [['payment_type_id'], 'exist', 'skipOnError' => false, 'targetClass' => PaymentType::className(), 'targetAttribute' => ['payment_type_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['profile_id'], 'exist', 'skipOnError' => false, 'targetClass' => Profile::className(), 'targetAttribute' => ['profile_id' => 'id']],
             [['total'], 'safe']
         ];
     }
@@ -79,7 +79,7 @@ class Order extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'status' => 'Status',
-            'user_id' => 'User',
+            'profile_id' => 'Profile',
             'payment_type_id' => 'Payment Type',
             'total' => 'Total',
             'created_at' => 'Created At',
@@ -99,9 +99,9 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getProfile()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
 
     /**

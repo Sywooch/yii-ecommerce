@@ -2,10 +2,11 @@
 
 namespace webdoka\yiiecommerce\common\forms;
 
+use app\models\Profile;
+use app\models\User;
 use webdoka\yiiecommerce\common\models\Order;
 use Yii;
 use yii\helpers\ArrayHelper;
-use app\models\User;
 use webdoka\yiiecommerce\common\models\Account;
 use webdoka\yiiecommerce\common\models\Transaction;
 
@@ -15,7 +16,7 @@ use webdoka\yiiecommerce\common\models\Transaction;
  */
 class TransactionForm extends Transaction
 {
-    public $user, $order, $transaction;
+    public $profile, $order, $transaction;
 
     /**
      * @inheritdoc
@@ -23,7 +24,7 @@ class TransactionForm extends Transaction
     public function rules()
     {
         return ArrayHelper::merge([
-            [['user'], 'required'],
+            [['profile'], 'required'],
             [['order'],
                 'exist',
                 'skipOnEmpty' => false,
@@ -54,7 +55,7 @@ class TransactionForm extends Transaction
     public function attributeLabels()
     {
         return [
-            'user' => 'User',
+            'profile' => 'Profile',
             'order' => 'Order',
             'transaction' => 'Transaction',
         ];
@@ -67,38 +68,37 @@ class TransactionForm extends Transaction
     public static function getUsers()
     {
         return User::find()
-            ->select('username')
-            ->indexBy('id')
-            ->orderBy(['username' => 'asc'])
-            ->column();
+            ->with('profile')
+            ->orderBy('username')
+            ->all();
     }
 
     /**
-     * Returns all accounts by user
-     * @param $user
+     * Returns all accounts by profile
+     * @param $profile
      * @return array
      */
-    public static function getAccountsByUser($user)
+    public static function getAccountsByProfile($profile)
     {
         return Account::find()
-            ->where(['user_id' => $user])
             ->select('name')
             ->indexBy('id')
+            ->where(['profile_id' => $profile])
             ->orderBy(['name' => 'asc'])
             ->column();
     }
 
     /**
-     * Returns all orders by user
-     * @param $user
+     * Returns all orders by profile
+     * @param $profile
      * @return array
      */
-    public static function getOrdersByUser($user)
+    public static function getOrdersByProfile($profile)
     {
         return Order::find()
-            ->where(['user_id' => $user])
             ->select('id')
             ->indexBy('id')
+            ->where(['profile_id' => $profile])
             ->orderBy(['id' => 'asc'])
             ->column();
     }

@@ -44,10 +44,12 @@ class Cart extends Component
 
         // Load from db
         if (!\Yii::$app->user->isGuest) {
-            if (!$cart = CartModel::find()->where(['user_id' => \Yii::$app->user->id])->one()) {
+            $profileId = \Yii::$app->user->identity->profile->id;
+
+            if (!$cart = CartModel::find()->where(['profile_id' => $profileId])->one()) {
                 // Create Cart if this is not exists
                 $cart = new CartModel();
-                $cart->user_id = \Yii::$app->user->id;
+                $cart->profile_id = $profileId;
                 $cart->save();
             }
 
@@ -83,7 +85,9 @@ class Cart extends Component
         $this->session[$this->id] = serialize($this->_positions);
 
         if (!\Yii::$app->user->isGuest) {
-            if ($cart = CartModel::find()->where(['user_id' => \Yii::$app->user->id])->one()) {
+            $profileId = \Yii::$app->user->identity->profile->id;
+
+            if ($cart = CartModel::find()->where(['profile_id' => $profileId])->one()) {
                 $cart->unlinkAll('cartProducts', true);
 
                 foreach ($this->_positions as $position) {

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\forms\TransactionForm;
 use yii\widgets\Pjax;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Transaction */
@@ -15,17 +16,17 @@ $this->registerJs('
 
         var $transaction = ".transaction-form",
             $type = "#transactionform-type",
-            $user = "#transactionform-user",
+            $profile = "#transactionform-profile",
             $accountId = "#transactionform-account_id",
             $amount = "#transactionform-amount";
 
-        $($transaction).on("change", [$type, $user, $accountId].join(", "), function () {
+        $($transaction).on("change", [$type, $profile, $accountId].join(", "), function () {
             $.pjax.reload({
                 url: "' . $url . '",
                 data: {
                     amount: $($amount).val(),
                     type: $($type).val(),
-                    user: $($user).val(),
+                    profile: $($profile).val(),
                     account_id: $($accountId).val(),
                 },
                 container: "#account",
@@ -49,13 +50,13 @@ $this->registerJs('
 
         <?php } ?>
 
-        <?= $form->field($model, 'user')->dropDownList(TransactionForm::getUsers(), ['prompt' => 'Choose user']) ?>
+        <?= $form->field($model, 'profile')->dropDownList(ArrayHelper::map(TransactionForm::getUsers(), 'profile.id', 'username'), ['prompt' => 'Choose profile']) ?>
 
-        <?= $form->field($model, 'account_id')->dropDownList(TransactionForm::getAccountsByUser($model->user), ['prompt' => 'Choose account']) ?>
+        <?= $form->field($model, 'account_id')->dropDownList(TransactionForm::getAccountsByProfile($model->profile), ['prompt' => 'Choose account']) ?>
 
         <?php if ($model->type == TransactionForm::WITHDRAW_TYPE) { ?>
 
-            <?= $form->field($model, 'order')->dropDownList(TransactionForm::getOrdersByUser($model->user), ['prompt' => 'Choose order']) ?>
+            <?= $form->field($model, 'order')->dropDownList(TransactionForm::getOrdersByProfile($model->profile), ['prompt' => 'Choose order']) ?>
 
         <?php } ?>
 

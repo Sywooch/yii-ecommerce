@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'amount',
-            'account.user.username',
+            'account.profile.user.username',
             'account.name',
             'type',
             'transaction.id:text:Rollback transaction',

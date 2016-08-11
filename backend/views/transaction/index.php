@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'amount',
-            'account.user.username',
+            'account.profile.user.username',
             'account.name',
             'type',
             'created_at:datetime',

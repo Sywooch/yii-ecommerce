@@ -2,13 +2,14 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
+use app\models\Profile;
 use Yii;
 
 /**
  * This is the model class for table "cart".
  *
  * @property integer $id
- * @property integer $user_id
+ * @property integer $profile_id
  *
  * @property CartProduct[] $cartProducts
  */
@@ -28,8 +29,8 @@ class Cart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['user_id'], 'integer'],
+            [['profile_id'], 'required'],
+            [['profile_id'], 'integer'],
         ];
     }
 
@@ -40,7 +41,7 @@ class Cart extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'profile_id' => 'Profile',
         ];
     }
 
@@ -59,5 +60,13 @@ class Cart extends \yii\db\ActiveRecord
     public function getProducts()
     {
         return $this->hasMany(Product::className(), ['id' => 'product_id'])->via('cartProducts');
+    }
+
+    /**
+     * Returns profile
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
 }

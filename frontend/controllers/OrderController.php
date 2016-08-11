@@ -60,9 +60,11 @@ class OrderController extends Controller
             }
         }
 
+        $profileId = Yii::$app->user->identity->profile->id;
+
         $orderModel = new Order();
         $orderModel->load(Yii::$app->request->post());
-        $orderModel->user_id = Yii::$app->user->id;
+        $orderModel->profile_id = $profileId;
         $orderModel->total = Yii::$app->cart->getCost();
 
         if ($country = Country::find()->where(['id' => Yii::$app->session->get('country')])->one()) {
@@ -104,7 +106,7 @@ class OrderController extends Controller
                 Yii::$app->session->setFlash('order_success', 'Order is created successful.');
 
                 // Create invoice to pay
-                if ($account = Account::find()->where(['user_id' => $orderModel->user_id])->default1()->one()) {
+                if ($account = Account::find()->where(['id' => $orderModel->profile->default_account_id])->one()) {
                     if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->total, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
                         // Redirect to pay
                         if (!$paymentSystem = Yii::$app->billing->load($orderModel->paymentType->name)) {

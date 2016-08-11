@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'balance',
             'currency.symbol',
-            'user.username',
+            'profile.user.username',
             'default',
         ],
     ]) ?>

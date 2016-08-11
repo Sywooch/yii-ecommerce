@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'total:currency',
                     'created_at:datetime',
                     'updated_at:datetime',
-                    'user.username',
+                    'profile.user.username',
                     'paymentType.name:text:Payment Type',
                     'country',
                     [
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'transaction.type:text:Type',
                         'transaction.amount:text:Amount',
                         'transaction.account.currency.symbol:text:Currency',
-                        'transaction.account.user.username:text:User',
+                        'transaction.account.profile.user.username:text:User',
                         'transaction.description:text:Description',
                     ]
                 ]) ?>
