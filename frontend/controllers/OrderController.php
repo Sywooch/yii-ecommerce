@@ -5,6 +5,7 @@ namespace webdoka\yiiecommerce\frontend\controllers;
 use webdoka\yiiecommerce\common\models\Account;
 use webdoka\yiiecommerce\common\models\Country;
 use webdoka\yiiecommerce\common\models\OrderProperty;
+use webdoka\yiiecommerce\common\models\OrderSet;
 use webdoka\yiiecommerce\common\models\Property;
 use Yii;
 use webdoka\yiiecommerce\common\models\OrderItem;
@@ -79,6 +80,7 @@ class OrderController extends Controller
 
             // Order items
             $orderItems = [];
+
             $positions = Yii::$app->cart->getPositions();
             foreach ($positions as $position) {
                 $orderItem = new OrderItem();
@@ -87,7 +89,31 @@ class OrderController extends Controller
 
                 $orderItems[] = $orderItem;
             }
+
+            // Order sets
+            $orderSets = [];
+            $orderSetItems = [];
+
+            $sets = Yii::$app->cart->getSets();
+            foreach ($sets as $set) {
+                $orderSet = new OrderSet();
+                $orderSet->set_id = $set->id;
+
+                foreach ($set->setsProducts as $setProduct) {
+                    $orderItem = new OrderItem();
+                    $orderItem->product_id = $setProduct->product_id;
+                    $orderItem->quantity = $setProduct->quantity;
+
+                    $orderSetItems[] = $orderItem;
+                }
+
+                $orderSet->populateRelation('orderItems', $orderSetItems);
+
+                $orderSets[] = $orderSet;
+            }
+
             $orderModel->populateRelation('orderItems', $orderItems);
+            $orderModel->populateRelation('orderSets', $orderSets);
 
             // Order properties
             $orderProperties = [];
@@ -102,6 +128,7 @@ class OrderController extends Controller
 
             if ($orderModel->save()) {
                 $transaction->commit();
+
                 Yii::$app->cart->removeAll();
                 Yii::$app->session->setFlash('order_success', 'Order is created successful.');
 

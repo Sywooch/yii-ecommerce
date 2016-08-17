@@ -4,6 +4,7 @@ namespace webdoka\yiiecommerce\backend\controllers;
 
 use webdoka\yiiecommerce\common\models\OrderHistory;
 use webdoka\yiiecommerce\common\models\OrderItem;
+use webdoka\yiiecommerce\common\models\OrderSet;
 use webdoka\yiiecommerce\common\models\OrderTransaction;
 use Yii;
 use webdoka\yiiecommerce\common\models\Order;
@@ -89,6 +90,10 @@ class OrderController extends Controller
         $productDataProvider->query = OrderItem::find()->where(['order_id' => $model->id]);
         $productDataProvider->pagination->pageSize = $pageSize;
 
+        $setDataProvider = new ActiveDataProvider();
+        $setDataProvider->query = OrderSet::find()->where(['order_id' => $model->id]);
+        $setDataProvider->pagination->pageSize = $pageSize;
+
         $transactionDataProvider = new ActiveDataProvider();
         $transactionDataProvider->query = OrderTransaction::find()->where(['order_id' => $model->id]);
         $transactionDataProvider->pagination->pageSize = $pageSize;
@@ -98,7 +103,14 @@ class OrderController extends Controller
         $historyDataProvider->sort->defaultOrder = ['created_at' => SORT_DESC];
         $historyDataProvider->pagination->pageSize = $pageSize;
 
-        return $this->render('view', compact('model', 'contactDataProvider', 'productDataProvider', 'transactionDataProvider', 'historyDataProvider'));
+        return $this->render('view', compact(
+            'model',
+            'contactDataProvider',
+            'productDataProvider',
+            'setDataProvider',
+            'transactionDataProvider',
+            'historyDataProvider'
+        ));
     }
 
     /**

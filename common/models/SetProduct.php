@@ -3,28 +3,27 @@
 namespace webdoka\yiiecommerce\common\models;
 
 use Yii;
-use webdoka\yiiecommerce\common\queries\CartProductQuery;
+use webdoka\yiiecommerce\common\queries\SetProductQuery;
 
 /**
- * This is the model class for table "carts_products".
+ * This is the model class for table "sets_products".
  *
  * @property integer $id
- * @property integer $cart_id
+ * @property integer $set_id
  * @property integer $product_id
  * @property integer $quantity
- * @property integer $cart_set_id
  *
  * @property Product $product
- * @property Cart $cart
+ * @property Set $set
  */
-class CartProduct extends \yii\db\ActiveRecord
+class SetProduct extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'carts_products';
+        return 'sets_products';
     }
 
     /**
@@ -33,10 +32,10 @@ class CartProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cart_id', 'product_id'], 'required'],
-            [['cart_id', 'product_id', 'quantity', 'cart_set_id'], 'integer'],
+            [['set_id', 'product_id'], 'required'],
+            [['set_id', 'product_id', 'quantity'], 'integer'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
-            [['cart_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cart::className(), 'targetAttribute' => ['cart_id' => 'id']],
+            [['set_id'], 'exist', 'skipOnError' => true, 'targetClass' => Set::className(), 'targetAttribute' => ['set_id' => 'id']],
         ];
     }
 
@@ -46,11 +45,10 @@ class CartProduct extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'cart_id' => 'Cart ID',
-            'product_id' => 'Product ID',
-            'quantity' => 'Quantity',
-            'cart_set_id' => 'Set',
+            'id' => Yii::t('app', 'ID'),
+            'set_id' => Yii::t('app', 'Set ID'),
+            'product_id' => Yii::t('app', 'Product ID'),
+            'quantity' => Yii::t('app', 'Quantity'),
         ];
     }
 
@@ -65,16 +63,17 @@ class CartProduct extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCart()
+    public function getSet()
     {
-        return $this->hasOne(Cart::className(), ['id' => 'cart_id']);
+        return $this->hasOne(Set::className(), ['id' => 'set_id']);
     }
 
     /**
-     * @return CartProductQuery
+     * @inheritdoc
+     * @return SetProductQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new CartProductQuery(get_called_class());
+        return new SetProductQuery(get_called_class());
     }
 }

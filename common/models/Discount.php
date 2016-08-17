@@ -22,12 +22,25 @@ class Discount extends \yii\db\ActiveRecord
 {
     const PERCENT_DIMENSION = 'percent';
     const FIXED_DIMENSION = 'fixed';
+    const SET_DIMENSION = 'set';
 
     const LIST_DISCOUNT = 'shopListDiscount';
     const VIEW_DISCOUNT = 'shopViewDiscount';
     const CREATE_DISCOUNT = 'shopCreateDiscount';
     const UPDATE_DISCOUNT = 'shopUpdateDiscount';
     const DELETE_DISCOUNT = 'shopDeleteDiscount';
+
+    /**
+     * @return array
+     */
+    public static function getDimensions()
+    {
+        return [
+            self::PERCENT_DIMENSION => ucfirst(self::PERCENT_DIMENSION),
+            self::FIXED_DIMENSION => ucfirst(self::FIXED_DIMENSION),
+            self::SET_DIMENSION => ucfirst(self::SET_DIMENSION),
+        ];
+    }
 
     /**
      * @inheritdoc

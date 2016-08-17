@@ -2,6 +2,7 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
+use webdoka\yiiecommerce\common\queries\OrderItemQuery;
 use Yii;
 
 /**
@@ -11,6 +12,7 @@ use Yii;
  * @property integer $order_id
  * @property integer $product_id
  * @property integer $quantity
+ * @property integer $order_set_item
  *
  * @property Product $order
  * @property Order $order0
@@ -64,5 +66,22 @@ class OrderItem extends \yii\db\ActiveRecord
     public function getOrder()
     {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderSet()
+    {
+        return $this->hasOne(OrderSet::className(), ['id' => 'order_set_id']);
+    }
+
+    /**
+     * @inheritdoc
+     * @return OrderItemQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new OrderItemQuery(get_called_class());
     }
 }

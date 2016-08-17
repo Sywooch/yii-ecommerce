@@ -45,4 +45,28 @@ class DiscountQuery extends \yii\db\ActiveQuery
 
         return $this;
     }
+
+    /**
+     * @return $this
+     */
+    public function set()
+    {
+        return $this->andWhere(['dimension' => Discount::SET_DIMENSION]);
+    }
+
+    /**
+     * @return $this
+     */
+    public function percent()
+    {
+        return $this->andWhere(['dimension' => Discount::PERCENT_DIMENSION]);
+    }
+
+    /**
+     * @return $this
+     */
+    public function fixed()
+    {
+        return $this->andWhere(['dimension' => Discount::FIXED_DIMENSION]);
+    }
 }

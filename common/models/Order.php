@@ -123,6 +123,14 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getOrderSets()
+    {
+        return $this->hasMany(OrderSet::className(), ['order_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOrderHistory()
     {
         return $this->hasMany(OrderHistory::className(), ['order_id' => 'id'])->orderBy(['id' => 'ASC']);
@@ -166,6 +174,15 @@ class Order extends \yii\db\ActiveRecord
             }
             foreach ($relatedRecords['orderItems'] as $relatedRecord) {
                 $this->link('orderItems', $relatedRecord);
+            }
+        }
+
+        if ($this->isRelationPopulated('orderSets')) {
+            if ($this->isNewRecord) {
+                $this->unlinkAll('orderSets');
+            }
+            foreach ($relatedRecords['orderSets'] as $relatedRecord) {
+                $this->link('orderSets', $relatedRecord);
             }
         }
 

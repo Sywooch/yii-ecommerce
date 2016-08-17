@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
 use yii\helpers\ArrayHelper;
 use webdoka\yiiecommerce\common\models\Product;
+use webdoka\yiiecommerce\common\models\Discount;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Discount */
@@ -17,7 +18,7 @@ use webdoka\yiiecommerce\common\models\Product;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'dimension')->dropDownList(['percent' => 'Percent', 'fixed' => 'Fixed']) ?>
+    <?= $form->field($model, 'dimension')->dropDownList(Discount::getDimensions()) ?>
 
     <?= $form->field($model, 'value')->textInput() ?>
 

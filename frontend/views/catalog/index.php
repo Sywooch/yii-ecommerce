@@ -4,13 +4,12 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Breadcrumbs;
 use webdoka\yiiecommerce\common\models\Country;
+use webdoka\yiiecommerce\frontend\widgets\CartWidget;
 
-/*
- * @var $this yii\web\View
- * @var $currentCategory webdoka\yiiecommerce\common\models\Category
- * @var $dataProvider ActiveDataProvider
- * @var $categories Array
- */
+/* @var $this yii\web\View */
+/* @var $currentCategory webdoka\yiiecommerce\common\models\Category */
+/* @var $dataProvider \yii\data\ActiveDataProvider */
+/* @var $categories array */
 
 $title = 'Shop';
 $this->title = Html::encode($title);
@@ -70,20 +69,10 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
 
     <div class="row">
         <div class="col-xs-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Your cart</div>
-                <div class="panel-body">
-                    <p>
-                        Summary:
-                        <strong><?= Yii::$app->formatter->asCurrency(Yii::$app->cart->getCost()) ?></strong>
-                    </p>
-                    <p>Quantity: <?= Yii::$app->cart->getCount() ?></p>
-                </div>
-                <div class="panel-footer text-center">
-                    <?= Html::a('View', ['cart/list'], ['class' => 'btn btn-primary btn-block']) ?>
-                </div>
-            </div>
+            <?= CartWidget::widget() ?>
             <ul class="nav nav-pills nav-stacked">
+                <li role="presentation"><?= Html::a('Sets', ['set/index']) ?></li>
+                <hr>
                 <li role="presentation"<?= !$currentCategory ? ' class="active"' : '' ?>><?= Html::a('All', ['catalog/index']) ?></li>
                 <?php foreach ($categories as $category) { ?>
                     <li role="presentation"<?= $currentCategory && $currentCategory->slug == $category->slug ? ' class="active"' : '' ?>>

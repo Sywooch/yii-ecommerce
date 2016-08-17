@@ -4,6 +4,7 @@ namespace webdoka\yiiecommerce\common\models;
 
 use app\models\Profile;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "cart".
@@ -54,12 +55,45 @@ class Cart extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCartProductsNoSet()
+    {
+        return $this->hasMany(CartProduct::className(), ['cart_id' => 'id'])->noSet();
+    }
+
+    /**
      * Returns Products
-     * @return $this
+     * @return ActiveQuery
      */
     public function getProducts()
     {
         return $this->hasMany(Product::className(), ['id' => 'product_id'])->via('cartProducts');
+    }
+
+    /**
+     * @return $this
+     */
+    public function getProductsNoSet()
+    {
+        return $this->hasMany(Product::className(), ['id' => 'product_id'])->via('cartProductsNoSet');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCartSets()
+    {
+        return $this->hasMany(CartSet::className(), ['cart_id' => 'id']);
+    }
+
+    /**
+     * Returns Sets
+     * @return $this
+     */
+    public function getSets()
+    {
+        return $this->hasMany(Set::className(), ['id' => 'set_id'])->via('cartSets');
     }
 
     /**

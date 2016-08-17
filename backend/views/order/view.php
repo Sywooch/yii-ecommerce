@@ -10,6 +10,7 @@ use webdoka\yiiecommerce\common\models\Order;
 /* @var $model webdoka\yiiecommerce\common\models\Order */
 /* @var $contactDataProvider \yii\data\ArrayDataProvider */
 /* @var $productDataProvider \yii\data\ArrayDataProvider */
+/* @var $setDataProvider \yii\data\ArrayDataProvider */
 /* @var $transactionDataProvider \yii\data\ArrayDataProvider */
 /* @var $historyDataProvider \yii\data\ArrayDataProvider */
 
@@ -105,6 +106,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div role="tabpanel" class="tab-pane fade" id="products">
 
+            <h3>Sets</h3>
+
+            <?php \yii\widgets\Pjax::begin(['id' => 'sets']); ?>
+
+            <?= GridView::widget([
+                'dataProvider' => $setDataProvider,
+                'summaryOptions' => ['class' => 'well'],
+                'columns' => [
+                    'set.name',
+                    'set.costWithDiscounters:currency:Cost',
+                    [
+                        'header' => 'Discount',
+                        'value' => function ($model) {
+                            return implode(', ', array_map(function ($model) {
+                                return $model->name;
+                            }, $model->set->discounts));
+                        }
+                    ],
+                ]
+            ]) ?>
+
+            <?php \yii\widgets\Pjax::end(); ?>
+
+            <h3>Products</h3>
+
             <?php \yii\widgets\Pjax::begin(['id' => 'products']); ?>
 
                 <?= GridView::widget([
@@ -113,7 +139,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         'product.category.name',
                         'product.name',
-                        'product.realPrice',
+                        'orderSet.set.name',
+                        'product.realPrice:currency:Cost',
                         'quantity',
                         'product.unit.name',
                     ]

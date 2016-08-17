@@ -2,9 +2,9 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
+use Yii;
 use webdoka\yiiecommerce\common\components\IPosition;
 use webdoka\yiiecommerce\common\queries\ProductQuery;
-use Yii;
 use yii\db\mysql\QueryBuilder;
 use yii\helpers\ArrayHelper;
 
@@ -28,7 +28,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     const UPDATE_PRODUCT = 'shopUpdateProduct';
     const DELETE_PRODUCT = 'shopDeleteProduct';
     
-    private $quantity;
+    private $_quantity;
 
     /**
      * @inheritdoc
@@ -142,7 +142,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      */
     public function getQuantity()
     {
-        return $this->quantity;
+        return $this->_quantity;
     }
 
     /**
@@ -150,7 +150,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      */
     public function setQuantity($quantity)
     {
-        $this->quantity = $quantity;
+        $this->_quantity = $quantity;
     }
 
     /**
@@ -261,6 +261,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function getDiscounts()
     {
         return $this->hasMany(Discount::className(), ['id' => 'discount_id'])
+            ->andWhere(['dimension' => Discount::SET_DIMENSION])
             ->via('productDiscounts');
     }
 

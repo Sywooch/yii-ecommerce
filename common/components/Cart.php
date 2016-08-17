@@ -3,6 +3,8 @@
 namespace webdoka\yiiecommerce\common\components;
 
 use webdoka\yiiecommerce\common\models\CartProduct;
+use webdoka\yiiecommerce\common\models\CartSet;
+use webdoka\yiiecommerce\common\models\Set;
 use yii\base\Component;
 use yii\di\Instance;
 use yii\web\Session;
@@ -14,10 +16,10 @@ use webdoka\yiiecommerce\common\models\Cart as CartModel;
  */
 class Cart extends Component
 {
-    /**
-     * @var array of IPosition
-     */
-    protected $_positions = [];
+    const SETS = '_sets';
+    const POSITIONS = '_positions';
+
+    protected $_positions = [], $_sets = [];
 
     public $id = __CLASS__;
     public $session = 'session';
@@ -38,8 +40,11 @@ class Cart extends Component
     {
         // Default load from session
         $this->session = Instance::ensure($this->session, Session::className());
-        if ($this->session[$this->id]) {
-            $this->_positions = unserialize($this->session[$this->id]);
+        if ($this->session[$this->id . self::POSITIONS]) {
+            $this->_positions = unserialize($this->session[$this->id . self::POSITIONS]);
+        }
+        if ($this->session[$this->id . self::SETS]) {
+            $this->_sets = unserialize($this->session[$this->id . self::SETS]);
         }
 
         // Load from db
@@ -53,25 +58,41 @@ class Cart extends Component
                 $cart->save();
             }
 
-            if (empty($cart->products) && !empty($this->_positions)) {
-                // Synch session -> db
+            if (
+                empty($cart->productsNoSet) && !empty($this->_positions) ||
+                empty($cart->sets && !empty($this->_sets))
+            ) {
+                // Sync session -> db
                 $this->saveToSession();
+            } elseif (
+                !empty($cart->productsNoSet) && empty($this->_positions) ||
+                !empty($cart->sets) && empty($this->_sets)) {
 
-            } elseif (!empty($cart->products)) {
-                // Synch db -> session
+                // Sync db -> session
                 $this->_positions = [];
+                $this->_sets = [];
 
-                foreach ($cart->products as $product) {
-                    if ($cartProduct = CartProduct::find()->where(['cart_id' => $cart->id, 'product_id' => $product->id])->one()) {
+                foreach ($cart->cartProducts as $cartProduct) {
+                    if (!$cartProduct->cart_set_id) {
+                        $product = $cartProduct->product;
                         $product->setQuantity($cartProduct->quantity);
 
-                        if (!isset($this->_positions[$product->id])) {
+                        if (array_key_exists($product->id, $this->_positions)) {
                             $this->_positions[$product->id] = $product;
                         }
                     }
                 }
 
-                $this->session[$this->id] = serialize($this->_positions);
+                foreach ($cart->cartSets as $cartSet) {
+                    if ($set = Set::find()->where(['id' => $cartSet->set_id])->one()) {
+                        $set->populateRelation('setsProducts', $cartSet->cartsProducts);
+
+                        $this->_sets[$set->tmpId] = $set;
+                    }
+                }
+
+                $this->session[$this->id . self::POSITIONS] = serialize($this->_positions);
+                $this->session[$this->id . self::SETS] = serialize($this->_sets);
             }
         }
     }
@@ -82,13 +103,15 @@ class Cart extends Component
     public function saveToSession()
     {
         // Default save to session
-        $this->session[$this->id] = serialize($this->_positions);
+        $this->session[$this->id . self::POSITIONS] = serialize($this->_positions);
+        $this->session[$this->id . self::SETS] = serialize($this->_sets);
 
         if (!\Yii::$app->user->isGuest) {
             $profileId = \Yii::$app->user->identity->profile->id;
 
             if ($cart = CartModel::find()->where(['profile_id' => $profileId])->one()) {
                 $cart->unlinkAll('cartProducts', true);
+                $cart->unlinkAll('cartSets', true);
 
                 foreach ($this->_positions as $position) {
                     $cartProduct = new CartProduct();
@@ -96,6 +119,23 @@ class Cart extends Component
                     $cartProduct->product_id = $position->id;
                     $cartProduct->quantity = $position->quantity;
                     $cartProduct->save();
+                }
+
+                foreach ($this->_sets as $set) {
+                    $cartSet = new CartSet();
+                    $cartSet->cart_id = $cart->id;
+                    $cartSet->set_id = $set->id;
+
+                    if ($cartSet->save()) {
+                        foreach ($set->setsProducts as $setProduct) {
+                            $cartProduct = new CartProduct();
+                            $cartProduct->cart_id = $cart->id;
+                            $cartProduct->product_id = $setProduct->product_id;
+                            $cartProduct->quantity = $setProduct->quantity;
+                            $cartProduct->cart_set_id = $cartSet->id;
+                            $cartProduct->save();
+                        }
+                    }
                 }
             }
         }
@@ -124,6 +164,28 @@ class Cart extends Component
     }
 
     /**
+     * Returns sets
+     * @return array
+     */
+    public function getSets()
+    {
+        return $this->_sets;
+    }
+
+    /**
+     * Set sets filtered by instance of IPosition
+     * @param $sets
+     */
+    public function setSets($sets)
+    {
+        $this->_sets = array_filter($sets, function ($position) {
+            return $position instanceof IPosition;
+        });
+
+        $this->saveToSession();
+    }
+
+    /**
      * Check on empty
      * @return bool
      */
@@ -140,14 +202,17 @@ class Cart extends Component
     {
         $count = 0;
 
-        foreach ($this->_positions as $position)
+        foreach ($this->_positions as $position) {
             $count += $position->getQuantity();
+        }
+
+        $count += count($this->_sets);
 
         return $count;
     }
 
     /**
-     * Returns summary cost of existing positions
+     * Returns summary cost of existing positions and sets
      */
     public function getCost()
     {
@@ -155,6 +220,10 @@ class Cart extends Component
 
         foreach ($this->_positions as $position) {
             $cost += $position->getCostWithDiscounters($position->getQuantity());
+        }
+
+        foreach ($this->_sets as $set) {
+            $cost += $set->getCostWithDiscounters();
         }
 
         return $cost;
@@ -175,6 +244,17 @@ class Cart extends Component
             $this->_positions[$id]->setQuantity($this->_positions[$id]->getQuantity() + $position->getQuantity());
         else
             $this->_positions[$position->getId()] = $position;
+
+        $this->saveToSession();
+    }
+
+    /**
+     * Put position to cart, or increase existing quantity
+     * @param Set $set
+     */
+    public function putSet(Set $set)
+    {
+        $this->_sets[$set->tmpId] = $set;
 
         $this->saveToSession();
     }
@@ -220,11 +300,24 @@ class Cart extends Component
     }
 
     /**
-     * Remove all positions
+     * @param $id
+     */
+    public function removeSetById($id)
+    {
+        if (array_key_exists($id, $this->_sets)) {
+            unset($this->_sets[$id]);
+            $this->saveToSession();
+        }
+    }
+
+    /**
+     * Remove all positions and sets
      */
     public function removeAll()
     {
         $this->_positions = [];
+        $this->_sets = [];
+
         $this->saveToSession();
     }
 
@@ -238,6 +331,9 @@ class Cart extends Component
 
         foreach ($this->_positions as $position)
             $data[] = [$position->getId(), $position->getQuantity(), $position->realPrice];
+
+        foreach ($this->_sets as $set)
+            $data[] = [$set->getId(), $set->getCostWithDiscounters()];
 
         return md5(serialize($data));
     }
