@@ -14,6 +14,7 @@ use webdoka\yiiecommerce\frontend\widgets\CartWidget;
 $title = 'Sets';
 $this->title = Html::encode($title);
 
+$this->params['breadcrumbs'][] = ['label' => 'Shop', 'url' => ['catalog/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 // VAT included
@@ -27,7 +28,7 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         <div class="col-xs-3">
             <?= CartWidget::widget() ?>
             <ul class="nav nav-pills nav-stacked">
-                <li role="presentation" class="active"><?= Html::a('Sets', ['catalog/index']) ?></li>
+                <li role="presentation" class="active"><?= Html::a('Sets', ['set/index']) ?></li>
                 <hr>
                 <li role="presentation"><?= Html::a('All', ['catalog/index']) ?></li>
                 <?php foreach ($categories as $category) { ?>

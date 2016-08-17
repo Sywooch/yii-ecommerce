@@ -23,7 +23,7 @@ class SetController extends Controller
      */
     public function actionIndex()
     {
-        $query = Set::find();
+        $query = SetConfigForm::find();
         $dataProvider = new ActiveDataProvider(['query' => $query]);
         $categories = Category::find()->orderBy(['parent_id' => 'asc'])->all();
 

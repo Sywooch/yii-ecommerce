@@ -40,10 +40,10 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
                 Empty.
             <?php } else { ?>
 
-                <?php foreach ($model->setsProducts as $index => $setsProduct) { ?>
+                <?php foreach ($model->setsProducts as $index => $setProduct) { ?>
                     <div class="row">
                         <div class="col-md-10">
-                            <?= Html::encode($setsProduct->product->name) ?>
+                            <?= Html::encode($setProduct->product->name) ?>
                             <?php if ($model->hasErrors('relSetsProducts[' . $index . '][set_id]')) { ?>
                                 <div class="has-error">
                             <?php } ?>

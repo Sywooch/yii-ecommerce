@@ -31,7 +31,7 @@ class SetConfigForm extends Set
                 $this->addError('relSetsProducts[' . $i . '][set_id]', 'SetProduct not found.');
             } else {
                 if ($setProduct->quantity > $relSetProduct['quantity']) {
-                    $this->addError('relSetsProducts[' . $i . '][quantity]', 'Quantity must be >= ' . $setProduct->quantity . '.');
+                    $this->addError('relSetsProducts[' . $i . '][quantity]', 'Quantity must be equal or more then ' . $setProduct->quantity . '.');
                 }
             }
         }
