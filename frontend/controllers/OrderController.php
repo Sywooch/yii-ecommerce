@@ -50,7 +50,9 @@ class OrderController extends Controller
      */
     public function actionCreate()
     {
-        $properties = Property::find()->indexBy('id')->all();
+        $profileType = Yii::$app->user->identity->profile->type;
+
+        $properties = Property::find()->where(['profile_type' => $profileType])->indexBy('id')->all();
 
         $model = new DynamicModel(array_keys($properties));
         foreach ($properties as $property) {
