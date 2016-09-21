@@ -60,7 +60,7 @@ class Cart extends Component
 
             if (
                 empty($cart->productsNoSet) && !empty($this->_positions) ||
-                empty($cart->sets && !empty($this->_sets))
+                empty($cart->sets) && !empty($this->_sets)
             ) {
                 // Sync session -> db
                 $this->saveToSession();
