@@ -2,6 +2,7 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
+use app\models\Profile;
 use Yii;
 use webdoka\yiiecommerce\common\queries\PropertyQuery;
 use yii\base\Exception;
@@ -46,8 +47,9 @@ class Property extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['label', 'name'], 'required'],
+            [['label', 'name', 'profile_type'], 'required'],
             [['type'], 'string'],
+            [['profile_type'], 'string'],
             [['required'], 'integer'],
             [['label', 'name'], 'string', 'max' => 255],
         ];
@@ -63,6 +65,7 @@ class Property extends \yii\db\ActiveRecord
             'label' => 'Label',
             'name' => 'Name',
             'type' => 'Type',
+            'profile_type' => 'Profile type',
             'required' => 'Required',
         ];
     }
@@ -94,5 +97,13 @@ class Property extends \yii\db\ActiveRecord
             self::CHECKBOX_TYPE => ucfirst(self::CHECKBOX_TYPE),
             self::TEXTAREA_TYPE => ucfirst(self::TEXTAREA_TYPE),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getProfileTypes()
+    {
+        return Profile::getTypes();
     }
 }
