@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'label',
             'type',
+            'profile_type',
             'required',
 
             [

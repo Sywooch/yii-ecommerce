@@ -19,6 +19,8 @@ use webdoka\yiiecommerce\common\models\Property;
 
     <?= $form->field($model, 'type')->dropDownList(Property::getTypes()) ?>
 
+    <?= $form->field($model, 'profile_type')->dropDownList(Property::getProfileTypes()) ?>
+
     <?= $form->field($model, 'required')->checkbox() ?>
 
     <div class="form-group">
