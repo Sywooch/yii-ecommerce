@@ -16,10 +16,13 @@ $priceDataProvider = new ArrayDataProvider([
     ]);
 
 echo $form->field($node, 'description')->textarea(['rows' => 6]);
+?>
+<?php if(isset($node->image)  && $node->image !=''):?>
+<img src="/uploads/po/<?=$node->image?>" style="width:80px" />  
 
-//echo $form->field($node, 'image')->textInput(['maxlength' => true]);
-
-echo $form->field($node, 'image')->fileInput();
+<?php endif; ?>
+<?php 
+echo $form->field($node, 'imagef')->fileInput();
 
 
 ?>

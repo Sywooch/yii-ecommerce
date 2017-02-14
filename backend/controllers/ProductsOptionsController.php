@@ -26,7 +26,6 @@ use yii\db\Exception as DbException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Response;
-use app\models\UploadForm;
 use yii\web\UploadedFile;
 
 /**
@@ -272,6 +271,18 @@ class ProductsOptionsController extends Controller
         $tag = explode("\\", $modelClass);
         $tag = array_pop($tag);
         $id = $post[$tag][$keyAttr];
+
+        $imgmodel = new ProductsOptions();
+        $imgmodel->imagef = UploadedFile::getInstance($imgmodel, 'imagef');
+
+        if($imgmodel->imagef != null){
+
+            if ($imgmodel->upload()) {
+             $path=$imgmodel->imagef->baseName . '.' . $imgmodel->imagef->extension;
+                $node->image=$path;
+            }
+
+        }
 
         if(isset($data[$tag]["relPrices"])){
 

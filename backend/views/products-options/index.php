@@ -26,6 +26,7 @@ echo TreeView::widget([
     // use the Product model you have in the previous step
     'query' => ProductsOptions::find()->addOrderBy('root, lft')->active(),
     'id'=>'products_options',
+    'options'=>['id'=>'products_options','enctype' => 'multipart/form-data'],
     'showIDAttribute' => false,
     'nodeAddlViews' => [
         Module::VIEW_PART_2 => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_form'

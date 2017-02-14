@@ -13,10 +13,11 @@ use yii\widgets\ActiveForm;
 
 <?= $form->field($node, 'description')->textarea(['rows' => 6]) ?>
 
-<?= $form->field($node, 'image')->fileInput(); ?>
+<?php if(isset($node->image) && $node->image !=''):?>
+<img src="/uploads/po/<?=$node->image?>" style="width:80px" />	
 
-<?= $form->field($node, 'products_id')->hiddenInput()->label(false);?>
-
+<?php endif; ?>	
+<?= $form->field($node, 'imagef')->fileInput(); ?>
 
 
 </div>

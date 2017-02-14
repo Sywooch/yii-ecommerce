@@ -116,51 +116,56 @@ if (isset($model->Option_id)){
 </div>
 
 <div class="popover-body">
-    <?php 
-    $all=ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id'=>$model->id])->andWhere('[[status]]=1')->all();
+  <?php 
+  $all=ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id'=>$model->id])->andWhere('[[status]]=1')->all();
 
-    $search=[];
-    $parent_id=0;
-    foreach ($all as $value) {
+  $search=[];
+  $parent_id=0;
+  foreach ($all as $value) {
 
-        $countries = ProductsOptions::findOne(['id' => $value->product_options_id]);
+    $optionItem = ProductsOptions::findOne(['id' => $value->product_options_id]);
 
-        $leaves = $countries->leaves()->all();
+    $leaves = $optionItem->leaves()->all();
 
-        if($leaves==null){
+    if($leaves==null){
 
-            $leaves = $countries->parents()->all();
+      $leaves = $optionItem->parents()->all();
 
-            foreach ($leaves as $value) {
+      foreach ($leaves as $value) {
 
-                if(!in_array($value->id,$search)){
+        if(!in_array($value->id,$search)){
 
-                    $search[]=$value->id;
+          $search[]=$value->id;
 
-                    if($value->lvl==1 || $value->lvl==2){
-                        echo '<div class="reset"></div>';
-                        echo str_repeat('-&nbsp;', $value->lvl).'<b>'.$value->name.'</b><p>'.$value->description.'</p><br>';
-                    }else{
-                       echo str_repeat('-&nbsp;', $value->lvl).$value->name.'<p>'.$value->description.'</p><br>';
-                   }
-
-               }
-           }
-
-           $countries = ProductsOptions::findOne(['id' => $countries->id]);
-           $parent = $countries->parents(1)->one();
-
-           if($parent_id!=$parent->id){
-
-
-            $parent_id=$parent->id;
+          if($value->lvl==1 || $value->lvl==2){
             echo '<div class="reset"></div>';
+            echo str_repeat('-&nbsp;', $value->lvl).'<b>'.$value->name.'</b><p>'.$value->description.'</p><br>';
+          }else{
+           echo str_repeat('-&nbsp;', $value->lvl).$value->name.'<p>'.$value->description.'</p><br>';
+         }
 
-        }
+       }
+     }
 
-        echo '<a href="'.Url::to(['cart/update','id'=>$model->id,'option'=>$countries->id, 'oldoption'=>$oldoptionid,'quant'=>Html::encode($model->quantity)]).'" class="selectoption"><div class="lastdivbox">'.$countries->name.'</div></a>';
+     $optionItem = ProductsOptions::findOne(['id' => $optionItem->id]);
+     $parent = $optionItem->parents(1)->one();
+
+     if($parent_id!=$parent->id){
+
+
+      $parent_id=$parent->id;
+      echo '<div class="reset"></div>';
 
     }
+    if(isset($optionItem->image) && $optionItem->image !=''){
+      $img='<img src="/uploads/po/'.$optionItem->image.'" style="width:98px" />'; 
+    }else{
+     $img=''; 
+   } 
+
+   echo '<a href="'.Url::to(['cart/update','id'=>$model->id,'option'=>$optionItem->id, 'oldoption'=>$oldoptionid,'quant'=>Html::encode($model->quantity)]).'" class="selectoption"><div class="lastdivbox">'.$optionItem->name.'<br>'.$img.'</div></a>';
+
+ }
 
 
 }

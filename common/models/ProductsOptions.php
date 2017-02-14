@@ -4,6 +4,7 @@ namespace webdoka\yiiecommerce\common\models;
 use creocoder\nestedsets\NestedSetsBehavior;
 use webdoka\yiiecommerce\common\queries\ProductsOptionsQuery;
 use yii\web\UploadedFile;
+use yii\base\Model;
 
 use Yii;
 
@@ -89,7 +90,7 @@ class ProductsOptions extends \yii\db\ActiveRecord
      */
     public $activeOrig = true;
 
-
+    public $imagef;
     /**
      * @inheritdoc
      */
@@ -108,7 +109,7 @@ class ProductsOptions extends \yii\db\ActiveRecord
             [['tree', 'lft', 'rgt', 'depth', 'status', 'icon_type', 'active', 'selected', 'disabled', 'readonly', 'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l', 'movable_r', 'removable', 'removable_all', 'root', 'lvl'], 'integer'],
             [['description'], 'string'],
             [['name', 'icon'], 'string', 'max' => 255],
-            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['imagef'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -151,10 +152,6 @@ class ProductsOptions extends \yii\db\ActiveRecord
         return [
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
-                // 'treeAttribute' => 'tree',
-                // 'leftAttribute' => 'lft',
-                // 'rightAttribute' => 'rgt',
-                // 'depthAttribute' => 'depth',
                     'treeAttribute' => 'root',
                     'leftAttribute' => 'lft',
                     'rightAttribute' => 'rgt',
@@ -212,10 +209,15 @@ class ProductsOptions extends \yii\db\ActiveRecord
     
     public function upload()
     {
+
         if ($this->validate()) {
-            $this->imageFile->saveAs('uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
-            return true;
+
+            $path=Yii::getAlias('@webroot') .'/uploads/po/' . $this->imagef->baseName . '.' . $this->imagef->extension;
+            $this->imagef->saveAs($path);
+
+            return $path;
         } else {
+           var_dump( $this->getErrors());exit;
             return false;
         }
     }    

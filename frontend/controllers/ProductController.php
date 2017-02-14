@@ -17,12 +17,6 @@ class ProductController extends Controller
     {
         $model = Product::findOne(['id'=>(int)$id]);
 
-     /*   $currentCategory = null;
-        if ($category && $currentCategory = Category::find()->where(['slug' => $category])->one()) {
-            $query->where(['category_id' => $currentCategory->id]);
-        }
-
-        $dataProvider = new ActiveDataProvider(['query' => $query]);*/
         $currentCategory = null;
         $categories = Category::find()->orderBy(['parent_id' => 'asc'])->all();
 
