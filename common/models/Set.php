@@ -194,7 +194,7 @@ class Set extends ActiveRecord implements ISetPosition
     /**
      * After save handles
      */
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         $relatedRecords = $this->getRelatedRecords();
 

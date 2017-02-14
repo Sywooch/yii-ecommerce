@@ -30,7 +30,14 @@ class CartController extends \yii\web\Controller
      */
     public function actionAdd($id)
     {
+        $optid=(int)Yii::$app->request->get('option',0);
+
         if ($product = Product::findOne($id)) {
+
+            $sess=Yii::$app->session;
+
+            $sess->set($id.'-optionid',$optid);
+
             Yii::$app->cart->put($product);
         }
         $this->redirect(['catalog/index']);
@@ -39,10 +46,24 @@ class CartController extends \yii\web\Controller
     /**
      * @param $id
      */
-    public function actionRemove($id)
+    public function actionUpdate($id,$option,$oldoption,$quant)
     {
+
         if ($product = Product::findOne($id)) {
-            Yii::$app->cart->remove($product);
+
+            Yii::$app->cart->updateopt($product,$option,$oldoption,$quant);
+        }
+        $this->redirect(['cart/list']);
+    }    
+
+    /**
+     * @param $id
+     */
+    public function actionRemove($id,$option)
+    {
+
+        if ($product = Product::findOne($id)) {
+            Yii::$app->cart->remove($product,$option);
             $this->redirect(['cart/list']);
         }
     }

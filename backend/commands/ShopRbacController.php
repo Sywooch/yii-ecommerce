@@ -301,6 +301,23 @@ class ShopRbacController extends Controller
         $actions[] = $updateProduct;
         $actions[] = $deleteProduct;
 
+        $listOptProduct = $auth->createPermission('shopListOptionsProducts');
+        $listOptProduct->description = 'List shop options from products';
+        $viewOptProduct = $auth->createPermission('shopViewOptionsProducts');
+        $viewOptProduct->description = 'View shop options from product';
+        $createOptProduct = $auth->createPermission('shopCreateOptionsProducts');
+        $createOptProduct->description = 'Create shop options from product';
+        $updateOptProduct = $auth->createPermission('shopUpdateOptionsProducts');
+        $updateOptProduct->description = 'Update shop options from product';
+        $deleteOptProduct = $auth->createPermission('shopDeleteOptionsProducts');
+        $deleteOptProduct->description = 'Delete shop options from product';
+
+        $actions[] = $listOptProduct;
+        $actions[] = $viewOptProduct;
+        $actions[] = $createOptProduct;
+        $actions[] = $updateOptProduct;
+        $actions[] = $deleteOptProduct;
+
         foreach ($actions as $action) {
             $auth->add($action);
         }

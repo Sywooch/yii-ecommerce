@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use \yii\helpers\Url;
 
 /*
  * @var $model \webdoka\yiiecommerce\common\models\Product
@@ -10,7 +11,7 @@ use yii\helpers\Html;
 
 <div class="col-xs-12 well">
     <div class="col-xs-6">
-        <h2><?= Html::encode($model->name) ?></h2>
+        <h2><a href="<?= Url::to(['product/index','id' => $model->id]);?>"><?= Html::encode($model->name) ?></a></h2>
         <table class="table table-striped features">
             <?php foreach ($model->fullFeatures as $featureProduct) { ?>
                 <tr>

@@ -88,6 +88,7 @@ class OrderController extends Controller
                 $orderItem = new OrderItem();
                 $orderItem->product_id = $position->getId();
                 $orderItem->quantity = $position->getQuantity();
+                $orderItem->option_id = $position->getOption_id();
 
                 $orderItems[] = $orderItem;
             }

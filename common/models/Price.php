@@ -65,6 +65,14 @@ class Price extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductsOptionsPrices()
+    {
+        return $this->hasMany(ProductsOptionsPrices::className(), ['price_id' => 'id']);
+    }    
+
+    /**
      * @inheritdoc
      * @return PriceQuery the active query used by this AR class.
      */
@@ -87,4 +95,20 @@ class Price extends \yii\db\ActiveRecord
             ->innerJoinWith('productsPrices pp')
             ->min('pp.value');
     }
+
+    /**
+     * Returns min price
+     * @param $roles
+     * @param $productId
+     * @return mixed
+     */
+    public static function getOptPrice($roles, $productId, $optid)
+    {
+        return self::find()
+            ->andWhere(['in', 'auth_item_name', $roles])
+            ->andWhere(['pop.product_id' => $productId])
+            ->andWhere(['pop.product_options_id' => $optid])
+            ->innerJoinWith('productsOptionsPrices pop')->min('pop.value');
+    }    
+
 }
