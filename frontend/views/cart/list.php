@@ -39,5 +39,11 @@ $this->params['breadcrumbs'][] = 'Cart';
 <?= ListView::widget([
     'dataProvider' => $positionsDataProvider,
     'summaryOptions' => ['class' => 'well'],
-    'itemView' => '_position',
+
+    'itemView' => function ($model, $key, $index, $widget) {
+            return $this->render('_position', compact('model','key', 'index'));
+        },
+
+
+
 ]); ?>

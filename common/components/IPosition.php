@@ -40,6 +40,19 @@ interface IPosition
     public function getCostWithDiscounters($quantity);
 
     /**
+     * Returns position option id
+     * @return mixed
+     */
+    public function getOption_id();
+
+    /**
+     * Sets option id
+     * @param $quantity
+     * @return mixed
+     */
+    public function setOption_id($optid);
+
+    /**
      * Returns position quantity
      * @return mixed
      */

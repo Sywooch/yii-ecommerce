@@ -11,6 +11,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\tree\models\Tree;
+use kartik\tree\TreeView;
 
 /**
  * ProductController implements the CRUD actions for Product model.

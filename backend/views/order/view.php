@@ -133,18 +133,54 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php \yii\widgets\Pjax::begin(['id' => 'products']); ?>
 
-                <?= GridView::widget([
-                    'dataProvider' => $productDataProvider,
-                    'summaryOptions' => ['class' => 'well'],
-                    'columns' => [
-                        'product.category.name',
-                        'product.name',
-                        'orderSet.set.name',
-                        'product.realPrice:currency:Cost',
-                        'quantity',
-                        'product.unit.name',
-                    ]
-                ]) ?>
+            <?= GridView::widget([
+                'dataProvider' => $productDataProvider,
+                'summaryOptions' => ['class' => 'well'],
+                'columns' => [
+                'product.category.name',
+                'product.name',
+                'orderSet.set.name',
+                       // 'product.realPrice:currency:Cost',
+
+                [
+                'header' => 'Cost from unit',
+                'format' => 'raw',
+                'value' => function($model) {
+                    if($model->option_id > 0){
+                      return Yii::$app->formatter->asCurrency($model->product->getOptionPrice($model->option_id));
+                  }else{
+                    return Yii::$app->formatter->asCurrency($model->product->realPrice);
+                }
+
+            },
+            ],
+
+
+            [
+            'header' => 'OptionBranch',
+            'format' => 'raw',
+            'value' => function($model) {
+                if($model->option_id > 0){
+                    $parents = $model->product->getBranchOption($model->option_id);
+                    $branch='';
+                    if($parents !=null){
+                        foreach ($parents['branch'] as $parent) {
+
+                            $branch .= Html::encode($parent->name). ' » '; 
+
+                        }
+                        return $branch .= Html::encode($parents['option']->name);
+                    }
+                }
+
+
+            },
+            ],
+
+            'quantity',
+            'product.unit.name',
+            ]
+            ]) ?>
 
             <?php \yii\widgets\Pjax::end(); ?>
         </div>
