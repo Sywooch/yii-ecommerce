@@ -77,11 +77,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'created_at:datetime',
                     'updated_at:datetime',
                     'profile.user.username',
-                    'paymentType.name:text:Payment Type',
                     [
                         'attribute' => 'paymentType',
                         'format' => 'text',
-                        'value' => $model->paymentType->name,
+                        'value' => isset($model->paymentType->name) ? $model->paymentType->name : '',
                     ],
                     'country',
                     [
@@ -120,9 +119,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'summaryOptions' => ['class' => 'well'],
                 'columns' => [
                     'set.name',
-                    'set.costWithDiscounters:currency:Cost',
+                    //'set.costWithDiscounters:currency:Cost',
                     [
-                        'header' => 'Discount',
+                        'header' => Yii::t('shop', 'Cost'),
+                        'value' => function ($model) {
+                        return isset($model->set->costWithDiscounters) ? $model->set->costWithDiscounters : '';
+                        }
+                    ],
+
+                    [
+                        'header' => Yii::t('shop', 'Discount'),
                         'value' => function ($model) {
                             return implode(', ', array_map(function ($model) {
                                 return $model->name;
@@ -142,9 +148,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $productDataProvider,
                 'summaryOptions' => ['class' => 'well'],
                 'columns' => [
-                'product.category.name',
-                'product.name',
-                'orderSet.set.name',
+                    [
+                        'header' => Yii::t('shop_spec', 'Category name'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->product->category->name) ? $model->product->category->name : '';
+                    }
+                    ],
+                    [
+                        'header' => Yii::t('shop_spec', 'Product name'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->product->name) ? $model->product->name : '';
+                    }
+                    ],
+                    [
+                        'header' => Yii::t('shop_spec', 'Set name'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->orderSet->set->name) ? $model->orderSet->set->name : '';
+                    }
+                    ],                    
+
                        // 'product.realPrice:currency:Cost',
 
                 [
@@ -198,12 +226,64 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider' => $transactionDataProvider,
                     'summaryOptions' => ['class' => 'well'],
                     'columns' => [
-                        'transaction.created_at:datetime:Created At',
-                        'transaction.type:text:Type',
-                        'transaction.amount:text:Amount',
-                        'transaction.account.currency.symbol:text:Currency',
-                        'transaction.account.profile.user.username:text:User',
-                        'transaction.description:text:Description',
+                    [
+                        'header' => Yii::t('shop', 'Created At'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->created_at) ? $model->transaction->created_at : '';
+                    }
+                    ],
+                        //'transaction.created_at:datetime:Created At',
+                    [
+                        'header' => Yii::t('shop', 'Type'),
+                        'format' => 'datetime',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->type) ? $model->transaction->type : '';
+                    }
+                    ],
+
+                       // 'transaction.type:text:Type',
+
+                    [
+                        'header' => Yii::t('shop', 'Amount'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->amount) ? $model->transaction->amount : '';
+                    }
+                    ],
+
+                     //   'transaction.amount:text:Amount',
+                    [
+                        'header' => Yii::t('shop', 'Currency'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->account->currency->symbol) ? $model->transaction->account->currency->symbol : '';
+                    }
+                    ],
+                    //    'transaction.account.currency.symbol:text:Currency',
+                    [
+                        'header' => Yii::t('shop', 'User'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->account->profile->user->username) ? $model->transaction->account->profile->user->username : '';
+                    }
+                    ],
+                    //'transaction.account.profile.user.username:text:User',
+                    [
+                        'header' => Yii::t('shop', 'Description'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->description) ? $model->transaction->description : '';
+                    }
+                    ],
+
+                        //'transaction.description:text:Description',
                     ]
                 ]) ?>
 
