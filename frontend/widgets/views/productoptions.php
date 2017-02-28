@@ -1,22 +1,4 @@
-    <style>
-    .popover{
-        max-width: 100%;
-        min-width: 50%;
-    }
-    .lastdivbox {
-        width: 100px;
-        height: 100px;
-        border: 1px solid blue;
-        float:left;
-        margin: 10px;
-        overflow:hidden;
-    }
-    .reset{
-        clear:both;
-    }
-</style>
-
-  <?php 
+<?php 
   use yii\helpers\Html;
   use \yii\helpers\Url;
   use webdoka\yiiecommerce\common\models\Product;
@@ -73,7 +55,7 @@ $all=ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['produ
      $optionItem = ProductsOptions::findOne(['id' => $optionItem->id]);
      $parent = $optionItem->parents(1)->one();
 
-     if($parent_id!=$parent->id){
+     if($parent !=null && $parent_id != $parent->id){
 
 
       $parent_id=$parent->id;
