@@ -5,27 +5,11 @@ use \yii\helpers\Url;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\ProductsOptions;
 use webdoka\yiiecommerce\common\models\ProductsOptionsPrices;
+use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
 
 /*
  * @var $model \webdoka\yiiecommerce\common\models\Product
  */
-
-
-$this->registerJs('
-    $(function(){
-        $("[data-toggle=popover]").popover({
-            html : true,
-            content: function() {
-              var content = $(this).attr("data-popover-content");
-              return $(content).children(".popover-body").html();
-          },
-          title: function() {
-              var title = $(this).attr("data-popover-content");
-              return $(title).children(".popover-heading").html();
-          }
-      });
-  });    
-  ');
 
 ?>
 
@@ -93,22 +77,6 @@ if (isset($model->Option_id)){
 }
 
 ?>
-  <style>
-    .popover{
-        max-width: 100%;
-        min-width: 50%;
-    }
-    .lastdivbox {
-        width: 100px;
-        height: 100px;
-        border: 1px solid blue;
-        float:left;
-        margin: 10px;
-    }
-    .reset{
-        clear:both;
-    }
-</style>
 
 <div class="hidden col-xs-12" id="a1-<?=$index?>">
   <div class="popover-heading">
@@ -116,60 +84,8 @@ if (isset($model->Option_id)){
 </div>
 
 <div class="popover-body">
-  <?php 
-  $all=ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id'=>$model->id])->andWhere('[[status]]=1')->all();
 
-  $search=[];
-  $parent_id=0;
-  foreach ($all as $value) {
-
-    $optionItem = ProductsOptions::findOne(['id' => $value->product_options_id]);
-
-    $leaves = $optionItem->leaves()->all();
-
-    if($leaves==null){
-
-      $leaves = $optionItem->parents()->all();
-
-      foreach ($leaves as $value) {
-
-        if(!in_array($value->id,$search)){
-
-          $search[]=$value->id;
-
-          if($value->lvl==1 || $value->lvl==2){
-            echo '<div class="reset"></div>';
-            echo str_repeat('-&nbsp;', $value->lvl).'<b>'.$value->name.'</b><p>'.$value->description.'</p><br>';
-          }else{
-           echo str_repeat('-&nbsp;', $value->lvl).$value->name.'<p>'.$value->description.'</p><br>';
-         }
-
-       }
-     }
-
-     $optionItem = ProductsOptions::findOne(['id' => $optionItem->id]);
-     $parent = $optionItem->parents(1)->one();
-
-     if($parent_id!=$parent->id){
-
-
-      $parent_id=$parent->id;
-      echo '<div class="reset"></div>';
-
-    }
-    if(isset($optionItem->image) && $optionItem->image !=''){
-      $img='<img src="/uploads/po/'.$optionItem->image.'" style="width:98px" />'; 
-    }else{
-     $img=''; 
-   } 
-
-   echo '<a href="'.Url::to(['cart/update','id'=>$model->id,'option'=>$optionItem->id, 'oldoption'=>$oldoptionid,'quant'=>Html::encode($model->quantity)]).'" class="selectoption"><div class="lastdivbox">'.$optionItem->name.'<br>'.$img.'</div></a>';
-
- }
-
-
-}
-?>
+<?= OptionWidget::widget(['model'=>$model, 'url'=>'cart/update', 'oldoption'=>$oldoptionid]); ?>
 
 </div>
 </div>
