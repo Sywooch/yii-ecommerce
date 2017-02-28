@@ -8,18 +8,17 @@ use webdoka\yiiecommerce\common\models\PaymentType;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Payment Types';
+$this->title = Yii::t('shop', 'Payment Types');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="payment-type-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary payment-type-index">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(PaymentType::CREATE_PAYMENT_TYPE)) { ?>
-            <?= Html::a('Create Payment Type', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Payment Type'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+       </div> 
+    <div class="box-body">       
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -57,4 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+</div>
+</div>

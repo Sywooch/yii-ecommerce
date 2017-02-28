@@ -56,14 +56,15 @@ class Storage extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'name' => 'Name',
-            'location_id' => 'Location ID',
-            'schedule' => 'Schedule',
-            'phones' => 'Phones',
-            'email' => 'Email',
-            'icon' => 'Icon',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'name' => Yii::t('shop', 'Name'),
+            'location_id' => Yii::t('shop', 'Location ID'),
+            'schedule' => Yii::t('shop', 'Schedule'),
+            'phones' => Yii::t('shop', 'Phones'),
+            'email' => Yii::t('shop', 'Email'),
+            'icon' => Yii::t('shop', 'Icon'),
+            'address' => Yii::t('shop', 'Address')
         ];
     }
 

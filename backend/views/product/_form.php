@@ -48,7 +48,7 @@ if(!$model->isNewRecord){
     $this->registerJs('
 
     $(document).on("click",".nav-tabs a[href=\"#options\"]", function(event, key) {
-        alert("Create prduct first!");
+        alert("'.Yii::t('shop', 'Create prduct first!').'");
         return false;
         });
 
@@ -99,15 +99,20 @@ $this->registerJs('
 ');
 
 ?>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+
 <ul class="nav nav-tabs">
 
-    <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab" data-toggle="tab">Product</a></li>
+    <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Product')?></a></li>
 
-    <li class="<?= ($model->isNewRecord)?('disabled'):('');?>" role="presentation"><a href="#options" aria-controls="options" role="tab" <?= (!$model->isNewRecord)?('data-toggle="tab"'):('');?> >Options</a></li>
+    <li class="<?= ($model->isNewRecord)?('disabled'):('');?>" role="presentation"><a href="#options" aria-controls="options" role="tab" <?= (!$model->isNewRecord)?('data-toggle="tab"'):('');?> ><?=Yii::t('shop', 'Product Options')?></a></li>
 
 
 </ul>
-
+    </div>
+ <div class="box-body">
 <div class="tab-content" role="tablist">
 
     <div role="tabpanel" class="tab-pane fade in active" id="products">
@@ -131,7 +136,7 @@ $this->registerJs('
 
             <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
 
-            <h2>Prices</h2>
+            <h2><?=Yii::t('shop', 'Prices')?></h2>
 
             <div class="well">
                 <?= ListView::widget([
@@ -141,7 +146,7 @@ $this->registerJs('
                     ]); ?>
                 </div>
 
-                <h2>Features</h2>
+                <h2><?=Yii::t('shop', 'Features')?></h2>
 
                 <div class="well">
                     <?php Pjax::begin(['id' => 'features']) ?>
@@ -156,7 +161,7 @@ $this->registerJs('
                     </div>
 
                     <div class="form-group">
-                        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                     </div>
 
                     <?php ActiveForm::end(); ?>
@@ -168,7 +173,7 @@ $this->registerJs('
 
                 <div class="product-form">
 
-                    <h2>Options</h2>
+                    <h2><?=Yii::t('shop', 'Product Options')?></h2>
                     <?= TreeView::widget([
                     'query' => ProductsOptions::find()->addOrderBy('root, lft')->active(),
                     'id'=>'products_options_product',
@@ -202,4 +207,6 @@ $this->registerJs('
 
 </div>
 
+</div>
+</div>
 </div>

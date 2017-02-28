@@ -13,7 +13,7 @@ use yii\widgets\ListView;
     <div class="box-body">
         <div class="lang-form">
 
-            <?php $form = ActiveForm::begin(['action' =>['/admin/shop/lang/trupdate','id'=>$model->id]]); ?>
+            <?php $form = ActiveForm::begin(['action' =>$model->isNewRecord ? ['/admin/shop/lang/trcreate'] : ['/admin/shop/lang/trupdate','id'=>$model->id]]); ?>
 
             <?= $form->field($model, 'category')->textInput(['maxlength' => true]) ?>
 
@@ -38,7 +38,7 @@ use yii\widgets\ListView;
     </div>
     <div class="box-footer">
         <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

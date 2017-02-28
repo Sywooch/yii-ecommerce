@@ -31,21 +31,21 @@ $this->registerJs('
 
 ?>
 
-<div class="set-form">
-
+<div class="box box-primary set-form">
+    <div class="box-body">
     <?php $form = ActiveForm::begin(['id' => 'setForm']); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
-    <h2>Discounts</h2>
+    <h2><?=Yii::t('shop', 'Discounts')?></h2>
 
     <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->set()->all(), 'id', 'name'), ['multiple' => true]) ?>
 
-    <h2>Products <span class="add-product btn btn-success pull-right">Add Product</span></h2>
+    <h2><?=Yii::t('shop', 'Products')?> <span class="add-product btn btn-success pull-right"><?=Yii::t('shop', 'Add Product')?></span></h2>
 
     <?php if (Yii::$app->session->hasFlash('set-error')) { ?>
         <div class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('set-error')) ?></div>
@@ -64,11 +64,11 @@ $this->registerJs('
 
                 <div class="col-md-2">
                     <?= $form->field($model, 'relSetsProducts[' . $index . '][quantity]')
-                        ->textInput(['placeholder' => 'Quantity'])->label(false) ?>
+                        ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false) ?>
                 </div>
 
                 <div class="col-md-2">
-                    <div class="delete-product btn btn-danger btn-block">Delete</div>
+                    <div class="delete-product btn btn-danger btn-block"><?=Yii::t('yii', 'Delete')?></div>
                 </div>
 
             </div>
@@ -91,14 +91,15 @@ $this->registerJs('
 
             <div class="col-md-2">
                 <?= $form->field($model, 'relSetsProducts[%set_product_id%][quantity]')
-                    ->textInput(['placeholder' => 'Quantity'])->label(false) ?>
+                    ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false) ?>
             </div>
 
             <div class="col-md-2">
-                <div class="delete-product btn btn-danger btn-block">Delete</div>
+                <div class="delete-product btn btn-danger btn-block"><?=Yii::t('yii', 'Delete')?></div>
             </div>
         </div>
 
     </div>
 
+</div>
 </div>

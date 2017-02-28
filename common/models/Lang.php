@@ -54,13 +54,13 @@ class Lang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'id' => 'ID',
-        'url' => 'Url',
-        'local' => 'Local',
-        'name' => 'Name',
-        'default' => 'Default',
-        'date_update' => 'Date Update',
-        'date_create' => 'Date Create',
+        'id' => Yii::t('shop', 'ID'),
+        'url' => Yii::t('shop', 'Url'),
+        'local' => Yii::t('shop', 'Local'),
+        'name' => Yii::t('shop', 'Name'),
+        'default' => Yii::t('shop', 'Default'),
+        'date_update' => Yii::t('shop', 'Date Update'),
+        'date_create' => Yii::t('shop', 'Date Create'),
         ];
     }
 
@@ -100,6 +100,28 @@ class Lang extends \yii\db\ActiveRecord
     {
         return Lang::find()->where('`default` = :default', [':default' => 1])->one();
     }
+
+    static function getLangName($code)
+    {
+        return Lang::find()->where('`url` = :code', [':code' => $code])->one()->name;
+    }
+
+
+//Переназначение языка по умолчанию
+    static function updateDefaultLang($id)
+    {
+            self::updateAll(['default'=>0]);
+
+            $model=Lang::findOne($id);
+
+            $model->default=1;
+
+            if($model->save()){
+                return true;
+            }else{
+                return false;
+            }
+    }       
 
 //Получения объекта языка по буквенному идентификатору
     static function getLangByUrl($url = null)

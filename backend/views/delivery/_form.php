@@ -31,7 +31,8 @@ $this->registerJs('
     });
 ');
 ?>
-
+<div class="box box-primary">
+    <div class="box-body">
 <div class="delivery-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -52,14 +53,16 @@ $this->registerJs('
 
         <?= $form->field($model, 'storage_id')->dropDownList(
             ArrayHelper::merge(['' => 'Select storage'], StorageForm::getStoragesByCountryAndCity($model->country, $model->city))
-        )->label('Storage') ?>
+        )->label(Yii::t('shop', 'Storage')) ?>
 
     <?php Pjax::end() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div> 
     </div>
-
+    <div class="box-footer">
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+   </div>
     <?php ActiveForm::end(); ?>
 
 </div>

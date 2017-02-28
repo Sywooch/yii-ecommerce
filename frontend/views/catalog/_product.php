@@ -34,11 +34,11 @@ use \yii\helpers\Url;
             <div class="col-xs-12">
                 <h2>
                     <?= Yii::$app->formatter->asCurrency($model->realPrice) ?>
-                    <small> for <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>
+                    <small> <?= Yii::t('shop','for')?> <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>
                 </h2>
             </div>
             <div class="col-xs-12">
-                <?= Html::a('Add to cart', ['cart/add', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('shop','Add to cart'), ['cart/add', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
             </div>
         </div>
     </div>

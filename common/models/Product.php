@@ -62,11 +62,12 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'category_id' => 'Category ID',
-            'unit_id' => 'Unit',
-            'name' => 'Name',
-            'price' => 'Default Price',
+            'id' => Yii::t('shop', 'ID'),
+            'category_id' => Yii::t('shop', 'Category ID'),
+            'unit_id' => Yii::t('shop', 'Unit'),
+            'unit' => Yii::t('shop', 'Unit'),
+            'name' => Yii::t('shop', 'Name'),
+            'price' => Yii::t('shop', 'Default Price'),
         ];
     }
 

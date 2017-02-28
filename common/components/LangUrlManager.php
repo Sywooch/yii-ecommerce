@@ -22,7 +22,13 @@ class LangUrlManager extends UrlManager
         }
         //Получаем сформированный URL(без префикса идентификатора языка)
         $url = parent::createUrl($params);
-        
+
+       if($lang->url == Lang::getDefaultLang()->url) {
+
+            return $url;
+       
+
+       }
         //Добавляем к URL префикс - буквенный идентификатор языка
         if( $url == '/' ){
             return '/'.$lang->url;

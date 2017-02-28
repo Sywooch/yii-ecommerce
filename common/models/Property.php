@@ -61,12 +61,12 @@ class Property extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'label' => 'Label',
-            'name' => 'Name',
-            'type' => 'Type',
-            'profile_type' => 'Profile type',
-            'required' => 'Required',
+            'id' => Yii::t('shop', 'ID'),
+            'label' => Yii::t('shop', 'Label'),
+            'name' => Yii::t('shop', 'Name'),
+            'type' => Yii::t('shop', 'Type'),
+            'profile_type' => Yii::t('shop', 'Profile type'),
+            'required' => Yii::t('shop', 'Required'),
         ];
     }
 

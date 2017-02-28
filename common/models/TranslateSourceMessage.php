@@ -6,6 +6,8 @@ use Yii;
 use yii\helpers\Url;
 use webdoka\yiiecommerce\common\models\Lang;
 use webdoka\yiiecommerce\common\models\TranslateMessage;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * This is the model class for table "{{%translate_source_message}}".
@@ -23,7 +25,7 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%translate_source_message}}';
+      return '{{%translate_source_message}}';
     }
 
     /**
@@ -31,10 +33,10 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['message'], 'string'],
-            [['category'], 'string', 'max' => 255],
-        ];
+      return [
+      [['message'], 'string'],
+      [['category'], 'string', 'max' => 255],
+      ];
     }
 
     /**
@@ -42,11 +44,11 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'category' => Yii::t('app', 'Category'),
-            'message' => Yii::t('app', 'Message'),
-        ];
+      return [
+      'id' => Yii::t('shop', 'ID'),
+      'category' => Yii::t('shop', 'Category'),
+      'message' => Yii::t('shop', 'Message'),
+      ];
     }
 
     /**
@@ -54,7 +56,7 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord
      */
     public function getTranslateMessages()
     {
-        return $this->hasMany(TranslateMessage::className(), ['id' => 'id']);
+      return $this->hasMany(TranslateMessage::className(), ['id' => 'id']);
     }
 
 
@@ -64,23 +66,51 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord
      */
     public function getTranslates()
     {
-        $data = [];
+      $data = [];
 
-        if ($alllang = Lang::find()->orderBy('date_create')->all()) {
-            foreach ($alllang as $lang) {
-                $alltranslate = null;
-                $alltranslate = TranslateMessage::find()->where(['and',['id'=>$this->id,'language'=>$lang->url]])->one();
- 
-                    $data[] = [
-                    'id' => $this->id,
-                    'language' => isset($alltranslate->language)?($alltranslate->language):($lang->url),
-                    'value' => isset($alltranslate->translation)?($alltranslate->translation):('')
-                    ];
-          }
+      if ($alllang = Lang::find()->orderBy('date_create')->all()) {
+        foreach ($alllang as $lang) {
+          $alltranslate = null;
+          $alltranslate = TranslateMessage::find()->where(['and',['id'=>$this->id,'language'=>$lang->url]])->one();
+
+          $data[] = [
+          'id' => $this->id,
+          'language' => isset($alltranslate->language)?($alltranslate->language):($lang->url),
+          'value' => isset($alltranslate->translation)?($alltranslate->translation):('')
+          ];
+        }
       }
 
       return $data;
+    }
+
+
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = TranslateSourceMessage::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere(['id' => $this->id,]);
+        $query->andFilterWhere(['like', 'message', $this->message]);
+        $query->andFilterWhere(['like', 'category', $this->category]);
+
+        return $dataProvider;
+    }
+
+
   }
-
-
-}

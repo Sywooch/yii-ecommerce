@@ -17,10 +17,13 @@ $priceDataProvider = new ArrayDataProvider([
 
 echo $form->field($node, 'description')->textarea(['rows' => 6]);
 ?>
-<?php if(isset($node->image)  && $node->image !=''):?>
-<img src="/uploads/po/<?=$node->image?>" style="width:80px" />  
 
-<?php endif; ?>
+<?php if(isset($node->image) && $node->image !=''){
+
+echo Html::img('@web/uploads/po/'.$node->image,["style"=>"width:80px"]); 
+
+} ?>
+
 <?php 
 echo $form->field($node, 'imagef')->fileInput();
 
@@ -28,7 +31,7 @@ echo $form->field($node, 'imagef')->fileInput();
 ?>
 <?php if(ProductsOptions::isOption($node->id)==false): ?>
 
-    <h2>Prices</h2>
+    <h2><?=Yii::t('shop', 'Prices')?></h2>
 
     <div class="well">
 

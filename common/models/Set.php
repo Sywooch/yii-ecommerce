@@ -51,8 +51,8 @@ class Set extends ActiveRecord implements ISetPosition
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
         ];
     }
 

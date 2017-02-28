@@ -15,26 +15,26 @@ use webdoka\yiiecommerce\common\models\Order;
 /* @var $historyDataProvider \yii\data\ArrayDataProvider */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Orders'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="order-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box box-primary">
+    <div class="box-header with-border">
 
     <ul class="nav nav-tabs">
 
-        <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+        <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Info') ?></a></li>
 
-        <li role="presentation"><a href="#products" aria-controls="products" role="tab" data-toggle="tab">Products</a></li>
+        <li role="presentation"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Products') ?></a></li>
 
-        <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Transactions</a></li>
+        <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Transactions') ?></a></li>
 
-        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
+        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab"><?=Yii::t('shop', 'History') ?></a></li>
 
     </ul>
 
-    <br>
+                </div>
+                <div class="box-body">
 
     <div class="tab-content" role="tablist">
 
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <div class="col-md-2">
 
-                            <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-block']) ?>
+                            <?= Html::submitButton(Yii::t('yii', 'Save'), ['class' => 'btn btn-primary btn-block']) ?>
 
                         </div>
 
@@ -78,6 +78,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'updated_at:datetime',
                     'profile.user.username',
                     'paymentType.name:text:Payment Type',
+                    [
+                        'attribute' => 'paymentType',
+                        'format' => 'text',
+                        'value' => $model->paymentType->name,
+                    ],
                     'country',
                     [
                         'attribute' => 'tax',
@@ -86,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
 
-            <h2>Details</h2>
+            <h2><?=Yii::t('shop', 'Details') ?></h2>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'details']); ?>
 
@@ -106,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div role="tabpanel" class="tab-pane fade" id="products">
 
-            <h3>Sets</h3>
+            <h3><?=Yii::t('shop', 'Sets') ?></h3>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'sets']); ?>
 
@@ -129,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php \yii\widgets\Pjax::end(); ?>
 
-            <h3>Products</h3>
+            <h3><?=Yii::t('shop', 'Products') ?></h3>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'products']); ?>
 
@@ -143,7 +148,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        // 'product.realPrice:currency:Cost',
 
                 [
-                'header' => 'Cost from unit',
+                'header' => Yii::t('shop', 'Cost from unit'),
                 'format' => 'raw',
                 'value' => function($model) {
                     if($model->option_id > 0){
@@ -157,7 +162,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             [
-            'header' => 'OptionBranch',
+            'header' =>  Yii::t('shop', 'OptionBranch'),
             'format' => 'raw',
             'value' => function($model) {
                 if($model->option_id > 0){
@@ -225,5 +230,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     </div>
+
+</div>
 
 </div>

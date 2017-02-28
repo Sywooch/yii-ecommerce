@@ -32,8 +32,12 @@ class DeliveryForm extends Delivery
     public function attributeLabels()
     {
         return [
-            'country' => 'Country',
-            'city' => 'City',
+            'country' => Yii::t('shop','Country'),
+            'city' => Yii::t('shop','City'),
+            'street' => Yii::t('shop','Street'),
+            'name' => Yii::t('shop', 'Name'),
+            'cost' => Yii::t('shop', 'Cost'),
+            'storage_id' => Yii::t('shop', 'Storage'),
         ];
     }
 }

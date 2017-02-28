@@ -28,10 +28,10 @@ class SetConfigForm extends Set
                 'set_id' => $relSetProduct['set_id'],
                 'product_id' => $relSetProduct['product_id']
             ])->one()) {
-                $this->addError('relSetsProducts[' . $i . '][set_id]', 'SetProduct not found.');
+                $this->addError('relSetsProducts[' . $i . '][set_id]', Yii::t('shop','SetProduct not found.'));
             } else {
                 if ($setProduct->quantity > $relSetProduct['quantity']) {
-                    $this->addError('relSetsProducts[' . $i . '][quantity]', 'Quantity must be equal or more then ' . $setProduct->quantity . '.');
+                    $this->addError('relSetsProducts[' . $i . '][quantity]', Yii::t('shop','Quantity must be equal or more then') . ' ' . $setProduct->quantity . '.');
                 }
             }
         }
@@ -43,7 +43,7 @@ class SetConfigForm extends Set
     public function attributeLabels()
     {
         return ArrayHelper::merge([
-            'relSetsProducts' => 'Products',
+            'relSetsProducts' => Yii::t('shop','Products'),
         ], parent::attributeLabels());
     }
 

@@ -13,7 +13,7 @@ use webdoka\yiiecommerce\frontend\widgets\CartWidget;
 $title = $model->name;
 $this->title = Html::encode($title);
 
-$this->params['breadcrumbs'][] = ['label' => 'Sets', 'url' => ['set/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop','Sets'), 'url' => ['set/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 // VAT included
@@ -74,10 +74,10 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
 
                 <div class="row">
                     <div class="col-md-offset-6 col-md-3">
-                        <?= Html::a('Return', ['set/index'], ['class' => 'btn btn-primary btn-block']) ?>
+                        <?= Html::a(Yii::t('shop','Return'), ['set/index'], ['class' => 'btn btn-primary btn-block']) ?>
                     </div>
                     <div class="col-md-3">
-                        <?= Html::submitButton('Add to cart', ['class' => 'btn btn-success btn-block']) ?>
+                        <?= Html::submitButton(Yii::t('shop','Add to cart'), ['class' => 'btn btn-success btn-block']) ?>
                     </div>
                 </div>
 

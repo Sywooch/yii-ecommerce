@@ -7,18 +7,16 @@ use webdoka\yiiecommerce\common\models\Transaction;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transactions';
+$this->title = Yii::t('shop', 'Transactions');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="transaction-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary transaction-index">
+<div class="box-header with-border">
         <?php if (Yii::$app->user->can(Transaction::CREATE_TRANSACTION)) { ?>
-            <?= Html::a('Create Transaction', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Transaction'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+         </div> 
+    <div class="box-body">    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -54,4 +52,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
 </div>

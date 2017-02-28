@@ -65,7 +65,7 @@ class LangRequest extends Request
         } elseif (isset($_SERVER['PHP_SELF']) && strpos($_SERVER['PHP_SELF'], $scriptUrl) === 0) {
             $pathInfo = substr($_SERVER['PHP_SELF'], strlen($scriptUrl));
         } else {
-            throw new InvalidConfigException('Unable to determine the path info of the current request.');
+            throw new InvalidConfigException(Yii::t('shop', 'Unable to determine the path info of the current request.'));
         }
 
         if ($pathInfo[0] === '/') {

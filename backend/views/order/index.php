@@ -7,12 +7,12 @@ use webdoka\yiiecommerce\common\models\Order;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Orders';
+$this->title = Yii::t('shop', 'Orders');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="order-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box box-primary order-index">
+    <div class="box-body"> 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -23,8 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'status',
             'total:currency',
-            'country',
+
             [
+                'header' => Yii::t('shop', 'Country'),
+                'attribute' => 'country',
+            ],
+
+            [
+                'header' => Yii::t('shop', 'Tax'),
                 'attribute' => 'tax',
                 'value' => function ($model) {
                     return $model->tax ? $model->tax . '%' : null;
@@ -47,4 +53,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
 </div>

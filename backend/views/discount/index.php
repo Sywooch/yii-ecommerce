@@ -11,15 +11,16 @@ use webdoka\yiiecommerce\common\models\Discount;
 $this->title = Yii::t('app', 'Discounts');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="discount-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Discount::CREATE_DISCOUNT)) { ?>
-            <?= Html::a(Yii::t('app', 'Create Discount'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Discount'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+
+      </div> 
+    <div class="box-body">   
+        <div class="discount-index">    
 <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -54,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Yii::$app->user->can(Discount::DELETE_DISCOUNT) ?
                             Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                                 'title' => Yii::t('yii', 'Delete'),
-                                'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                                'data-confirm' => Yii::t('app', 'Are you sure to delete this item?'),
                                 'data-method' => 'post',
                             ]) : '';
                     },
@@ -63,3 +64,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>
+</div>
+</div>

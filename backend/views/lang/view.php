@@ -8,19 +8,19 @@ use webdoka\yiiecommerce\common\models\Lang;
 /* @var $model app\models\Lang */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Langs'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Languages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box box-primary">
     <div class="box-header with-border">
        <?php if (Yii::$app->user->can(Lang::UPDATE_LANG)) { ?>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
         <?php if (Yii::$app->user->can(Lang::DELETE_LANG)) { ?>        
-            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+            <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
                 ],
                 ]) ?>
@@ -36,8 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'local',
                     'name',
                     'default',
-                    'date_update',
-                    'date_create',
                     ],
                     ]) ?>
 

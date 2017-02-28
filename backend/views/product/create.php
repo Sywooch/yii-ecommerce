@@ -6,17 +6,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Product */
 
-$this->title = 'Create Product';
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->title =  Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Product');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $action = 'create';
 
 ?>
-<div class="product-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', compact('model', 'dataProvider', 'priceDataProvider', 'action')) ?>
 
-</div>

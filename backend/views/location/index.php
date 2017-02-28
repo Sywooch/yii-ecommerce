@@ -10,15 +10,16 @@ use webdoka\yiiecommerce\common\models\Location;
 $this->title = 'Locations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="location-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box box-primary location-index">
+    <div class="box-header with-border">
 
-    <p>
         <?php if (Yii::$app->user->can(Location::CREATE_LOCATION)) { ?>
-            <?= Html::a('Create Location', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Location'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+      </div> 
+    <div class="box-body">  
+
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -58,4 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+</div>
+</div>

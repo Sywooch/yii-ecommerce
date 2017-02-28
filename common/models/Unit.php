@@ -29,6 +29,23 @@ class Unit extends UidModel
         return 'units';
     }
 
+
+
+    public function behaviors()
+    {
+
+    return [
+        'translate' => [
+            'class' => 'webdoka\yiiecommerce\common\behaviors\Translate',
+            'in_name' => 'name',
+            'in_description' => false,
+            'in_shortdescription' => false,
+            'modelID' => get_class($this),
+        ]
+    ];
+
+    }
+
     /**
      * @inheritdoc
      */
@@ -46,9 +63,9 @@ class Unit extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'name' => 'Name',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'name' => Yii::t('shop', 'Name'),
         ];
     }
 

@@ -7,33 +7,32 @@ use yii\widgets\DetailView;
 /* @var $model webdoka\yiiecommerce\common\models\Delivery */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Deliveries', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Deliveries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="delivery-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
+            'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+            'method' => 'post',
             ],
-        ]) ?>
-    </p>
+            ]) ?>
+        </div>
+        <div class="box-body">
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'uid',
-            'name',
-            'cost',
-            'storage.name:text:Storage',
-        ],
-    ]) ?>
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                'id',
+                'uid',
+                'name',
+                'cost',
+                'storage.name:text:Storage',
+                ],
+                ]) ?>
 
-</div>
+            </div>
+        </div>

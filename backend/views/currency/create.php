@@ -6,16 +6,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Currency */
 
-$this->title = 'Create Currency';
-$this->params['breadcrumbs'][] = ['label' => 'Currencies', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Currency');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Currencies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="currency-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
-</div>

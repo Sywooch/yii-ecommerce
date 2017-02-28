@@ -47,9 +47,9 @@ class Feature extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'slug' => 'Slug',
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'slug' => Yii::t('shop', 'Slug'),
         ];
     }
 

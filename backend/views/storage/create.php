@@ -7,14 +7,9 @@ use yii\helpers\Html;
 /* @var $model webdoka\yiiecommerce\common\models\Storage */
 /* @var $url string */
 
-$this->title = 'Create Storage';
-$this->params['breadcrumbs'][] = ['label' => 'Storages', 'url' => ['index']];
+$this->title =  Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Storage');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Storages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="storage-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', compact('model', 'url')) ?>
 
-</div>

@@ -8,18 +8,16 @@ use webdoka\yiiecommerce\common\models\Storage;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Storages';
+$this->title = Yii::t('shop', 'Storages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="storage-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary storage-index">
+<div class="box-header with-border">
         <?php if (Yii::$app->user->can(Storage::CREATE_STORAGE)) { ?>
-            <?= Html::a('Create Storage', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Storage'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+         </div> 
+    <div class="box-body">       
 <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -64,4 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+    
+</div>
+</div>

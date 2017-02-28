@@ -6,14 +6,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Delivery */
 
-$this->title = 'Create Delivery';
-$this->params['breadcrumbs'][] = ['label' => 'Deliveries', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Delivery');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Deliveries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="delivery-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', compact('model', 'url')) ?>
 
-</div>

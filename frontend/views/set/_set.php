@@ -40,8 +40,8 @@ $model->relSetsProducts = $model->setsProducts;
 
             <br>
 
-            <?= Html::a('Details', ['set/view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
-            <?= Html::submitButton('Add to cart', ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('shop','Details'), ['set/view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+            <?= Html::submitButton(Yii::t('shop','Add to cart'), ['class' => 'btn btn-success']) ?>
         </h2>
     </div>
 

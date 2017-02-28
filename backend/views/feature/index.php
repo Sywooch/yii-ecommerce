@@ -7,18 +7,17 @@ use webdoka\yiiecommerce\common\models\Feature;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Features';
+$this->title = Yii::t('shop', 'Features');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="feature-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary discount-index">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Feature::CREATE_FEATURE)) { ?>
-            <?= Html::a('Create Feature', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Feature'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+
+      </div> 
+    <div class="box-body">    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -56,4 +55,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
 </div>

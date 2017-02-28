@@ -51,10 +51,11 @@ class Category extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'parent_id' => 'Parent ID',
-            'name' => 'Name',
-            'slug' => 'Slug',
+            'id' => Yii::t('shop', 'ID'),
+            'parent_id' => Yii::t('shop', 'Parent ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'slug' => Yii::t('shop', 'Slug'),
+            'relFeatures' => Yii::t('shop', 'Features'),
         ];
     }
 

@@ -7,18 +7,16 @@ use webdoka\yiiecommerce\common\models\Unit;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Units';
+$this->title = Yii::t('shop', 'Units');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="unit-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary unit-index">
+<div class="box-header with-border">
         <?php if (Yii::$app->user->can(Unit::CREATE_UNIT)) { ?>
-            <?= Html::a('Create Unit', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Unit'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+         </div> 
+    <div class="box-body"> 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -55,4 +53,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
 </div>

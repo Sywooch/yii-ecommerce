@@ -28,7 +28,7 @@ class Robokassa extends Component implements IPaymentSystem
         }
 
         if ($invoice->status != Invoice::PENDING_STATUS) {
-            throw new BadRequestHttpException('The account has already been processed previously.');
+            throw new BadRequestHttpException(Yii::t('shop', 'The account has already been processed previously.'));
         }
 
         $merchant = $this->shopId;

@@ -5,6 +5,7 @@ namespace webdoka\yiiecommerce\common\forms;
 use webdoka\yiiecommerce\common\models\Discount;
 use webdoka\yiiecommerce\common\models\Product;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class DiscountForm extends Discount
 {
@@ -16,7 +17,7 @@ class DiscountForm extends Discount
     public function rules()
     {
         return ArrayHelper::merge([
-            ['relProducts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => 'Specify Products']
+            ['relProducts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Products')]
         ], parent::rules());
     }
 
@@ -26,7 +27,7 @@ class DiscountForm extends Discount
     public function attributeLabels()
     {
         return ArrayHelper::merge([
-            'relProducts' => 'Products',
+            'relProducts' => Yii::t('shop', 'Products'),
         ], parent::attributeLabels());
     }
 

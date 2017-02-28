@@ -40,8 +40,8 @@ $this->registerJs('
 
 ?>
 
-<div class="storage-form">
-
+<div class="box box-primary storage-form">
+    <div class="box-body">
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -75,11 +75,12 @@ $this->registerJs('
     <?php if ($model->icon) { ?>
         <?= Html::img($model->iconUrl, ['width' => 80, 'height' => 80, 'class' => 'thumbnail']) ?>
     <?php } ?>
-
+        </div>
+        <div class="box-footer">
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

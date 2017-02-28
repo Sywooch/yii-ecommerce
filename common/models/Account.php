@@ -55,11 +55,12 @@ class Account extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'balance' => 'Balance',
-            'currency_id' => 'Currency ID',
-            'profile_id' => 'Profile ID',
+            'id' => Yii::t('shop','ID'),
+            'name' => Yii::t('shop','Name'),
+            'balance' => Yii::t('shop','Balance'),
+            'currency_id' => Yii::t('shop','Currency ID'),
+            'profile_id' => Yii::t('shop','Profile ID'),
+            'default' => Yii::t('shop','Default'),
         ];
     }
 

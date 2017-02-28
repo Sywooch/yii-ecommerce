@@ -13,13 +13,13 @@ use webdoka\yiiecommerce\common\models\Set;
     <div class="col-xs-12">
         <h2>
             <?= Html::encode($model->name) ?>
-            <span class="label label-info">Price: <?= Yii::$app->formatter->asCurrency($model->getCostWithDiscounters()) ?></span>
+            <span class="label label-info"><?=Yii::t('shop','Price')?>: <?= Yii::$app->formatter->asCurrency($model->getCostWithDiscounters()) ?></span>
             <?= Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', [
                 'cart/remove-set',
                 'id' => $model->tmpId,
             ], [
                 'class' => 'btn btn-danger',
-                'title' => 'Remove'
+                'title' => Yii::t('shop','Remove')
             ]) ?>
         </h2>
         <table class="table table-striped features">
