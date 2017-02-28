@@ -55,9 +55,15 @@ class TransactionForm extends Transaction
     public function attributeLabels()
     {
         return [
-            'profile' => 'Profile',
-            'order' => 'Order',
-            'transaction' => 'Transaction',
+            'profile' => Yii::t('shop','Profile'),
+            'order' => Yii::t('shop','Order'),
+            'transaction' => Yii::t('shop','Transaction'),
+            'amount' => Yii::t('shop', 'Amount'),
+            'account_id' => Yii::t('shop', 'Account ID'),
+            'type' => Yii::t('shop', 'Type'),
+            'description' => Yii::t('shop', 'Description'),
+            'created_at' => Yii::t('shop', 'Created At'),
+            'transaction_id' => Yii::t('shop', 'Transaction'),
         ];
     }
 

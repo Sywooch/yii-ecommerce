@@ -44,9 +44,9 @@ class SetDiscount extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'set_id' => Yii::t('app', 'Set ID'),
-            'discount_id' => Yii::t('app', 'Discount ID'),
+            'id' => Yii::t('shop', 'ID'),
+            'set_id' => Yii::t('shop', 'Set ID'),
+            'discount_id' => Yii::t('shop', 'Discount ID'),
         ];
     }
 

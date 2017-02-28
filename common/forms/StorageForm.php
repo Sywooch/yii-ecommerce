@@ -39,9 +39,17 @@ class StorageForm extends Storage
     public function attributeLabels()
     {
         return [
-            'country' => 'Country',
-            'city' => 'City',
-            'street' => 'Address',
+            'country' => Yii::t('shop','Country'),
+            'city' => Yii::t('shop','City'),
+            'street' => Yii::t('shop','Street'),
+            'name' => Yii::t('shop', 'Name'),
+            'location_id' => Yii::t('shop', 'Location ID'),
+            'schedule' => Yii::t('shop', 'Schedule'),
+            'phones' => Yii::t('shop', 'Phones'),
+            'email' => Yii::t('app', 'Email'),
+            'icon' => Yii::t('shop', 'Icon'),
+            'address' => Yii::t('shop', 'Address'),
+            'iconImage' => Yii::t('shop', 'Icon'),
         ];
     }
 

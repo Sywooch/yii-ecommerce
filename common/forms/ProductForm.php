@@ -10,6 +10,7 @@ use webdoka\yiiecommerce\common\models\Feature;
 use webdoka\yiiecommerce\common\models\ProductDiscount;
 use webdoka\yiiecommerce\common\models\ProductPrice;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class ProductForm extends Product
 {
@@ -23,9 +24,9 @@ class ProductForm extends Product
     public function rules()
     {
         return ArrayHelper::merge([
-            ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Feature'],
-            ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => 'Specify Price'],
-            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => 'Specify Discount'],
+            ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop','Specify Feature')],
+            ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop','Specify Price')],
+            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop','Specify Discount')],
         ], parent::rules());
     }
 
@@ -35,9 +36,9 @@ class ProductForm extends Product
     public function attributeLabels()
     {
         return ArrayHelper::merge([
-            'relFeatures' => 'Features',
-            'relPrices' => 'Prices',
-            'relDiscounts' => 'Discounts',
+            'relFeatures' => Yii::t('shop','Features'),
+            'relPrices' => Yii::t('shop','Prices'),
+            'relDiscounts' => Yii::t('shop','Discounts'),
         ], parent::attributeLabels());
     }
 

@@ -249,6 +249,24 @@ class ShopRbacController extends Controller
         $actions[] = $createLocation;
         $actions[] = $updateLocation;
         $actions[] = $deleteLocation;
+
+
+        $listLang = $auth->createPermission('shopListLang');
+        $listLang->description = 'List shop language';
+        $viewLang = $auth->createPermission('shopViewLang');
+        $viewLang->description = 'View shop language';
+        $createLang = $auth->createPermission('shopCreateLang');
+        $createLang->description = 'Create shop language';
+        $updateLang = $auth->createPermission('shopUpdateLang');
+        $updateLang->description = 'Update shop language';
+        $deleteLang = $auth->createPermission('shopDeleteLang');
+        $deleteLang->description = 'Delete shop language';
+
+        $actions[] = $listLang;
+        $actions[] = $viewLang;
+        $actions[] = $createLang;
+        $actions[] = $updateLang;
+        $actions[] = $deleteLang;
         
         $listFeature = $auth->createPermission('shopListFeature');
         $listFeature->description = 'List shop features';

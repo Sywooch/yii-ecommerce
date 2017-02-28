@@ -19,7 +19,7 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
 
 <div class="hidden col-xs-12" id="a1">
   <div class="popover-heading">
-    Options from <?=$model->name;?>
+   <?=Yii::t('shop','Options from')?>: <?=$model->name;?>
 </div>
 
 <div class="popover-body">
@@ -57,18 +57,18 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
                 <h2>
                     <?php if ((int)Yii::$app->request->get('option',0) !=0): ?>
                      <?= Yii::$app->formatter->asCurrency($model->getOptionPrice((int)Yii::$app->request->get('option'))) ?>
-                     <small> for <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>   
+                     <small> <?= Yii::t('shop','for')?> <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>   
                  <?php else: ?>
                     <?= Yii::$app->formatter->asCurrency($model->realPrice) ?>
-                    <small> for <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>
+                    <small> <?= Yii::t('shop','for')?> <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>
                 <?php endif ?>           
 
             </h2>
         </div>
         <div class="col-xs-12">
-        <?= Html::a('Add to cart', ['cart/add', 'id' => $model->id,'option'=>(int)Yii::$app->request->get('option',0)], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('shop','Add to cart'), ['cart/add', 'id' => $model->id,'option'=>(int)Yii::$app->request->get('option',0)], ['class' => 'btn btn-success']) ?>
             <a type="button" id="element" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#a1">
-                Options
+               <?=Yii::t('shop','Options')?>
             </a>
         </div>
     </div>

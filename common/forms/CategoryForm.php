@@ -5,6 +5,7 @@ namespace webdoka\yiiecommerce\common\forms;
 use webdoka\yiiecommerce\common\models\Category;
 use webdoka\yiiecommerce\common\models\Feature;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class CategoryForm extends Category
 {

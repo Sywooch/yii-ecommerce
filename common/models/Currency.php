@@ -47,10 +47,10 @@ class Currency extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'symbol' => 'Symbol',
-            'abbr' => 'Abbr',
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'symbol' => Yii::t('shop', 'Symbol'),
+            'abbr' => Yii::t('shop', 'Abbr'),
         ];
     }
 

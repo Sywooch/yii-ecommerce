@@ -6,16 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Price */
 
-$this->title = 'Create Price';
-$this->params['breadcrumbs'][] = ['label' => 'Prices', 'url' => ['index']];
+$this->title =  Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Price');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Prices'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="price-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 
-</div>

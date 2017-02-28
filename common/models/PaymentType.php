@@ -41,15 +41,30 @@ class PaymentType extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors()
+    {
+
+    return [
+        'translate' => [
+            'class' => 'webdoka\yiiecommerce\common\behaviors\Translate',
+            'in_name' => 'name',
+            'in_description' => 'label',
+            'in_shortdescription' => false,
+            'modelID' => get_class($this),
+        ]
+    ];
+
+    }    
+
     /**
      * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'label' => 'Label',
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'label' => Yii::t('shop', 'Label'),
         ];
     }
 

@@ -23,21 +23,21 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
              $parents = $model->getBranchOption($model->Option_id);
 
              ?>
-             <span class="label label-info">Price: <?= Yii::$app->formatter->asCurrency($model->getOptionPrice($model->Option_id)) ?></span>
+             <span class="label label-info"><?=Yii::t('shop','Price')?>: <?= Yii::$app->formatter->asCurrency($model->getOptionPrice($model->Option_id)) ?></span>
 
              <?php }else{ 
                 $parents = null;
                 ?>
 
-                <span class="label label-info">Price: <?= Yii::$app->formatter->asCurrency($model->realPrice) ?></span>                
+                <span class="label label-info"><?=Yii::t('shop','Price')?>: <?= Yii::$app->formatter->asCurrency($model->realPrice) ?></span>                
                 <?php } ?>
 
-                <span class="label label-info">Quantity: <?= Html::encode($model->quantity) ?></span>
+                <span class="label label-info"><?=Yii::t('shop','Quantity')?>: <?= Html::encode($model->quantity) ?></span>
                 <?= Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', [
                     'cart/remove', 'id' => $model->id, 'option' => (isset($model->Option_id) && $model->Option_id !=0)?($model->Option_id):(0)
                     ], [
                     'class' => 'btn btn-danger',
-                    'title' => 'Remove'
+                    'title' => Yii::t('shop','Remove')
                     ]); 
                     ?>
 
@@ -62,7 +62,7 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
                         <?php }
                         ?>
             <a type="button" id="element" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-popover-content="#a1-<?=$index?>">
-                Change options
+                <?=Yii::t('shop','Change options')?>
             </a>
 
             </div>

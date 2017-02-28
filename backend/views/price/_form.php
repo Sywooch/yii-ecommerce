@@ -8,25 +8,28 @@ use app\models\AuthItem;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="price-form">
+<div class="box box-primary price-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+            <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
+    <div class="box-body">
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'auth_item_name')->dropDownList(
-        AuthItem::find()->rolesOnly()->available()
-            ->indexBy('name')
-            ->select('name')->column(),
-        ['prompt' => 'Choose role']
-    ) ?>
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= $form->field($model, 'auth_item_name')->dropDownList(
+                AuthItem::find()->rolesOnly()->available()
+                ->indexBy('name')
+                ->select('name')->column(),
+                ['prompt' => 'Choose role']
+                ) ?>
+        </div>
+        <div class="box-footer">
+            <div class="form-group">
+                <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
+        </div>
+        <?php ActiveForm::end(); ?>
+
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>

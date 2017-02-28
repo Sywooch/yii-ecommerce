@@ -10,19 +10,16 @@ use yii\grid\GridView;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Countries', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Countries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="account-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Country::UPDATE_COUNTRY)) { ?>
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
-    </p>
-
+                </div>
+                <div class="box-body">
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -35,3 +32,4 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+  </div>

@@ -7,18 +7,18 @@ use webdoka\yiiecommerce\common\models\Currency;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Currencies';
+$this->title = Yii::t('shop', 'Currencies');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="currency-index">
+<div class="box box-primary">
+    <div class="box-header with-border">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
         <?php if (Yii::$app->user->can(Currency::CREATE_CURRENCY)) { ?>
-            <?= Html::a('Create Currency', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Currency'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+      </div> 
+    <div class="box-body">               
+        <div class="currency-index">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -56,4 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
+</div>
+
 </div>

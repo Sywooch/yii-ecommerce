@@ -37,7 +37,7 @@ class SetController extends Controller
     public function actionView($id)
     {
         if (!$model = SetConfigForm::find()->where(['id' => $id])->one()) {
-            throw new InvalidParamException('Invalid $id.');
+            throw new InvalidParamException(Yii::t('shop','Invalid'). ' $id.');
         }
 
         if (!Yii::$app->request->isPost) {

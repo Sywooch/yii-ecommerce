@@ -49,13 +49,13 @@ class Location extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'country' => 'Country',
-            'city' => 'City',
-            'address' => 'Address',
-            'full' => 'Full address',
-            'index' => 'Index',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'country' => Yii::t('shop', 'Country'),
+            'city' => Yii::t('shop', 'City'),
+            'address' => Yii::t('shop', 'Address'),
+            'full' => Yii::t('shop', 'Full address'),
+            'index' => Yii::t('shop', 'Index'),
         ];
     }
 

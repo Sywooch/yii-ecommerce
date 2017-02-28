@@ -6,16 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\PaymentType */
 
-$this->title = 'Create Payment Type';
-$this->params['breadcrumbs'][] = ['label' => 'Payment Types', 'url' => ['index']];
+$this->title =  Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Payment Type');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Payment Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="payment-type-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
-</div>

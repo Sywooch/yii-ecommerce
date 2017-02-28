@@ -28,13 +28,13 @@ class Billing extends Component
     public function charge($accountId, $amount, $description)
     {
         if (!$account = Account::find()->where(['id' => $accountId])->one()) {
-            throw new InvalidParamException('Invalid $accountId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $accountId.');
         }
 
         $transaction = new Transaction();
         $transaction->type = Transaction::CHARGE_TYPE;
         $transaction->amount = $amount;
-        $transaction->description = $description ?: 'Charge';
+        $transaction->description = $description ?: Yii::t('shop', 'Charge');
         $transaction->account_id = $accountId;
 
         $dbTransaction = Yii::$app->db->beginTransaction();
@@ -63,17 +63,17 @@ class Billing extends Component
     public function withdraw($accountId, $amount, $description, $orderId = false)
     {
         if (!$account = Account::find()->where(['id' => $accountId])->one()) {
-            throw new InvalidParamException('Invalid $accountId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $accountId.');
         }
 
         if (!($order = Order::find()->where(['id' => $orderId])->one()) && $orderId) {
-            throw new InvalidParamException('Invalid $orderId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $orderId.');
         }
 
         $transaction = new Transaction();
         $transaction->type = Transaction::WITHDRAW_TYPE;
         $transaction->amount = $amount;
-        $transaction->description = $description ?: 'Withdraw';
+        $transaction->description = $description ?: Yii::t('shop', 'Withdraw');
         $transaction->account_id = $accountId;
 
         $dbTransaction = Yii::$app->db->beginTransaction();
@@ -116,21 +116,21 @@ class Billing extends Component
     public function rollback($transactionId, $description)
     {
         if (!$transaction = Transaction::find()->where(['id' => $transactionId])->one()) {
-            throw new InvalidParamException('Invalid $transactionId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $transactionId.');
         }
 
         if ($transaction->type == Transaction::ROLLBACK_TYPE) {
-            throw new InvalidParamException('Impossible rollback transaction which has rollback type.');
+            throw new InvalidParamException(Yii::t('shop', 'Impossible rollback transaction which has rollback type.'));
         }
 
         if (!$account = $transaction->account) {
-            throw new InvalidParamException('Account not found.');
+            throw new InvalidParamException(Yii::t('shop', 'Account not found.'));
         }
 
         $rollbackTransaction = new Transaction();
         $rollbackTransaction->type = Transaction::ROLLBACK_TYPE;
         $rollbackTransaction->amount = $transaction->amount;
-        $rollbackTransaction->description = $description ?: 'Rollback';
+        $rollbackTransaction->description = $description ?: Yii::t('shop', 'Rollback');
         $rollbackTransaction->account_id = $transaction->account_id;
         $rollbackTransaction->transaction_id = $transaction->id;
 
@@ -175,11 +175,11 @@ class Billing extends Component
     public function createInvoice($amount, $accountId, $description, $orderId = false)
     {
         if (!$account = Account::findOne($accountId)) {
-            throw new InvalidParamException('Invalid $accountId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $accountId.');
         }
 
         if ($orderId && !$order = Order::findOne($orderId)) {
-            throw new InvalidParamException('Invalid $orderId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $orderId.');
         }
 
         $invoice = new Invoice();
@@ -205,15 +205,15 @@ class Billing extends Component
     public function changeInvoice($invoiceId, $status)
     {
         if (!$invoice = Invoice::find()->where(['id' => $invoiceId])->one()) {
-            throw new InvalidParamException('Invalid $invoiceId.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $invoiceId.');
         }
 
         if (!in_array($status, array_keys(Invoice::getStatuses()))) {
-            throw new InvalidParamException('Invalid $status.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $status.');
         }
 
         if ($invoice->status !== Invoice::PENDING_STATUS) {
-            throw new Exception('Invoice is already defined.');
+            throw new Exception(Yii::t('shop', 'Invoice is already defined.'));
         }
 
         $invoice->status = $status;
@@ -232,7 +232,7 @@ class Billing extends Component
             $account = $invoice->account;
 
             if ($order && $account && $account->balance > $order->total) {
-                return $this->withdraw($invoice->account_id, $order->total, 'Order #' . $order->id, $order->id);
+                return $this->withdraw($invoice->account_id, $order->total, Yii::t('shop', 'Order') . ' #' . $order->id, $order->id);
             }
         } elseif ($invoice->status == Invoice::FAIL_STATUS) {
             if ($invoice->order) {

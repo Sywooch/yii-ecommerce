@@ -49,10 +49,10 @@ class Price extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'label' => 'Label',
-            'name' => 'Name',
-            'auth_item_name' => 'Auth Item Name',
+            'id' => Yii::t('shop', 'ID'),
+            'label' => Yii::t('shop', 'Label'),
+            'name' => Yii::t('shop', 'Name'),
+            'auth_item_name' => Yii::t('shop', 'Auth Item Name'),
         ];
     }
 

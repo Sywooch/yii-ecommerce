@@ -7,10 +7,11 @@ use yii\widgets\ActiveForm;
 /* @var $model webdoka\yiiecommerce\common\models\Location */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="location-form">
+<div class="box box-primary location-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+	<div class="box-body">
 
     <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
 
@@ -20,10 +21,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'index')->textInput(['maxlength' => true]) ?>
 
+	</div>
+	<div class="box-footer">
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
+	</div>
     <?php ActiveForm::end(); ?>
 
 </div>

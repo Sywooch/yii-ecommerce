@@ -36,8 +36,8 @@ $this->registerJs('
 ');
 ?>
 
-<div class="transaction-form">
-
+<div class="box box-primary transaction-form">
+    <div class="box-body">
     <?php $form = ActiveForm::begin(); ?>
 
     <?php Pjax::begin(['id' => 'account']) ?>
@@ -50,30 +50,31 @@ $this->registerJs('
 
         <?php } ?>
 
-        <?= $form->field($model, 'profile')->dropDownList(ArrayHelper::map(TransactionForm::getUsers(), 'profile.id', 'username'), ['prompt' => 'Choose profile']) ?>
+        <?= $form->field($model, 'profile')->dropDownList(ArrayHelper::map(TransactionForm::getUsers(), 'profile.id', 'username'), ['prompt' => Yii::t('shop', 'Choose profile')]) ?>
 
-        <?= $form->field($model, 'account_id')->dropDownList(TransactionForm::getAccountsByProfile($model->profile), ['prompt' => 'Choose account']) ?>
+        <?= $form->field($model, 'account_id')->dropDownList(TransactionForm::getAccountsByProfile($model->profile), ['prompt' => Yii::t('shop', 'Choose account')]) ?>
 
         <?php if ($model->type == TransactionForm::WITHDRAW_TYPE) { ?>
 
-            <?= $form->field($model, 'order')->dropDownList(TransactionForm::getOrdersByProfile($model->profile), ['prompt' => 'Choose order']) ?>
+            <?= $form->field($model, 'order')->dropDownList(TransactionForm::getOrdersByProfile($model->profile), ['prompt' => Yii::t('shop', 'Choose order')]) ?>
 
         <?php } ?>
 
         <?php if ($model->type == TransactionForm::ROLLBACK_TYPE) { ?>
 
-            <?= $form->field($model, 'transaction')->dropDownList(TransactionForm::getTransactionsByAccount($model->account_id), ['prompt' => 'Choose transaction']) ?>
+            <?= $form->field($model, 'transaction')->dropDownList(TransactionForm::getTransactionsByAccount($model->account_id), ['prompt' => Yii::t('shop', 'Choose transaction')]) ?>
 
         <?php } ?>
 
     <?php Pjax::end() ?>
 
     <?=$form->field($model, 'description')->textarea() ?>
-
+        </div>
+        <div class="box-footer">
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

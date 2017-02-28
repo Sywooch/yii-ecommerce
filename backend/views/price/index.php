@@ -7,18 +7,17 @@ use webdoka\yiiecommerce\common\models\Price;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Prices';
+$this->title = Yii::t('shop', 'Prices');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="price-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary price-index">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Price::CREATE_PRICE)) { ?>
-            <?= Html::a('Create Price', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Price'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+        </div> 
+    <div class="box-body">        
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -57,4 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php Pjax::end(); ?>
+</div>
+</div>

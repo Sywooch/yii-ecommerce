@@ -7,18 +7,17 @@ use webdoka\yiiecommerce\common\models\Product;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Products';
+$this->title = Yii::t('shop', 'Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary product-index">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Product::CREATE_PRODUCT)) { ?>
-            <?= Html::a('Create Product', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Product'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </p>
+        </div> 
+    <div class="box-body">  
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summaryOptions' => ['class' => 'well'],
@@ -29,7 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'category_id',
             'name',
             'price',
-            'unit.name:html:Unit',
+            //'unit.name:html:Unit',
+            [
+                'attribute' => 'unit',
+                'value' => 'unit.name'
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -58,4 +61,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+</div>
 </div>

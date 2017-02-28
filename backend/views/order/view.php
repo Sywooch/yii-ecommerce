@@ -15,26 +15,26 @@ use webdoka\yiiecommerce\common\models\Order;
 /* @var $historyDataProvider \yii\data\ArrayDataProvider */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Orders'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="order-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box box-primary">
+    <div class="box-header with-border">
 
     <ul class="nav nav-tabs">
 
-        <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab">Info</a></li>
+        <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Info') ?></a></li>
 
-        <li role="presentation"><a href="#products" aria-controls="products" role="tab" data-toggle="tab">Products</a></li>
+        <li role="presentation"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Products') ?></a></li>
 
-        <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Transactions</a></li>
+        <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Transactions') ?></a></li>
 
-        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
+        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab"><?=Yii::t('shop', 'History') ?></a></li>
 
     </ul>
 
-    <br>
+                </div>
+                <div class="box-body">
 
     <div class="tab-content" role="tablist">
 
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <div class="col-md-2">
 
-                            <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-block']) ?>
+                            <?= Html::submitButton(Yii::t('yii', 'Save'), ['class' => 'btn btn-primary btn-block']) ?>
 
                         </div>
 
@@ -77,7 +77,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'created_at:datetime',
                     'updated_at:datetime',
                     'profile.user.username',
-                    'paymentType.name:text:Payment Type',
+                    [
+                        'attribute' => 'paymentType',
+                        'format' => 'text',
+                        'value' => isset($model->paymentType->name) ? $model->paymentType->name : '',
+                    ],
                     'country',
                     [
                         'attribute' => 'tax',
@@ -86,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
 
-            <h2>Details</h2>
+            <h2><?=Yii::t('shop', 'Details') ?></h2>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'details']); ?>
 
@@ -106,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div role="tabpanel" class="tab-pane fade" id="products">
 
-            <h3>Sets</h3>
+            <h3><?=Yii::t('shop', 'Sets') ?></h3>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'sets']); ?>
 
@@ -115,9 +119,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'summaryOptions' => ['class' => 'well'],
                 'columns' => [
                     'set.name',
-                    'set.costWithDiscounters:currency:Cost',
+                    //'set.costWithDiscounters:currency:Cost',
                     [
-                        'header' => 'Discount',
+                        'header' => Yii::t('shop', 'Cost'),
+                        'value' => function ($model) {
+                        return isset($model->set->costWithDiscounters) ? $model->set->costWithDiscounters : '';
+                        }
+                    ],
+
+                    [
+                        'header' => Yii::t('shop', 'Discount'),
                         'value' => function ($model) {
                             return implode(', ', array_map(function ($model) {
                                 return $model->name;
@@ -129,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php \yii\widgets\Pjax::end(); ?>
 
-            <h3>Products</h3>
+            <h3><?=Yii::t('shop', 'Products') ?></h3>
 
             <?php \yii\widgets\Pjax::begin(['id' => 'products']); ?>
 
@@ -137,13 +148,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 'dataProvider' => $productDataProvider,
                 'summaryOptions' => ['class' => 'well'],
                 'columns' => [
-                'product.category.name',
-                'product.name',
-                'orderSet.set.name',
+                    [
+                        'header' => Yii::t('shop_spec', 'Category name'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->product->category->name) ? $model->product->category->name : '';
+                    }
+                    ],
+                    [
+                        'header' => Yii::t('shop_spec', 'Product name'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->product->name) ? $model->product->name : '';
+                    }
+                    ],
+                    [
+                        'header' => Yii::t('shop_spec', 'Set name'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->orderSet->set->name) ? $model->orderSet->set->name : '';
+                    }
+                    ],                    
+
                        // 'product.realPrice:currency:Cost',
 
                 [
-                'header' => 'Cost from unit',
+                'header' => Yii::t('shop', 'Cost from unit'),
                 'format' => 'raw',
                 'value' => function($model) {
                     if($model->option_id > 0){
@@ -157,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             [
-            'header' => 'OptionBranch',
+            'header' =>  Yii::t('shop', 'OptionBranch'),
             'format' => 'raw',
             'value' => function($model) {
                 if($model->option_id > 0){
@@ -193,12 +226,64 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider' => $transactionDataProvider,
                     'summaryOptions' => ['class' => 'well'],
                     'columns' => [
-                        'transaction.created_at:datetime:Created At',
-                        'transaction.type:text:Type',
-                        'transaction.amount:text:Amount',
-                        'transaction.account.currency.symbol:text:Currency',
-                        'transaction.account.profile.user.username:text:User',
-                        'transaction.description:text:Description',
+                    [
+                        'header' => Yii::t('shop', 'Created At'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->created_at) ? $model->transaction->created_at : '';
+                    }
+                    ],
+                        //'transaction.created_at:datetime:Created At',
+                    [
+                        'header' => Yii::t('shop', 'Type'),
+                        'format' => 'datetime',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->type) ? $model->transaction->type : '';
+                    }
+                    ],
+
+                       // 'transaction.type:text:Type',
+
+                    [
+                        'header' => Yii::t('shop', 'Amount'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->amount) ? $model->transaction->amount : '';
+                    }
+                    ],
+
+                     //   'transaction.amount:text:Amount',
+                    [
+                        'header' => Yii::t('shop', 'Currency'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->account->currency->symbol) ? $model->transaction->account->currency->symbol : '';
+                    }
+                    ],
+                    //    'transaction.account.currency.symbol:text:Currency',
+                    [
+                        'header' => Yii::t('shop', 'User'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->account->profile->user->username) ? $model->transaction->account->profile->user->username : '';
+                    }
+                    ],
+                    //'transaction.account.profile.user.username:text:User',
+                    [
+                        'header' => Yii::t('shop', 'Description'),
+                        'format' => 'text',
+                        'value' => function ($model) {
+
+                        return isset($model->transaction->description) ? $model->transaction->description : '';
+                    }
+                    ],
+
+                        //'transaction.description:text:Description',
                     ]
                 ]) ?>
 
@@ -225,5 +310,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     </div>
+
+</div>
 
 </div>

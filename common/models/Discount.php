@@ -71,13 +71,13 @@ class Discount extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'dimension' => Yii::t('app', 'Dimension'),
-            'value' => Yii::t('app', 'Value'),
-            'started_at' => Yii::t('app', 'Started At'),
-            'finished_at' => Yii::t('app', 'Finished At'),
-            'count' => Yii::t('app', 'Count'),
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'dimension' => Yii::t('shop', 'Dimension'),
+            'value' => Yii::t('shop', 'Value'),
+            'started_at' => Yii::t('shop', 'Started At'),
+            'finished_at' => Yii::t('shop', 'Finished At'),
+            'count' => Yii::t('shop', 'Count'),
         ];
     }
 

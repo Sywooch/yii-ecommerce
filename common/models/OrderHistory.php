@@ -56,11 +56,11 @@ class OrderHistory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'order_id' => 'Order ID',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'id' => Yii::t('shop', 'ID'),
+            'order_id' => Yii::t('shop', 'Order ID'),
+            'status' => Yii::t('shop', 'Status'),
+            'created_at' => Yii::t('shop', 'Created At'),
+            'updated_at' => Yii::t('shop', 'Updated At'),
         ];
     }
 

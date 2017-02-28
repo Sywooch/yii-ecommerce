@@ -10,14 +10,14 @@ use webdoka\yiiecommerce\common\models\ProductsOptions;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Products Options';
+$this->title = Yii::t('shop', 'Products Options');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
+<div class="box box-primary">
+    <div class="box-body"> 
 <div class="products-options-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-
 
 <?php 
     
@@ -49,4 +49,6 @@ echo TreeView::widget([
 ]);
 ?>
 
+</div>
+</div>
 </div>

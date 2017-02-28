@@ -43,9 +43,9 @@ class FeatureCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'feature_id' => 'Feature ID',
-            'category_id' => 'Category ID',
+            'id' => Yii::t('shop', 'ID'),
+            'feature_id' => Yii::t('shop', 'Feature ID'),
+            'category_id' => Yii::t('shop', 'Category ID'),
         ];
     }
 

@@ -52,11 +52,11 @@ class Delivery extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'name' => 'Name',
-            'cost' => 'Cost',
-            'storage_id' => 'Storage ID',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'name' => Yii::t('shop', 'Name'),
+            'cost' => Yii::t('shop', 'Cost'),
+            'storage_id' => Yii::t('shop', 'Storage ID'),
         ];
     }
 

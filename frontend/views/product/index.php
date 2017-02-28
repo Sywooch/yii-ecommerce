@@ -11,7 +11,7 @@ use webdoka\yiiecommerce\frontend\widgets\CartWidget;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $categories array */
 
-$title = 'Shop';
+$title = Yii::t('shop','Shop');
 $this->title = Html::encode($title);
 
 if ($currentCategory) {
@@ -74,9 +74,9 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         <div class="col-xs-3">
             <?= CartWidget::widget() ?>
             <ul class="nav nav-pills nav-stacked">
-                <li role="presentation"><?= Html::a('Sets', ['set/index']) ?></li>
+                <li role="presentation"><?= Html::a(Yii::t('shop','Sets'), ['set/index']) ?></li>
                 <hr>
-                <li role="presentation"<?= !$currentCategory ? ' class="active"' : '' ?>><?= Html::a('All', ['catalog/index']) ?></li>
+                <li role="presentation"<?= !$currentCategory ? ' class="active"' : '' ?>><?= Html::a(Yii::t('shop','All'), ['catalog/index']) ?></li>
                 <?php foreach ($categories as $category) { ?>
                     <li role="presentation"<?= $currentCategory && $currentCategory->slug == $category->slug ? ' class="active"' : '' ?>>
                         <?= Html::a($category->name, [$category->slug]) ?>

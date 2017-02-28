@@ -11,10 +11,10 @@ use webdoka\yiiecommerce\frontend\widgets\CartWidget;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $categories array */
 
-$title = 'Sets';
+$title = Yii::t('shop','Sets');
 $this->title = Html::encode($title);
 
-$this->params['breadcrumbs'][] = ['label' => 'Shop', 'url' => ['catalog/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop','Shop'), 'url' => ['catalog/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 // VAT included
@@ -28,9 +28,9 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         <div class="col-xs-3">
             <?= CartWidget::widget() ?>
             <ul class="nav nav-pills nav-stacked">
-                <li role="presentation" class="active"><?= Html::a('Sets', ['set/index']) ?></li>
+                <li role="presentation" class="active"><?= Html::a(Yii::t('shop','Sets'), ['set/index']) ?></li>
                 <hr>
-                <li role="presentation"><?= Html::a('All', ['catalog/index']) ?></li>
+                <li role="presentation"><?= Html::a(Yii::t('shop','All'), ['catalog/index']) ?></li>
                 <?php foreach ($categories as $category) { ?>
                     <li role="presentation"><?= Html::a($category->name, ['catalog/' . $category->slug]) ?></li>
                 <?php } ?>
