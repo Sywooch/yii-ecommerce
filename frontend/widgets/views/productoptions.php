@@ -55,7 +55,7 @@ $all=ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['produ
      $optionItem = ProductsOptions::findOne(['id' => $optionItem->id]);
      $parent = $optionItem->parents(1)->one();
 
-     if($parent_id!=$parent->id){
+     if($parent !=null && $parent_id != $parent->id){
 
 
       $parent_id=$parent->id;
