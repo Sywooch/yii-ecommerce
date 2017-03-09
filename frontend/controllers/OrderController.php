@@ -23,6 +23,7 @@ use yii\web\Controller;
  */
 class OrderController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -133,28 +134,28 @@ class OrderController extends Controller
                 $transaction->commit();
 
                 Yii::$app->cart->removeAll();
-                Yii::$app->session->setFlash('order_success',Yii::t('shop','Order is created successful.'));
+                Yii::$app->session->setFlash('order_success', Yii::t('shop', 'Order is created successful.'));
 
                 // Create invoice to pay
                 if ($account = Account::find()->where(['id' => $orderModel->profile->default_account_id])->one()) {
                     if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->total, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
                         // Redirect to pay
                         if (!$paymentSystem = Yii::$app->billing->load($orderModel->paymentType->name)) {
-                            throw new InvalidParamException(Yii::t('shop','Invalid payment type.'));
+                            throw new InvalidParamException(Yii::t('shop', 'Invalid payment type.'));
                         }
 
                         return $paymentSystem->requestPayment($invoiceId);
                     } else {
-                        Yii::$app->session->setFlash('order_failure', Yii::t('shop','Unable to create invoice.'));
+                        Yii::$app->session->setFlash('order_failure', Yii::t('shop', 'Unable to create invoice.'));
                     }
                 } else {
-                    Yii::$app->session->setFlash('order_failure', Yii::t('shop','Unable to get default account.'));
+                    Yii::$app->session->setFlash('order_failure', Yii::t('shop', 'Unable to get default account.'));
                 }
 
                 return $this->redirect(['catalog/index']);
             }
 
-            Yii::$app->session->setFlash('order_failure', Yii::t('shop','Order is failed. Check your cart details.'));
+            Yii::$app->session->setFlash('order_failure', Yii::t('shop', 'Order is failed. Check your cart details.'));
             $transaction->rollBack();
 
             return $this->redirect(['cart/list']);
@@ -162,4 +163,5 @@ class OrderController extends Controller
             return $this->render('create', compact('model', 'orderModel', 'properties'));
         }
     }
+
 }

@@ -15,27 +15,25 @@ use Yii;
  * @property string $address
  * @property string $index
  */
-class Location extends UidModel
-{
+class Location extends UidModel {
+
     const LIST_LOCATION = 'shopListLocation';
     const VIEW_LOCATION = 'shopViewLocation';
     const CREATE_LOCATION = 'shopCreateLocation';
     const UPDATE_LOCATION = 'shopUpdateLocation';
     const DELETE_LOCATION = 'shopDeleteLocation';
-    
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'locations';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['country', 'city', 'address', 'index'], 'required'],
             [['uid', 'country', 'city', 'address', 'index'], 'string', 'max' => 255],
@@ -46,8 +44,7 @@ class Location extends UidModel
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'uid' => Yii::t('shop', 'Uid'),
@@ -63,8 +60,7 @@ class Location extends UidModel
      * @inheritdoc
      * @return LocationQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new LocationQuery(get_called_class());
     }
 
@@ -72,8 +68,8 @@ class Location extends UidModel
      * Returns full address
      * @return string
      */
-    public function getFull()
-    {
+    public function getFull() {
         return sprintf('%s, %s, %s', $this->country, $this->city, $this->address);
     }
+
 }

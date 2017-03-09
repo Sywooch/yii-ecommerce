@@ -9,19 +9,17 @@ use webdoka\yiiecommerce\common\models\Product;
  *
  * @see Product
  */
-class ProductQuery extends \yii\db\ActiveQuery
-{
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+class ProductQuery extends \yii\db\ActiveQuery {
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
      * @return Product[]|array
      */
-    public function all($db = null)
-    {
+    public function all($db = null) {
         return parent::all($db);
     }
 
@@ -29,8 +27,8 @@ class ProductQuery extends \yii\db\ActiveQuery
      * @inheritdoc
      * @return Product|array|null
      */
-    public function one($db = null)
-    {
+    public function one($db = null) {
         return parent::one($db);
     }
+
 }

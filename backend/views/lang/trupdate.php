@@ -11,7 +11,10 @@ $this->params['breadcrumbs'][] = ['label' => $model->message, 'url' => ['trview'
 $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 
-    <?= $this->render('_trform', [
-        'model' => $model,'dataProvider'=>$dataProvider,
-    ]) ?>
+<?=
+
+$this->render('_trform', [
+    'model' => $model, 'dataProvider' => $dataProvider,
+])
+?>
 

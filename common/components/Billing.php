@@ -13,8 +13,8 @@ use yii\base\InvalidParamException;
 use webdoka\yiiecommerce\common\models\Account;
 use webdoka\yiiecommerce\common\models\Transaction;
 
-class Billing extends Component
-{
+class Billing extends Component {
+
     public $paymentSystems = [];
 
     /**
@@ -25,8 +25,7 @@ class Billing extends Component
      * @return bool
      * @throws \yii\db\Exception
      */
-    public function charge($accountId, $amount, $description)
-    {
+    public function charge($accountId, $amount, $description) {
         if (!$account = Account::find()->where(['id' => $accountId])->one()) {
             throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $accountId.');
         }
@@ -34,7 +33,7 @@ class Billing extends Component
         $transaction = new Transaction();
         $transaction->type = Transaction::CHARGE_TYPE;
         $transaction->amount = $amount;
-        $transaction->description = $description ?: Yii::t('shop', 'Charge');
+        $transaction->description = $description ? : Yii::t('shop', 'Charge');
         $transaction->account_id = $accountId;
 
         $dbTransaction = Yii::$app->db->beginTransaction();
@@ -60,8 +59,7 @@ class Billing extends Component
      * @return bool
      * @throws \yii\db\Exception
      */
-    public function withdraw($accountId, $amount, $description, $orderId = false)
-    {
+    public function withdraw($accountId, $amount, $description, $orderId = false) {
         if (!$account = Account::find()->where(['id' => $accountId])->one()) {
             throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $accountId.');
         }
@@ -73,7 +71,7 @@ class Billing extends Component
         $transaction = new Transaction();
         $transaction->type = Transaction::WITHDRAW_TYPE;
         $transaction->amount = $amount;
-        $transaction->description = $description ?: Yii::t('shop', 'Withdraw');
+        $transaction->description = $description ? : Yii::t('shop', 'Withdraw');
         $transaction->account_id = $accountId;
 
         $dbTransaction = Yii::$app->db->beginTransaction();
@@ -113,8 +111,7 @@ class Billing extends Component
      * @return bool
      * @throws \yii\db\Exception
      */
-    public function rollback($transactionId, $description)
-    {
+    public function rollback($transactionId, $description) {
         if (!$transaction = Transaction::find()->where(['id' => $transactionId])->one()) {
             throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $transactionId.');
         }
@@ -130,7 +127,7 @@ class Billing extends Component
         $rollbackTransaction = new Transaction();
         $rollbackTransaction->type = Transaction::ROLLBACK_TYPE;
         $rollbackTransaction->amount = $transaction->amount;
-        $rollbackTransaction->description = $description ?: Yii::t('shop', 'Rollback');
+        $rollbackTransaction->description = $description ? : Yii::t('shop', 'Rollback');
         $rollbackTransaction->account_id = $transaction->account_id;
         $rollbackTransaction->transaction_id = $transaction->id;
 
@@ -172,8 +169,7 @@ class Billing extends Component
      * @param bool|false $orderId
      * @return bool
      */
-    public function createInvoice($amount, $accountId, $description, $orderId = false)
-    {
+    public function createInvoice($amount, $accountId, $description, $orderId = false) {
         if (!$account = Account::findOne($accountId)) {
             throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $accountId.');
         }
@@ -202,8 +198,7 @@ class Billing extends Component
      * @return bool
      * @throws Exception
      */
-    public function changeInvoice($invoiceId, $status)
-    {
+    public function changeInvoice($invoiceId, $status) {
         if (!$invoice = Invoice::find()->where(['id' => $invoiceId])->one()) {
             throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $invoiceId.');
         }
@@ -251,12 +246,12 @@ class Billing extends Component
      * @param $system
      * @return object the created object
      */
-    public function load($system)
-    {
+    public function load($system) {
         if (array_key_exists($system, $this->paymentSystems)) {
             return Yii::createObject($this->paymentSystems[$system]);
         }
 
         return false;
     }
+
 }

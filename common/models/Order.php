@@ -23,26 +23,24 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property OrderItem[] $orderItems
  */
-class Order extends \yii\db\ActiveRecord
-{
+class Order extends \yii\db\ActiveRecord {
+
     const STATUS_AWAITING_PAYMENT = 'Awaiting payment';
     const STATUS_PAID = 'Paid';
     const STATUS_DELIVERY = 'Delivery';
     const STATUS_DONE = 'Done';
     const STATUS_CANCEL = 'Cancel';
     const STATUS_EXPIRED = 'Expired';
-
     const LIST_ORDER = 'shopListOrder';
     const VIEW_ORDER = 'shopViewOrder';
     const CREATE_ORDER = 'shopCreateOrder';
     const UPDATE_ORDER = 'shopUpdateOrder';
     const DELETE_ORDER = 'shopDeleteOrder';
-    
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             TimestampBehavior::className(),
         ];
@@ -51,16 +49,14 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'orders';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['status', 'profile_id', 'payment_type_id'], 'required'],
             [['created_at', 'updated_at', 'profile_id', 'payment_type_id'], 'integer'],
@@ -74,8 +70,7 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'status' => Yii::t('shop', 'Status'),
@@ -90,8 +85,7 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeValidate()
-    {
+    public function beforeValidate() {
         if ($this->isNewRecord) {
             $this->status = self::STATUS_AWAITING_PAYMENT;
         }
@@ -102,64 +96,56 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
-    {
+    public function getProfile() {
         return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPaymentType()
-    {
+    public function getPaymentType() {
         return $this->hasOne(PaymentType::className(), ['id' => 'payment_type_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderItems()
-    {
+    public function getOrderItems() {
         return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderSets()
-    {
+    public function getOrderSets() {
         return $this->hasMany(OrderSet::className(), ['order_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderHistory()
-    {
+    public function getOrderHistory() {
         return $this->hasMany(OrderHistory::className(), ['order_id' => 'id'])->orderBy(['id' => 'ASC']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdersProperties()
-    {
+    public function getOrdersProperties() {
         return $this->hasMany(OrderProperty::className(), ['order_id' => 'id']);
     }
 
     /**
      * @return $this
      */
-    public function getProperties()
-    {
+    public function getProperties() {
         return $this->hasMany(Property::className(), ['id' => 'property_id'])->via('ordersProperties');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdersTransactions()
-    {
+    public function getOrdersTransactions() {
         return $this->hasMany(OrderTransaction::className(), ['order_id' => 'id']);
     }
 
@@ -167,8 +153,7 @@ class Order extends \yii\db\ActiveRecord
      * @param bool $insert
      * @param array $changedAttributes
      */
-    public function afterSave($insert, $changedAttributes)
-    {
+    public function afterSave($insert, $changedAttributes) {
         $relatedRecords = $this->getRelatedRecords();
 
         if ($this->isRelationPopulated('orderItems')) {
@@ -211,8 +196,7 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return array
      */
-    public static function getStatuses()
-    {
+    public static function getStatuses() {
         return [
             self::STATUS_AWAITING_PAYMENT => self::STATUS_AWAITING_PAYMENT,
             self::STATUS_PAID => self::STATUS_PAID,
@@ -222,4 +206,5 @@ class Order extends \yii\db\ActiveRecord
             self::STATUS_EXPIRED => self::STATUS_EXPIRED,
         ];
     }
+
 }

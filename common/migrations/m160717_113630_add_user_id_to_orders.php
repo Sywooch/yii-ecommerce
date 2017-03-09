@@ -5,13 +5,12 @@ use yii\db\Migration;
 /**
  * Handles adding user_id to table `orders`.
  */
-class m160717_113630_add_user_id_to_orders extends Migration
-{
+class m160717_113630_add_user_id_to_orders extends Migration {
+
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $this->dropColumn('orders', 'phone');
         $this->dropColumn('orders', 'email');
         $this->dropColumn('orders', 'address');
@@ -24,8 +23,7 @@ class m160717_113630_add_user_id_to_orders extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $this->addColumn('orders', 'phone', 'VARCHAR(255) NOT NULL');
         $this->addColumn('orders', 'email', 'VARCHAR(255) NOT NULL');
         $this->addColumn('orders', 'address', 'VARCHAR(255) NOT NULL');
@@ -34,4 +32,5 @@ class m160717_113630_add_user_id_to_orders extends Migration
         $this->dropForeignKey('fk-orders-user_id-users-id', 'orders');
         $this->dropColumn('orders', 'user_id');
     }
+
 }

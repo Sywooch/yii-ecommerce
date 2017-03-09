@@ -13,7 +13,7 @@ use yii\widgets\ListView;
     <div class="box-body">
         <div class="lang-form">
 
-            <?php $form = ActiveForm::begin(['action' =>$model->isNewRecord ? ['/admin/shop/lang/trcreate'] : ['/admin/shop/lang/trupdate','id'=>$model->id]]); ?>
+            <?php $form = ActiveForm::begin(['action' => $model->isNewRecord ? ['/admin/shop/lang/trcreate'] : ['/admin/shop/lang/trupdate', 'id' => $model->id]]); ?>
 
             <?= $form->field($model, 'category')->textInput(['maxlength' => true]) ?>
 
@@ -21,19 +21,21 @@ use yii\widgets\ListView;
 
         </div>
 
-                <h2><?=Yii::t('shop', 'Translations') ?></h2>
+        <h2><?= Yii::t('shop', 'Translations') ?></h2>
 
-                <div class="well">
-                    <?php Pjax::begin(['id' => 'translate']) ?>
+        <div class="well">
+            <?php Pjax::begin(['id' => 'translate']) ?>
 
-                    <?= ListView::widget([
-                        'itemView' => '_translate',
-                        'dataProvider' => $dataProvider,
-                        'summary' => false,
-                        ]); ?>
+            <?=
+            ListView::widget([
+                'itemView' => '_translate',
+                'dataProvider' => $dataProvider,
+                'summary' => false,
+            ]);
+            ?>
 
-                        <?php Pjax::end() ?>
-                    </div>
+            <?php Pjax::end() ?>
+        </div>
 
     </div>
     <div class="box-footer">

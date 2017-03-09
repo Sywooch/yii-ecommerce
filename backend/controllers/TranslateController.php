@@ -12,13 +12,12 @@ use yii\filters\VerbFilter;
 /**
  * TranslateController implements the CRUD actions for TranslateMessage model.
  */
-class TranslateController extends Controller
-{
+class TranslateController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,14 +32,13 @@ class TranslateController extends Controller
      * Lists all TranslateMessage models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $dataProvider = new ActiveDataProvider([
             'query' => TranslateMessage::find(),
         ]);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -50,10 +48,9 @@ class TranslateController extends Controller
      * @param string $language
      * @return mixed
      */
-    public function actionView($id, $language)
-    {
+    public function actionView($id, $language) {
         return $this->render('view', [
-            'model' => $this->findModel($id, $language),
+                    'model' => $this->findModel($id, $language),
         ]);
     }
 
@@ -62,15 +59,14 @@ class TranslateController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new TranslateMessage();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'language' => $model->language]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -82,15 +78,14 @@ class TranslateController extends Controller
      * @param string $language
      * @return mixed
      */
-    public function actionUpdate($id, $language)
-    {
+    public function actionUpdate($id, $language) {
         $model = $this->findModel($id, $language);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id, 'language' => $model->language]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -102,8 +97,7 @@ class TranslateController extends Controller
      * @param string $language
      * @return mixed
      */
-    public function actionDelete($id, $language)
-    {
+    public function actionDelete($id, $language) {
         $this->findModel($id, $language)->delete();
 
         return $this->redirect(['index']);
@@ -117,12 +111,12 @@ class TranslateController extends Controller
      * @return TranslateMessage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id, $language)
-    {
+    protected function findModel($id, $language) {
         if (($model = TranslateMessage::findOne(['id' => $id, 'language' => $language])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
+
 }

@@ -5,13 +5,12 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `transactions`.
  */
-class m160717_085939_create_transactions extends Migration
-{
+class m160717_085939_create_transactions extends Migration {
+
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $this->createTable('transactions', [
             'id' => $this->primaryKey(),
             'type' => 'ENUM("charge", "withdraw", "rollback") NOT NULL',
@@ -37,9 +36,9 @@ class m160717_085939_create_transactions extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $this->dropTable('orders_transactions');
         $this->dropTable('transactions');
     }
+
 }

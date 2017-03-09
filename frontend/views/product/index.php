@@ -11,7 +11,7 @@ use webdoka\yiiecommerce\frontend\widgets\CartWidget;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 /* @var $categories array */
 
-$title = Yii::t('shop','Shop');
+$title = Yii::t('shop', 'Shop');
 $this->title = Html::encode($title);
 
 if ($currentCategory) {
@@ -25,14 +25,11 @@ if ($currentCategory) {
 }
 
 
-
-
 // VAT included
 $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one();
-
 ?>
 
-<div class="container-fluid">
+<div class="row">
 
     <?php if (Yii::$app->session->hasFlash('order_success')) { ?>
         <?php if (is_array(Yii::$app->session->getFlash('order_success'))) { ?>
@@ -70,22 +67,8 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         <?php } ?>
     <?php } ?>
 
-    <div class="row">
-        <div class="col-xs-3">
-            <?= CartWidget::widget() ?>
-            <ul class="nav nav-pills nav-stacked">
-                <li role="presentation"><?= Html::a(Yii::t('shop','Sets'), ['set/index']) ?></li>
-                <hr>
-                <li role="presentation"<?= !$currentCategory ? ' class="active"' : '' ?>><?= Html::a(Yii::t('shop','All'), ['catalog/index']) ?></li>
-                <?php foreach ($categories as $category) { ?>
-                    <li role="presentation"<?= $currentCategory && $currentCategory->slug == $category->slug ? ' class="active"' : '' ?>>
-                        <?= Html::a($category->name, [$category->slug]) ?>
-                    </li>
-                <?php } ?>
-            </ul>
-        </div>
-        <div class="col-xs-9">
-            <?= $this->render('_product', compact('model','vatIncluded'));?>
-        </div>
-    </div>
+
+    <?= $this->render('_product', compact('model', 'vatIncluded')); ?>
+    <?= $this->render('_details', compact('model', 'vatIncluded')); ?>
+
 </div>

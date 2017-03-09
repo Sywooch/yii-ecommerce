@@ -21,12 +21,11 @@ use yii\db\Expression;
  *
  * @property Account $account
  */
-class Transaction extends \yii\db\ActiveRecord
-{
+class Transaction extends \yii\db\ActiveRecord {
+
     const CHARGE_TYPE = 'charge';
     const WITHDRAW_TYPE = 'withdraw';
     const ROLLBACK_TYPE = 'rollback';
-
     const LIST_TRANSACTION = 'shopListTransaction';
     const VIEW_TRANSACTION = 'shopViewTransaction';
     const CREATE_TRANSACTION = 'shopCreateTransaction';
@@ -36,16 +35,14 @@ class Transaction extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'transactions';
     }
 
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'class' => TimestampBehavior::className()
         ];
@@ -54,13 +51,12 @@ class Transaction extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['account_id', 'type'], 'required'],
             ['amount', 'required', 'when' => function ($model) {
-                 return $model->type != self::ROLLBACK_TYPE;
-            }],
+                    return $model->type != self::ROLLBACK_TYPE;
+                }],
             [['amount'], 'number'],
             [['account_id'], 'integer'],
             [['type'], 'string'],
@@ -73,8 +69,7 @@ class Transaction extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'amount' => Yii::t('shop', 'Amount'),
@@ -89,24 +84,21 @@ class Transaction extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccount()
-    {
+    public function getAccount() {
         return $this->hasOne(Account::className(), ['id' => 'account_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder()
-    {
+    public function getOrder() {
         return $this->hasOne(Order::className(), ['id' => 'order_id'])->via('ordersTransactions');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdersTransactions()
-    {
+    public function getOrdersTransactions() {
         return $this->hasMany(OrderTransaction::className(), ['transaction_id' => 'id']);
     }
 
@@ -114,8 +106,7 @@ class Transaction extends \yii\db\ActiveRecord
      * Returns rolled back transaction
      * @return \yii\db\ActiveQuery
      */
-    public function getTransaction()
-    {
+    public function getTransaction() {
         return $this->hasOne(Transaction::className(), ['id' => 'transaction_id']);
     }
 
@@ -123,8 +114,7 @@ class Transaction extends \yii\db\ActiveRecord
      * Returns rollback transaction
      * @return \yii\db\ActiveQuery
      */
-    public function getRollback()
-    {
+    public function getRollback() {
         return $this->hasOne(Transaction::className(), ['transaction_id' => 'id']);
     }
 
@@ -132,16 +122,14 @@ class Transaction extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return TransactionQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new TransactionQuery(get_called_class());
     }
 
     /**
      * @return array
      */
-    public static function getTypes()
-    {
+    public static function getTypes() {
         return [
             self::CHARGE_TYPE => ucfirst(self::CHARGE_TYPE),
             self::WITHDRAW_TYPE => ucfirst(self::WITHDRAW_TYPE),
@@ -153,8 +141,7 @@ class Transaction extends \yii\db\ActiveRecord
      * Unlink relations and restore balance
      * @return bool
      */
-    public function beforeDelete()
-    {
+    public function beforeDelete() {
         if (!$account = $this->account) {
             return false;
         }
@@ -181,4 +168,5 @@ class Transaction extends \yii\db\ActiveRecord
 
         return parent::beforeDelete();
     }
+
 }

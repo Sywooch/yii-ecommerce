@@ -12,5 +12,5 @@ $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 
 $action = 'update';
 ?>
-    <?= $this->render('_form', compact('model', 'dataProvider', 'priceDataProvider', 'action')) ?>
+<?= $this->render('_form', compact('model', 'dataProvider', 'priceDataProvider', 'action')) ?>
 

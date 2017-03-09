@@ -14,27 +14,31 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box box-primary transaction-view">
     <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Transaction::DELETE_TRANSACTION)) { ?>
-            <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
                     'method' => 'post',
                 ],
-            ]) ?>
+            ])
+            ?>
         <?php } ?>
-                </div>
-                <div class="box-body">  
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'amount',
-            'account.profile.user.username',
-            'account.name',
-            'type',
-            'transaction.id:text:Rollback transaction',
-        ],
-    ]) ?>
+    </div>
+    <div class="box-body">  
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'amount',
+                'account.profile.user.username',
+                'account.name',
+                'type',
+                'transaction.id:text:Rollback transaction',
+            ],
+        ])
+        ?>
 
-</div>
+    </div>
 </div>

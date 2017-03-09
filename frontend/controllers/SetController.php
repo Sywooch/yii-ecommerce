@@ -12,22 +12,47 @@ use yii\base\InvalidParamException;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use webdoka\yiiecommerce\common\forms\SetConfigForm;
+use yii\data\Pagination;
 
 /**
  * SetController implements the CRUD actions for Order model.
  */
 class SetController extends Controller
 {
+
     /**
      * @return string
      */
     public function actionIndex()
     {
         $query = SetConfigForm::find();
+
+        $pageSize = Yii::$app->request->get('per-page', 15);
+
+        $countQuery = clone $query;
+
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+
+        $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));;
+
+        //$query->joinWith(['products'])->groupBy(['product_id']);
+
         $dataProvider = new ActiveDataProvider(['query' => $query]);
+
+        $dataProvider->sort->attributes['name'] = [
+            'asc' => ['name' => SORT_ASC],
+            'desc' => ['name' => SORT_DESC],
+            'default' => SORT_DESC,
+        ];
+        /*  $dataProvider->sort->attributes['price'] = [
+  'asc' => ['MIN(value)' => SORT_ASC],
+  'desc' => ['MIN(value)' => SORT_DESC],
+  'default' => SORT_ASC,
+  ];
+*/
         $categories = Category::find()->orderBy(['parent_id' => 'asc'])->all();
 
-        return $this->render('index', compact('dataProvider', 'categories'));
+        return $this->render('index', compact('currentCategory', 'dataProvider', 'categories', 'pages'));
     }
 
     /**
@@ -37,7 +62,7 @@ class SetController extends Controller
     public function actionView($id)
     {
         if (!$model = SetConfigForm::find()->where(['id' => $id])->one()) {
-            throw new InvalidParamException(Yii::t('shop','Invalid'). ' $id.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' $id.');
         }
 
         if (!Yii::$app->request->isPost) {
@@ -72,4 +97,5 @@ class SetController extends Controller
 
         return $this->render('view', compact('model'));
     }
+
 }

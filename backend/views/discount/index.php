@@ -18,51 +18,51 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Discount'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
 
-      </div> 
+    </div> 
     <div class="box-body">   
         <div class="discount-index">    
-<?php Pjax::begin(); ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'summaryOptions' => ['class' => 'well'],
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'dimension',
-            'value',
-            'started_at',
-            'finished_at',
-            'count',
-
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'buttons' => [
-                    'view' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Discount::VIEW_DISCOUNT) ?
-                            Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                'title' => Yii::t('yii', 'View'),
-                            ]) : '';
-                    },
-                    'update' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Discount::UPDATE_DISCOUNT) ?
-                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                'title' => Yii::t('yii', 'Update'),
-                            ]) : '';
-                    },
-                    'delete' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Discount::DELETE_DISCOUNT) ?
-                            Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                'title' => Yii::t('yii', 'Delete'),
-                                'data-confirm' => Yii::t('app', 'Are you sure to delete this item?'),
-                                'data-method' => 'post',
-                            ]) : '';
-                    },
-                ],
-            ],
-        ],
-    ]); ?>
-<?php Pjax::end(); ?></div>
-</div>
+            <?php Pjax::begin(); ?>
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'summaryOptions' => ['class' => 'well'],
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'id',
+                    'name',
+                    'dimension',
+                    'value',
+                    'started_at',
+                    'finished_at',
+                    'count',
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'buttons' => [
+                            'view' => function ($url, $model, $key) {
+                                return Yii::$app->user->can(Discount::VIEW_DISCOUNT) ?
+                                        Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                            'title' => Yii::t('yii', 'View'),
+                                        ]) : '';
+                            },
+                                    'update' => function ($url, $model, $key) {
+                                return Yii::$app->user->can(Discount::UPDATE_DISCOUNT) ?
+                                        Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                            'title' => Yii::t('yii', 'Update'),
+                                        ]) : '';
+                            },
+                                    'delete' => function ($url, $model, $key) {
+                                return Yii::$app->user->can(Discount::DELETE_DISCOUNT) ?
+                                        Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                            'title' => Yii::t('yii', 'Delete'),
+                                            'data-confirm' => Yii::t('app', 'Are you sure to delete this item?'),
+                                            'data-method' => 'post',
+                                        ]) : '';
+                            },
+                                ],
+                            ],
+                        ],
+                    ]);
+                    ?>
+                    <?php Pjax::end(); ?></div>
+    </div>
 </div>

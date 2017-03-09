@@ -18,12 +18,11 @@ use webdoka\yiiecommerce\common\queries\DiscountQuery;
  *
  * @property ProductDiscount[] $productsDiscounts
  */
-class Discount extends \yii\db\ActiveRecord
-{
+class Discount extends \yii\db\ActiveRecord {
+
     const PERCENT_DIMENSION = 'percent';
     const FIXED_DIMENSION = 'fixed';
     const SET_DIMENSION = 'set';
-
     const LIST_DISCOUNT = 'shopListDiscount';
     const VIEW_DISCOUNT = 'shopViewDiscount';
     const CREATE_DISCOUNT = 'shopCreateDiscount';
@@ -33,8 +32,7 @@ class Discount extends \yii\db\ActiveRecord
     /**
      * @return array
      */
-    public static function getDimensions()
-    {
+    public static function getDimensions() {
         return [
             self::PERCENT_DIMENSION => ucfirst(self::PERCENT_DIMENSION),
             self::FIXED_DIMENSION => ucfirst(self::FIXED_DIMENSION),
@@ -45,16 +43,14 @@ class Discount extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'discounts';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'value'], 'required'],
             [['dimension'], 'string'],
@@ -68,8 +64,7 @@ class Discount extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'name' => Yii::t('shop', 'Name'),
@@ -84,36 +79,32 @@ class Discount extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductsDiscounts()
-    {
+    public function getProductsDiscounts() {
         return $this->hasMany(ProductDiscount::className(), ['discount_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducts()
-    {
+    public function getProducts() {
         return $this->hasMany(Product::className(), ['id' => 'product_id'])
-            ->via('productsDiscounts');
+                        ->via('productsDiscounts');
     }
 
     /**
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getProductsGroupedByCategory()
-    {
+    public function getProductsGroupedByCategory() {
         return Product::find()
-            ->innerJoinWith('category')
-            ->all();
+                        ->innerJoinWith('category')
+                        ->all();
     }
 
     /**
      * @inheritdoc
      * @return DiscountQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new DiscountQuery(get_called_class());
     }
 
@@ -122,8 +113,7 @@ class Discount extends \yii\db\ActiveRecord
      * @param bool $insert
      * @param array $changedAttributes
      */
-    public function afterSave($insert, $changedAttributes)
-    {
+    public function afterSave($insert, $changedAttributes) {
         $relatedRecords = $this->getRelatedRecords();
 
         if ($this->isRelationPopulated('products')) {
@@ -133,4 +123,5 @@ class Discount extends \yii\db\ActiveRecord
             }
         }
     }
+
 }

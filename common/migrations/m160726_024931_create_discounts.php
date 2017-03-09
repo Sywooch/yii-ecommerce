@@ -5,13 +5,12 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `discounts`.
  */
-class m160726_024931_create_discounts extends Migration
-{
+class m160726_024931_create_discounts extends Migration {
+
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $this->createTable('discounts', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
@@ -35,8 +34,7 @@ class m160726_024931_create_discounts extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $this->dropForeignKey('fk-products_discounts-discount_id-discounts-id', 'products_discounts');
         $this->dropForeignKey('fk-products_discounts-product_id-products-id', 'products_discounts');
 
@@ -44,4 +42,5 @@ class m160726_024931_create_discounts extends Migration
 
         $this->dropTable('discounts');
     }
+
 }

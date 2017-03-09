@@ -2,10 +2,9 @@
 
 use yii\db\Migration;
 
-class m160811_081947_create_sets extends Migration
-{
-    public function up()
-    {
+class m160811_081947_create_sets extends Migration {
+
+    public function up() {
         $this->alterColumn('discounts', 'dimension', 'ENUM("percent", "fixed", "set") NOT NULL');
 
         $this->createTable('sets', [
@@ -21,7 +20,7 @@ class m160811_081947_create_sets extends Migration
 
         $this->addForeignKey('fk-sets_discounts-set_id-sets-id', 'sets_discounts', 'set_id', 'sets', 'id');
         $this->addForeignKey('fk-sets_discounts-discount_id-discounts-id', 'sets_discounts', 'discount_id', 'discounts', 'id');
-        
+
         $this->createTable('sets_products', [
             'id' => $this->primaryKey(),
             'set_id' => $this->integer()->notNull(),
@@ -52,13 +51,12 @@ class m160811_081947_create_sets extends Migration
 
         $this->addForeignKey('fk-carts_sets-cart_id-carts-id', 'carts_sets', 'cart_id', 'carts', 'id');
         $this->addForeignKey('fk-carts_sets-set_id-sets-id', 'carts_sets', 'set_id', 'sets', 'id');
-        
+
         $this->addColumn('carts_products', 'cart_set_id', 'INTEGER DEFAULT NULL');
         $this->addForeignKey('fk-carts_products-cart_set_id-carts_sets-id', 'carts_products', 'cart_set_id', 'carts_sets', 'id', 'SET NULL');
     }
 
-    public function down()
-    {
+    public function down() {
         $this->dropForeignKey('fk-carts_products-cart_set_id-carts_sets-id', 'carts_products');
         $this->dropColumn('carts_products', 'cart_set_id');
 
@@ -91,13 +89,13 @@ class m160811_081947_create_sets extends Migration
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }

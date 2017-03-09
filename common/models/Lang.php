@@ -24,10 +24,9 @@ class Lang extends \yii\db\ActiveRecord
     const UPDATE_LANG = 'shopUpdateLang';
     const DELETE_LANG = 'shopDeleteLang';
 
-
     //Переменная, для хранения текущего объекта языка
     static $current = null;
-    
+
     /**
      * @inheritdoc
      */
@@ -42,9 +41,9 @@ class Lang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        [['url', 'local', 'name', 'date_update', 'date_create'], 'required'],
-        [['default', 'date_update', 'date_create'], 'integer'],
-        [['url', 'local', 'name'], 'string', 'max' => 255],
+            [['url', 'local', 'name', 'date_update', 'date_create'], 'required'],
+            [['default', 'date_update', 'date_create'], 'integer'],
+            [['url', 'local', 'name'], 'string', 'max' => 255],
         ];
     }
 
@@ -54,34 +53,38 @@ class Lang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-        'id' => Yii::t('shop', 'ID'),
-        'url' => Yii::t('shop', 'Url'),
-        'local' => Yii::t('shop', 'Local'),
-        'name' => Yii::t('shop', 'Name'),
-        'default' => Yii::t('shop', 'Default'),
-        'date_update' => Yii::t('shop', 'Date Update'),
-        'date_create' => Yii::t('shop', 'Date Create'),
+            'id' => Yii::t('shop', 'ID'),
+            'url' => Yii::t('shop', 'Url'),
+            'local' => Yii::t('shop', 'Local'),
+            'name' => Yii::t('shop', 'Name'),
+            'default' => Yii::t('shop', 'Default'),
+            'date_update' => Yii::t('shop', 'Date Update'),
+            'date_create' => Yii::t('shop', 'Date Create'),
         ];
     }
 
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
-        'timestamp' => [
-        'class' => 'yii\behaviors\TimestampBehavior',
-        'attributes' => [
-        \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['date_create', 'date_update'],
-        \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['date_update'],
-        ],
-        ],
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['date_create', 'date_update'],
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['date_update'],
+                ],
+            ],
         ];
     }
-
-
+    /**
+     * @return array|null|\yii\db\ActiveRecord
+     */
 //Получение текущего объекта языка
     static function getCurrent()
     {
-        if( self::$current === null ){
+        if (self::$current === null) {
             self::$current = self::getDefaultLang();
         }
         return self::$current;
@@ -106,22 +109,21 @@ class Lang extends \yii\db\ActiveRecord
         return Lang::find()->where('`url` = :code', [':code' => $code])->one()->name;
     }
 
-
 //Переназначение языка по умолчанию
     static function updateDefaultLang($id)
     {
-            self::updateAll(['default'=>0]);
+        self::updateAll(['default' => 0]);
 
-            $model=Lang::findOne($id);
+        $model = Lang::findOne($id);
 
-            $model->default=1;
+        $model->default = 1;
 
-            if($model->save()){
-                return true;
-            }else{
-                return false;
-            }
-    }       
+        if ($model->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 //Получения объекта языка по буквенному идентификатору
     static function getLangByUrl($url = null)
@@ -130,13 +132,12 @@ class Lang extends \yii\db\ActiveRecord
             return null;
         } else {
             $language = Lang::find()->where('url = :url', [':url' => $url])->one();
-            if ( $language === null ) {
+            if ($language === null) {
                 return null;
-            }else{
+            } else {
                 return $language;
             }
         }
-    }    
-
+    }
 
 }

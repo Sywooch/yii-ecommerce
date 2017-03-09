@@ -5,10 +5,9 @@ use webdoka\yiiecommerce\common\models\Account;
 use webdoka\yiiecommerce\common\models\Cart;
 use webdoka\yiiecommerce\common\models\Order;
 
-class m160811_045341_relink_to_profile extends Migration
-{
-    public function up()
-    {
+class m160811_045341_relink_to_profile extends Migration {
+
+    public function up() {
         $this->dropForeignKey('fk-accounts-user_id-users-id', 'accounts');
 
         foreach (Account::find()->all() as $account) {
@@ -46,21 +45,20 @@ class m160811_045341_relink_to_profile extends Migration
         $this->addForeignKey('fk-orders-profile_id-profiles-id', 'orders', 'profile_id', 'profiles', 'id');
     }
 
-    public function down()
-    {
+    public function down() {
         echo "m160811_045341_relink_to_profile cannot be reverted.\n";
 
         return false;
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }

@@ -12,6 +12,7 @@ use yii\data\ArrayDataProvider;
  */
 class CartController extends \yii\web\Controller
 {
+
     /**
      * @return string
      */
@@ -30,13 +31,17 @@ class CartController extends \yii\web\Controller
      */
     public function actionAdd($id)
     {
-        $optid=(int)Yii::$app->request->get('option',0);
+        $optid = (int)Yii::$app->request->get('option', 0);
+
+        $qty = (int)Yii::$app->request->get('qty', 1);
 
         if ($product = Product::findOne($id)) {
 
-            $sess=Yii::$app->session;
+            $sess = Yii::$app->session;
 
-            $sess->set($id.'-optionid',$optid);
+            $product->setQuantity($qty);
+
+            $sess->set($id . '-optionid', $optid);
 
             Yii::$app->cart->put($product);
         }
@@ -46,24 +51,24 @@ class CartController extends \yii\web\Controller
     /**
      * @param $id
      */
-    public function actionUpdate($id,$option,$oldoption,$quant)
+    public function actionUpdate($id, $option, $oldoption, $quant)
     {
 
         if ($product = Product::findOne($id)) {
 
-            Yii::$app->cart->updateopt($product,$option,$oldoption,$quant);
+            Yii::$app->cart->updateopt($product, $option, $oldoption, $quant);
         }
         $this->redirect(['cart/list']);
-    }    
+    }
 
     /**
      * @param $id
      */
-    public function actionRemove($id,$option)
+    public function actionRemove($id, $option)
     {
 
         if ($product = Product::findOne($id)) {
-            Yii::$app->cart->remove($product,$option);
+            Yii::$app->cart->remove($product, $option);
             $this->redirect(['cart/list']);
         }
     }
@@ -76,4 +81,5 @@ class CartController extends \yii\web\Controller
         Yii::$app->cart->removeSetById(Yii::$app->request->get('id'));
         $this->redirect(['cart/list']);
     }
+
 }

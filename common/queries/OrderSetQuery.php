@@ -9,19 +9,17 @@ use webdoka\yiiecommerce\common\models\OrderSet;
  *
  * @see OrderSet
  */
-class OrderSetQuery extends \yii\db\ActiveQuery
-{
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+class OrderSetQuery extends \yii\db\ActiveQuery {
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
      * @return OrderSet[]|array
      */
-    public function all($db = null)
-    {
+    public function all($db = null) {
         return parent::all($db);
     }
 
@@ -29,8 +27,8 @@ class OrderSetQuery extends \yii\db\ActiveQuery
      * @inheritdoc
      * @return OrderSet|array|null
      */
-    public function one($db = null)
-    {
+    public function one($db = null) {
         return parent::one($db);
     }
+
 }

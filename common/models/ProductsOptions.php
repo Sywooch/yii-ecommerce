@@ -1,11 +1,11 @@
 <?php
 
 namespace webdoka\yiiecommerce\common\models;
+
 use creocoder\nestedsets\NestedSetsBehavior;
 use webdoka\yiiecommerce\common\queries\ProductsOptionsQuery;
 use yii\web\UploadedFile;
 use yii\base\Model;
-
 use Yii;
 
 /**
@@ -39,9 +39,8 @@ use Yii;
  *
  * @property ProductsOptionsPrices[] $productsOptionsPrices
  */
-class ProductsOptions extends \yii\db\ActiveRecord
-{
-    
+class ProductsOptions extends \yii\db\ActiveRecord {
+
     const LIST_POPTIONS = 'shopListOptionsProducts';
     const VIEW_POPTIONS = 'shopViewOptionsProducts';
     const CREATE_POPTIONS = 'shopCreateOptionsProducts';
@@ -52,58 +51,55 @@ class ProductsOptions extends \yii\db\ActiveRecord
         isDisabled as parentIsDisabled; // note the alias
     }
 
-
     /**
      * @var string product id`s. String from hidden field tree form
      */
-    public $products_id;    
+    public $products_id;
 
     /**
      * @var string the classname for the TreeQuery that implements the NestedSetQueryBehavior.
      * If not set this will default to `kartik  ree\models\TreeQuery`.
      */
     public static $treeQueryClass; // change if you need to set your own TreeQuery
- 
+
     /**
      * @var bool whether to HTML encode the tree node names. Defaults to `true`.
      */
     public $encodeNodeNames = true;
- 
+
     /**
      * @var bool whether to HTML purify the tree node icon content before saving.
      * Defaults to `true`.
      */
     public $purifyNodeIcons = true;
- 
+
     /**
      * @var array activation errors for the node
      */
     public $nodeActivationErrors = [];
- 
+
     /**
      * @var array node removal errors
      */
     public $nodeRemovalErrors = [];
- 
+
     /**
      * @var bool attribute to cache the `active` state before a model update. Defaults to `true`.
      */
     public $activeOrig = true;
-
     public $imagef;
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'products_options';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             //[['tree', 'lft', 'rgt', 'depth', 'name', 'lvl'], 'required'],
             [['tree', 'lft', 'rgt', 'depth', 'status', 'icon_type', 'active', 'selected', 'disabled', 'readonly', 'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l', 'movable_r', 'removable', 'removable_all', 'root', 'lvl'], 'integer'],
@@ -116,128 +112,117 @@ class ProductsOptions extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' =>  Yii::t('shop', 'ID'),
-            'tree' =>  Yii::t('shop', 'Tree'),
-            'lft' =>  Yii::t('shop', 'Lft'),
-            'rgt' =>  Yii::t('shop', 'Rgt'),
-            'depth' =>  Yii::t('shop', 'Depth'),
-            'name' =>  Yii::t('shop', 'Name'),
-            'description' =>  Yii::t('shop', 'Description'),
-            'image' =>  Yii::t('shop', 'Image'),
-            'status' =>  Yii::t('shop', 'Status'),
-            'icon' =>  Yii::t('shop', 'Icon'),
-            'icon_type' =>  Yii::t('shop', 'Icon Type'),
-            'active' =>  Yii::t('shop', 'Active'),
-            'selected' =>  Yii::t('shop', 'Selected'),
-            'disabled' =>  Yii::t('shop', 'Disabled'),
-            'readonly' =>  Yii::t('shop', 'Readonly'),
-            'visible' =>  Yii::t('shop', 'Visible'),
-            'collapsed' =>  Yii::t('shop', 'Collapsed'),
-            'movable_u' =>  Yii::t('shop', 'Movable U'),
-            'movable_d' =>  Yii::t('shop', 'Movable D'),
-            'movable_l' =>  Yii::t('shop', 'Movable L'),
-            'movable_r' =>  Yii::t('shop', 'Movable R'),
-            'removable' =>  Yii::t('shop', 'Removable'),
-            'removable_all' =>  Yii::t('shop', 'Removable All'),
-            'root' =>  Yii::t('shop', 'Root'),
-            'lvl' =>  Yii::t('shop', 'Lvl'),
+            'id' => Yii::t('shop', 'ID'),
+            'tree' => Yii::t('shop', 'Tree'),
+            'lft' => Yii::t('shop', 'Lft'),
+            'rgt' => Yii::t('shop', 'Rgt'),
+            'depth' => Yii::t('shop', 'Depth'),
+            'name' => Yii::t('shop', 'Name'),
+            'description' => Yii::t('shop', 'Description'),
+            'image' => Yii::t('shop', 'Image'),
+            'status' => Yii::t('shop', 'Status'),
+            'icon' => Yii::t('shop', 'Icon'),
+            'icon_type' => Yii::t('shop', 'Icon Type'),
+            'active' => Yii::t('shop', 'Active'),
+            'selected' => Yii::t('shop', 'Selected'),
+            'disabled' => Yii::t('shop', 'Disabled'),
+            'readonly' => Yii::t('shop', 'Readonly'),
+            'visible' => Yii::t('shop', 'Visible'),
+            'collapsed' => Yii::t('shop', 'Collapsed'),
+            'movable_u' => Yii::t('shop', 'Movable U'),
+            'movable_d' => Yii::t('shop', 'Movable D'),
+            'movable_l' => Yii::t('shop', 'Movable L'),
+            'movable_r' => Yii::t('shop', 'Movable R'),
+            'removable' => Yii::t('shop', 'Removable'),
+            'removable_all' => Yii::t('shop', 'Removable All'),
+            'root' => Yii::t('shop', 'Root'),
+            'lvl' => Yii::t('shop', 'Lvl'),
         ];
     }
-
 
     public function behaviors() {
         return [
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
-                    'treeAttribute' => 'root',
-                    'leftAttribute' => 'lft',
-                    'rightAttribute' => 'rgt',
-                    'depthAttribute' => 'lvl',
+                'treeAttribute' => 'root',
+                'leftAttribute' => 'lft',
+                'rightAttribute' => 'rgt',
+                'depthAttribute' => 'lvl',
             ],
         ];
     }
 
-    public function transactions()
-    {
+    public function transactions() {
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
-
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductsOptionsPrices()
-    {
-        return $this->hasMany(ProductsOptionsPrices::className(), ['product_options_id' => 'id']) ->where('status = 1');
+    public function getProductsOptionsPrices() {
+        return $this->hasMany(ProductsOptionsPrices::className(), ['product_options_id' => 'id'])->where('status = 1');
     }
 
-    public function isDisabled()
-    {
+    public function isDisabled() {
         if (
-            Yii::$app->user->can(self::CREATE_POPTIONS) && 
-            Yii::$app->user->can(self::UPDATE_POPTIONS) && 
-            Yii::$app->user->can(self::DELETE_POPTIONS) &&
-            Yii::$app->user->can(Product::CREATE_PRODUCT) && 
-            Yii::$app->user->can(Product::UPDATE_PRODUCT) && 
-            Yii::$app->user->can(Product::DELETE_PRODUCT)) {
-             return $this->parentIsDisabled();
+                Yii::$app->user->can(self::CREATE_POPTIONS) &&
+                Yii::$app->user->can(self::UPDATE_POPTIONS) &&
+                Yii::$app->user->can(self::DELETE_POPTIONS) &&
+                Yii::$app->user->can(Product::CREATE_PRODUCT) &&
+                Yii::$app->user->can(Product::UPDATE_PRODUCT) &&
+                Yii::$app->user->can(Product::DELETE_PRODUCT)) {
+            return $this->parentIsDisabled();
         }
-         return true;
-        
+        return true;
     }
 
-    public static function isAdminTree()
-    {
+    public static function isAdminTree() {
         if (
-            Yii::$app->user->can(self::CREATE_POPTIONS) && 
-            Yii::$app->user->can(self::UPDATE_POPTIONS) && 
-            Yii::$app->user->can(self::DELETE_POPTIONS) &&
-            Yii::$app->user->can(Product::CREATE_PRODUCT) && 
-            Yii::$app->user->can(Product::UPDATE_PRODUCT) && 
-            Yii::$app->user->can(Product::DELETE_PRODUCT)) {
-             return true;
+                Yii::$app->user->can(self::CREATE_POPTIONS) &&
+                Yii::$app->user->can(self::UPDATE_POPTIONS) &&
+                Yii::$app->user->can(self::DELETE_POPTIONS) &&
+                Yii::$app->user->can(Product::CREATE_PRODUCT) &&
+                Yii::$app->user->can(Product::UPDATE_PRODUCT) &&
+                Yii::$app->user->can(Product::DELETE_PRODUCT)) {
+            return true;
         }
-         return false;
-        
+        return false;
     }
 
-    
-    public function upload()
-    {
+    public function upload() {
 
         if ($this->validate()) {
 
-            $path=Yii::getAlias('@webroot') .'/uploads/po/' . $this->imagef->baseName . '.' . $this->imagef->extension;
+            $path = Yii::getAlias('@webroot') . '/uploads/po/' . $this->imagef->baseName . '.' . $this->imagef->extension;
             $this->imagef->saveAs($path);
 
             return $path;
         } else {
-           var_dump( $this->getErrors());exit;
+            var_dump($this->getErrors());
+            exit;
             return false;
         }
-    }    
+    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function CheckedTree($id)
-    {    
+    public static function CheckedTree($id) {
 
-        $curroptions=ProductsOptionsPrices::find()->where(['=',"product_id",$id])->andWhere(['=',"status",1])->groupBy(['product_options_id'])->all();
+        $curroptions = ProductsOptionsPrices::find()->where(['=', "product_id", $id])->andWhere(['=', "status", 1])->groupBy(['product_options_id'])->all();
 
-        $chk=[];
+        $chk = [];
 
-        $chek='';
+        $chek = '';
 
-        if($curroptions !=null){
+        if ($curroptions != null) {
 
             foreach ($curroptions as $chknode) {
-                $chk[]=$chknode->product_options_id;
+                $chk[] = $chknode->product_options_id;
             }
 
             return implode(',', $chk);
@@ -247,35 +232,31 @@ class ProductsOptions extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function isOption($id)
-    {  
+    public static function isOption($id) {
 
         $getchild = ProductsOptions::findOne($id);
 
-        if($getchild !=false){
+        if ($getchild != false) {
 
-         return $getchild->children()->all();
-
+            return $getchild->children()->all();
         }
 
-         return false; 
-    }   
-
+        return false;
+    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPricesWithValues($id,$prid=null)
-    {
+    public function getPricesWithValues($id, $prid = null) {
         $data = [];
-        
+
         $prices = Price::find()->all();
         foreach ($prices as $price) {
             $productPrice = ProductsOptionsPrices::find()->where([
-                'product_options_id' => $id,
-                'price_id' => $price->id,
-                'product_id' => $prid,
-            ])->one();
+                        'product_options_id' => $id,
+                        'price_id' => $price->id,
+                        'product_id' => $prid,
+                    ])->one();
 
             $data[] = [
                 'id' => $price->id,
@@ -286,12 +267,13 @@ class ProductsOptions extends \yii\db\ActiveRecord
 
         return $data;
     }
+
     /**
      * @inheritdoc
      * @return ProductsOptionsQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new ProductsOptionsQuery(get_called_class());
     }
+
 }

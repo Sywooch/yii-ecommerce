@@ -18,18 +18,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->user->can(Country::UPDATE_COUNTRY)) { ?>
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
-                </div>
-                <div class="box-body">
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'abbr',
-            'exists_tax',
-            'tax',
-        ],
-    ]) ?>
+    </div>
+    <div class="box-body">
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'name',
+                'abbr',
+                'exists_tax',
+                'tax',
+            ],
+        ])
+        ?>
 
+    </div>
 </div>
-  </div>

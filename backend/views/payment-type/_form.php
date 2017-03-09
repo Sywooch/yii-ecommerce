@@ -11,22 +11,22 @@ use webdoka\yiiecommerce\backend\widgets\Translateform;
 <div class="box box-primary payment-type-form">
 
     <?php $form = ActiveForm::begin(); ?>
-	
-	<div class="box-body">
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="box-body">
 
-     <?= Translateform::widget(['form'=>$form,'model'=>$model,'attr'=>'name','field'=>'name','formtype'=>'string']); ?>
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
+        <?= Translateform::widget(['form' => $form, 'model' => $model, 'attr' => 'name', 'field' => 'name', 'formtype' => 'string']); ?>
 
-     <?= Translateform::widget(['form'=>$form,'model'=>$model,'attr'=>'label','field'=>'description','formtype'=>'text']); ?>
-	</div>
-	<div class="box-footer">
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
+
+        <?= Translateform::widget(['form' => $form, 'model' => $model, 'attr' => 'label', 'field' => 'description', 'formtype' => 'text']); ?>
     </div>
- </div>
+    <div class="box-footer">
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

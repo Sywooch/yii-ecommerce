@@ -2,10 +2,9 @@
 
 use yii\db\Migration;
 
-class m160605_162706_create extends Migration
-{
-    public function safeUp()
-    {
+class m160605_162706_create extends Migration {
+
+    public function safeUp() {
         $this->createTable('features', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
@@ -32,10 +31,10 @@ class m160605_162706_create extends Migration
         $this->addForeignKey('fk-features_products-product_id', 'features_products', 'product_id', 'products', 'id', 'CASCADE');
     }
 
-    public function safeDown()
-    {
+    public function safeDown() {
         $this->dropTable('features_products');
         $this->dropTable('features_categories');
         $this->dropTable('features');
     }
+
 }

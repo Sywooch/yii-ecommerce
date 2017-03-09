@@ -5,13 +5,12 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `accounts`.
  */
-class m160713_122814_create_accounts extends Migration
-{
+class m160713_122814_create_accounts extends Migration {
+
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $this->createTable('accounts', [
             'id' => $this->primaryKey(),
             'balance' => $this->float(),
@@ -26,11 +25,11 @@ class m160713_122814_create_accounts extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $this->dropForeignKey('fk-accounts-currency_id-currencies-id', 'accounts');
         $this->dropForeignKey('fk-accounts-user_id-users-id', 'accounts');
 
         $this->dropTable('accounts');
     }
+
 }

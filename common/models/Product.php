@@ -22,14 +22,14 @@ use yii\web\Session;
  * @property OrderItem[] $orderItems
  * @property Category $category
  */
-class Product extends \yii\db\ActiveRecord implements IPosition
-{
+class Product extends \yii\db\ActiveRecord implements IPosition {
+
     const LIST_PRODUCT = 'shopListProduct';
     const VIEW_PRODUCT = 'shopViewProduct';
     const CREATE_PRODUCT = 'shopCreateProduct';
     const UPDATE_PRODUCT = 'shopUpdateProduct';
     const DELETE_PRODUCT = 'shopDeleteProduct';
-    
+
     private $_quantity;
     //private $_optionid;
     private $_option_id;
@@ -37,16 +37,14 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'products';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['category_id', 'unit_id'], 'integer'],
             [['name', 'price', 'unit_id'], 'required'],
@@ -59,8 +57,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'category_id' => Yii::t('shop', 'Category ID'),
@@ -68,46 +65,41 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'unit' => Yii::t('shop', 'Unit'),
             'name' => Yii::t('shop', 'Name'),
             'price' => Yii::t('shop', 'Default Price'),
+            'prices' => Yii::t('shop', 'Default Price'),
         ];
     }
-
 
     /**
      * @inheritdoc
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @inheritdoc
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
      * @inheritdoc
      */
-    public function getPrice()
-    {
+    public function getPrice() {
         return $this->price;
     }
 
-
     /**
      * @inheritdoc
      */
-    public function getRealPrice()
-    {
+    public function getRealPrice() {
         // Default price
         $price = $this->price;
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
 
         // Get min price
-        $price = Price::getMinPrice($roles, $this->id) ?: $price;
+        $price = Price::getMinPrice($roles, $this->id) ? : $price;
 
         // Price + VAT
         if ($country = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one()) {
@@ -120,14 +112,13 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     /**
      * @inheritdoc
      */
-    public function getOptionPrice($optid)
-    {
+    public function getOptionPrice($optid) {
         // Default price
         $price = $this->price;
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
 
         // Get min price
-        $price = Price::getOptPrice($roles, $this->id, $optid) ?: $price;
+        $price = Price::getOptPrice($roles, $this->id, $optid) ? : $price;
 
 
         // Price + VAT
@@ -138,35 +129,29 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         return $price;
     }
 
-    public function getBranchOption($option_id){
+    public function getBranchOption($option_id) {
 
-             $return=[];
-             $return['option'] = ProductsOptions::findOne(['id' => $option_id]);
-             $return['branch']=$return['option']->parents()->all();
-             return $return;
+        $return = [];
+        $return['option'] = ProductsOptions::findOne(['id' => $option_id]);
+        $return['branch'] = $return['option']->parents()->all();
+        return $return;
     }
-
-
-
 
     /**
      * Returns calculated cost after discounts applied
      * @param $quantity
      * @return float|int|mixed
      */
-    public function getCostWithDiscounters($quantity,$optionid=0)
-    {
-        
+    public function getCostWithDiscounters($quantity, $optionid = 0) {
 
-        if ($optionid == 0 || $optionid == null){
 
-          $price = $this->realPrice;   
+        if ($optionid == 0 || $optionid == null) {
 
-        }else{
+            $price = $this->realPrice;
+        } else {
 
             $price = $this->getOptionPrice($optionid);
-
-        }      
+        }
 
         $discounts = $this->availableDiscounts;
 
@@ -187,53 +172,45 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         return $price * $quantity;
     }
 
-
     /**
      * @inheritdoc
      */
-    public function getOptid()
-    {
+    public function getOptid() {
         return $this->_optionid;
-    } 
+    }
 
     /**
      * @inheritdoc
      */
-    public function setOptid($optid)
-    {
+    public function setOptid($optid) {
         $this->_optionid = $optid;
     }
 
-
     /**
      * @inheritdoc
      */
-    public function getOption_id()
-    {
+    public function getOption_id() {
         return $this->_option_id;
-    } 
+    }
 
     /**
      * @inheritdoc
      */
-    public function setOption_id($optid)
-    {
+    public function setOption_id($optid) {
         $this->_option_id = $optid;
-    }    
+    }
 
     /**
      * @inheritdoc
      */
-    public function getQuantity()
-    {
+    public function getQuantity() {
         return $this->_quantity;
     }
 
     /**
      * @inheritdoc
      */
-    public function setQuantity($quantity)
-    {
+    public function setQuantity($quantity) {
         $this->_quantity = $quantity;
     }
 
@@ -241,57 +218,50 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns unit
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getUnit()
-    {
+    public function getUnit() {
         return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderItems()
-    {
+    public function getOrderItems() {
         return $this->hasMany(OrderItem::className(), ['order_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductPrices()
-    {
+    public function getProductPrices() {
         return $this->hasMany(ProductPrice::className(), ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductOtionsPrices()
-    {
+    public function getProductOtionsPrices() {
         return $this->hasMany(ProductsOptionsPrices::className(), ['product_id' => 'id']);
     }
-
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPrices()
-    {
+    public function getPrices() {
         return $this->hasMany(Price::className(), ['id' => 'price_id'])->via('productPrices');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPricesWithValues()
-    {
+    public function getPricesWithValues() {
         $data = [];
 
         $prices = Price::find()->all();
         foreach ($prices as $price) {
             $productPrice = ProductPrice::find()->where([
-                'product_id' => $this->id,
-                'price_id' => $price->id,
-            ])->one();
+                        'product_id' => $this->id,
+                        'price_id' => $price->id,
+                    ])->one();
 
             $data[] = [
                 'id' => $price->id,
@@ -306,8 +276,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory()
-    {
+    public function getCategory() {
         return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
@@ -315,8 +284,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns product features with source features
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getFullFeatures()
-    {
+    public function getFullFeatures() {
         return $this->hasMany(FeatureProduct::className(), ['product_id' => 'id'])->with('feature');
     }
 
@@ -324,8 +292,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Return CartProduct list
      * @return \yii\db\ActiveQuery
      */
-    public function getCartProducts()
-    {
+    public function getCartProducts() {
         return $this->hasMany(CartProduct::className(), ['cart_id' => 'id']);
     }
 
@@ -333,8 +300,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns product features
      * @return \yii\db\ActiveQuery
      */
-    public function getProductFeatures()
-    {
+    public function getProductFeatures() {
         return $this->hasMany(FeatureProduct::className(), ['product_id' => 'id']);
     }
 
@@ -342,8 +308,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns product discounts
      * @return \yii\db\ActiveQuery
      */
-    public function getProductDiscounts()
-    {
+    public function getProductDiscounts() {
         return $this->hasMany(ProductDiscount::className(), ['product_id' => 'id']);
     }
 
@@ -351,27 +316,25 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns discounts
      * @return \yii\db\ActiveQuery
      */
-    public function getDiscounts()
-    {
+    public function getDiscounts() {
         return $this->hasMany(Discount::className(), ['id' => 'discount_id'])
-            ->andWhere(['dimension' => Discount::SET_DIMENSION])
-            ->via('productDiscounts');
+                        //->andWhere(['dimension' => Discount::SET_DIMENSION])
+                        ->via('productDiscounts');
     }
 
     /**
      * Returns features by category and product
      * @return array
      */
-    public function getFeaturesWithCategories()
-    {
+    public function getFeaturesWithCategories() {
         $data = [];
 
         if ($category = Category::find()->where(['id' => $this->category_id])->one()) {
             foreach ($category->features as $feature) {
                 $featureProduct = FeatureProduct::find()->where([
-                    'feature_id' => $feature->id,
-                    'product_id' => $this->id,
-                ])->one();
+                            'feature_id' => $feature->id,
+                            'product_id' => $this->id,
+                        ])->one();
 
                 $data[] = [
                     'id' => $feature->id,
@@ -388,8 +351,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns discounts inline
      * @return string
      */
-    public function getDiscountImplode()
-    {
+    public function getDiscountImplode() {
         $discountNames = [];
 
         foreach ($this->discounts as $discount) {
@@ -403,22 +365,20 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * Returns available discounts
      * @return array|Discount[]
      */
-    public function getAvailableDiscounts()
-    {
+    public function getAvailableDiscounts() {
         $productDiscountIDs = $this->getProductDiscounts()->select('discount_id')->column();
-
+        
         return Discount::find()
-            ->andWhere(['id' => $productDiscountIDs])
-            ->available()
-            ->all();
+                        ->andWhere(['id' => $productDiscountIDs])
+                        ->available()
+                        ->all();
     }
 
     /**
      * @inheritdoc
      * @return ProductQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new ProductQuery(get_called_class());
     }
 
@@ -427,8 +387,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
      * @param bool $insert
      * @param array $changedAttributes
      */
-    public function afterSave($insert, $changedAttributes)
-    {
+    public function afterSave($insert, $changedAttributes) {
         $relatedRecords = $this->getRelatedRecords();
 
         if (array_key_exists('productFeatures', $relatedRecords)) {
@@ -452,4 +411,5 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             }
         }
     }
+
 }

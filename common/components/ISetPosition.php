@@ -6,8 +6,8 @@ namespace webdoka\yiiecommerce\common\components;
  * Interface ISetPosition
  * @package webdoka\yiiecommerce\common\components
  */
-interface ISetPosition
-{
+interface ISetPosition {
+
     /**
      * Returns position id
      * @return integer
@@ -24,13 +24,13 @@ interface ISetPosition
      * Returns position real price
      * @return float
      */
-    public function getRealPrice(); 
+    public function getRealPrice();
 
     /**
      * Returns position quantity
      * @return mixed
      */
-    public function getQuantity();    
+    public function getQuantity();
 
     /**
      * Sets quantity

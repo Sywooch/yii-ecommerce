@@ -2,10 +2,9 @@
 
 use yii\db\Migration;
 
-class m160602_144846_common_tables extends Migration
-{
-    public function safeUp()
-    {
+class m160602_144846_common_tables extends Migration {
+
+    public function safeUp() {
         $this->createTable('categories', [
             'id' => $this->primaryKey(),
             'parent_id' => $this->integer(),
@@ -47,8 +46,7 @@ class m160602_144846_common_tables extends Migration
         $this->addForeignKey('fk_order_items_product_id', 'order_items', 'product_id', 'products', 'id', 'CASCADE');
     }
 
-    public function safeDown()
-    {
+    public function safeDown() {
         $this->dropForeignKey('fk_order_items_product_id', 'order_items');
         $this->dropForeignKey('fk_order_items_order_id', 'order_items');
 
@@ -64,4 +62,5 @@ class m160602_144846_common_tables extends Migration
 
         $this->dropTable('categories');
     }
+
 }

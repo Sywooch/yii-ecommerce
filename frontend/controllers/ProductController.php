@@ -13,13 +13,15 @@ use yii\web\Controller;
  */
 class ProductController extends Controller
 {
+
     public function actionIndex($id)
     {
-        $model = Product::findOne(['id'=>(int)$id]);
+        $model = Product::findOne(['id' => (int)$id]);
 
         $currentCategory = null;
         $categories = Category::find()->orderBy(['parent_id' => 'asc'])->all();
 
-        return $this->render('index', compact('id','model','categories','currentCategory'));
+        return $this->render('index', compact('id', 'model', 'categories', 'currentCategory'));
     }
+
 }

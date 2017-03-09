@@ -17,26 +17,30 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
         <?php if (Yii::$app->user->can(Feature::DELETE_FEATURE)) { ?>
-            <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
                     'method' => 'post',
                 ],
-            ]) ?>
+            ])
+            ?>
         <?php } ?>
-                </div>
-                <div class="box-body">
+    </div>
+    <div class="box-body">
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'slug',
-        ],
-    ]) ?>
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'name',
+                'slug',
+            ],
+        ])
+        ?>
 
-                    </div>
-                </div>
+    </div>
+</div>
 

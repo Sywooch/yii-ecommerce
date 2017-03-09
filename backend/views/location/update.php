@@ -11,6 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' 
 $this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+<?=
+
+$this->render('_form', [
+    'model' => $model,
+])
+?>

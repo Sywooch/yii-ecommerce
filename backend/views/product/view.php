@@ -21,41 +21,49 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
         <?php if (Yii::$app->user->can(Product::DELETE_PRODUCT)) { ?>
-            <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
                     'method' => 'post',
                 ],
-            ]) ?>
+            ])
+            ?>
         <?php } ?>
-                </div>
-                <div class="box-body"> 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'category_id',
-            'name',
-            'price',
-            'unit.name:html:Unit',
-            'discountImplode:text:Discounts',
-        ],
-    ]) ?>
+    </div>
+    <div class="box-body"> 
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'category_id',
+                'name',
+                'price',
+                'unit.name:html:Unit',
+                'discountImplode:text:Discounts',
+            ],
+        ])
+        ?>
 
-    <h2><?=Yii::t('shop', 'Prices')?></h2>
+        <h2><?= Yii::t('shop', 'Prices') ?></h2>
 
-    <?= GridView::widget([
-        'dataProvider' => $priceDataProvider,
-        'summary' => false,
-    ]); ?>
+        <?=
+        GridView::widget([
+            'dataProvider' => $priceDataProvider,
+            'summary' => false,
+        ]);
+        ?>
 
-    <h2><?=Yii::t('shop', 'Features')?></h2>
+        <h2><?= Yii::t('shop', 'Features') ?></h2>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'summary' => false,
-    ]); ?>
+        <?=
+        GridView::widget([
+            'dataProvider' => $dataProvider,
+            'summary' => false,
+        ]);
+        ?>
 
-</div>
+    </div>
 </div>

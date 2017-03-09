@@ -5,13 +5,12 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `delivery`.
  */
-class m160620_064350_create_delivery extends Migration
-{
+class m160620_064350_create_delivery extends Migration {
+
     /**
      * @inheritdoc
      */
-    public function up()
-    {
+    public function up() {
         $this->createTable('deliveries', [
             'id' => $this->primaryKey(),
             'uid' => $this->string()->notNull(),
@@ -26,8 +25,8 @@ class m160620_064350_create_delivery extends Migration
     /**
      * @inheritdoc
      */
-    public function down()
-    {
+    public function down() {
         $this->dropTable('deliveries');
     }
+
 }

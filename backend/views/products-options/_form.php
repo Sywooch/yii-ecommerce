@@ -11,15 +11,16 @@ use yii\widgets\ActiveForm;
 <div class="products-options-form">
 
 
-<?= $form->field($node, 'description')->textarea(['rows' => 6]) ?>
+    <?= $form->field($node, 'description')->textarea(['rows' => 6]) ?>
 
-<?php if(isset($node->image) && $node->image !=''){
+    <?php
+    if (isset($node->image) && $node->image != '') {
 
-echo Html::img('@web/uploads/po/'.$node->image,["style"=>"width:80px"]); 
+        echo Html::img('@web/uploads/po/' . $node->image, ["style" => "width:80px"]);
+    }
+    ?>
 
-} ?>
-	
-<?= $form->field($node, 'imagef')->fileInput(); ?>
+    <?= $form->field($node, 'imagef')->fileInput(); ?>
 
 
 </div>

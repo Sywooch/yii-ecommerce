@@ -9,19 +9,17 @@ use webdoka\yiiecommerce\common\models\OrderTransaction;
  *
  * @see OrderTransaction
  */
-class OrderTransactionQuery extends \yii\db\ActiveQuery
-{
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+class OrderTransactionQuery extends \yii\db\ActiveQuery {
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
      * @return OrderTransaction[]|array
      */
-    public function all($db = null)
-    {
+    public function all($db = null) {
         return parent::all($db);
     }
 
@@ -29,8 +27,8 @@ class OrderTransactionQuery extends \yii\db\ActiveQuery
      * @inheritdoc
      * @return OrderTransaction|array|null
      */
-    public function one($db = null)
-    {
+    public function one($db = null) {
         return parent::one($db);
     }
+
 }

@@ -16,21 +16,19 @@ use webdoka\yiiecommerce\common\queries\TranslateDynamicTextQuery;
  * @property string $short_description
  * @property string $description
  */
-class TranslateDynamicText extends \yii\db\ActiveRecord
-{
+class TranslateDynamicText extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'translate_dynamic_text';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['lang', 'modelID', 'itemID'], 'required'],
             [['itemID'], 'integer'],
@@ -44,8 +42,7 @@ class TranslateDynamicText extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'lang' => Yii::t('app', 'Lang'),
@@ -61,8 +58,8 @@ class TranslateDynamicText extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return TranslateDynamicTextQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new TranslateDynamicTextQuery(get_called_class());
     }
+
 }

@@ -15,21 +15,19 @@ use Yii;
  * @property Product $product
  * @property Feature $feature
  */
-class FeatureProduct extends \yii\db\ActiveRecord
-{
+class FeatureProduct extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'features_products';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['feature_id', 'product_id'], 'required'],
             [['feature_id', 'product_id'], 'integer'],
@@ -42,8 +40,7 @@ class FeatureProduct extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'feature_id' => Yii::t('shop', 'Feature ID'),
@@ -55,16 +52,15 @@ class FeatureProduct extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFeature()
-    {
+    public function getFeature() {
         return $this->hasOne(Feature::className(), ['id' => 'feature_id']);
     }
+
 }

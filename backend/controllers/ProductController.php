@@ -17,13 +17,12 @@ use kartik\tree\TreeView;
 /**
  * ProductController implements the CRUD actions for Product model.
  */
-class ProductController extends Controller
-{
+class ProductController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -69,14 +68,13 @@ class ProductController extends Controller
      * Lists all Product models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find(),
         ]);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -85,8 +83,7 @@ class ProductController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         $model = $this->findModel($id);
 
         $dataProvider = new ArrayDataProvider([
@@ -107,10 +104,9 @@ class ProductController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new ProductForm();
-        $model->category_id = Yii::$app->request->get('category_id') ?: null;
+        $model->category_id = Yii::$app->request->get('category_id') ? : null;
 
         $dataProvider = new ArrayDataProvider([
             'pagination' => false,
@@ -135,10 +131,9 @@ class ProductController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = ProductForm::find()->where(['id' => $id])->one();
-        $model->category_id = Yii::$app->request->get('category_id') ?: $model->category_id;
+        $model->category_id = Yii::$app->request->get('category_id') ? : $model->category_id;
 
         if (!Yii::$app->request->isPost)
             $model->populateRelation('relDiscounts', $model->discounts);
@@ -166,8 +161,7 @@ class ProductController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -180,12 +174,12 @@ class ProductController extends Controller
      * @return Product the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Product::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
+
 }

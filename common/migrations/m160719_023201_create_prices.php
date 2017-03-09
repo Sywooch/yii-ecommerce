@@ -2,10 +2,9 @@
 
 use yii\db\Migration;
 
-class m160719_023201_create_prices extends Migration
-{
-    public function safeUp()
-    {
+class m160719_023201_create_prices extends Migration {
+
+    public function safeUp() {
         $this->createTable('prices', [
             'id' => $this->primaryKey(),
             'label' => $this->string()->notNull(),
@@ -26,8 +25,7 @@ class m160719_023201_create_prices extends Migration
         $this->addForeignKey('fk-products_prices-price_id-products-id', 'products_prices', 'price_id', 'prices', 'id', 'CASCADE');
     }
 
-    public function safeDown()
-    {
+    public function safeDown() {
         $this->dropForeignKey('fk-products_prices-product_id-products-id', 'products_prices');
         $this->dropForeignKey('fk-products_prices-price_id-products-id', 'products_prices');
 
@@ -36,4 +34,5 @@ class m160719_023201_create_prices extends Migration
         $this->dropForeignKey('fk-prices-auth_item_name-auth_item_name', 'prices');
         $this->dropTable('prices');
     }
+
 }

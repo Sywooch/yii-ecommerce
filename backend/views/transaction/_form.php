@@ -38,9 +38,9 @@ $this->registerJs('
 
 <div class="box box-primary transaction-form">
     <div class="box-body">
-    <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-    <?php Pjax::begin(['id' => 'account']) ?>
+        <?php Pjax::begin(['id' => 'account']) ?>
 
         <?= $form->field($model, 'type')->dropDownList(TransactionForm::getTypes()) ?>
 
@@ -66,14 +66,14 @@ $this->registerJs('
 
         <?php } ?>
 
-    <?php Pjax::end() ?>
+        <?php Pjax::end() ?>
 
-    <?=$form->field($model, 'description')->textarea() ?>
-        </div>
-        <div class="box-footer">
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= $form->field($model, 'description')->textarea() ?>
     </div>
+    <div class="box-footer">
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
     </div>
     <?php ActiveForm::end(); ?>
 

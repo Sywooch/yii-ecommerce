@@ -12,36 +12,34 @@ use yii\web\UploadedFile;
  * Class StorageForm
  * @package webdoka\yiiecommerce\common\forms
  */
-class StorageForm extends Storage
-{
+class StorageForm extends Storage {
+
     public
-        $country,
-        $city,
-        $address,
-        $iconImage;
+            $country,
+            $city,
+            $address,
+            $iconImage;
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return ArrayHelper::merge([
-            [['country', 'city', 'address'], 'required'],
-            [['address'], 'integer'],
-            [['country', 'city'], 'string', 'max' => 255],
-            [['iconImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
-        ], parent::rules());
+                    [['country', 'city', 'address'], 'required'],
+                    [['address'], 'integer'],
+                    [['country', 'city'], 'string', 'max' => 255],
+                    [['iconImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+                        ], parent::rules());
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'country' => Yii::t('shop','Country'),
-            'city' => Yii::t('shop','City'),
-            'street' => Yii::t('shop','Street'),
+            'country' => Yii::t('shop', 'Country'),
+            'city' => Yii::t('shop', 'City'),
+            'street' => Yii::t('shop', 'Street'),
             'name' => Yii::t('shop', 'Name'),
             'location_id' => Yii::t('shop', 'Location ID'),
             'schedule' => Yii::t('shop', 'Schedule'),
@@ -57,11 +55,10 @@ class StorageForm extends Storage
      * Uploads icon
      * @return bool
      */
-    public function upload()
-    {
+    public function upload() {
         if ($this->validate() && $this->iconImage) {
             $this->iconImage->saveAs(
-                Yii::getAlias('@webroot/uploads/' . $this->iconImage->baseName . '.' . $this->iconImage->extension)
+                    Yii::getAlias('@webroot/uploads/' . $this->iconImage->baseName . '.' . $this->iconImage->extension)
             );
             return true;
         } else {
@@ -73,8 +70,7 @@ class StorageForm extends Storage
      * Sets icon as instance
      * @return bool
      */
-    public function beforeValidate()
-    {
+    public function beforeValidate() {
         if (Yii::$app->request->isPost) {
             $this->iconImage = UploadedFile::getInstance($this, 'iconImage');
         }
@@ -87,8 +83,7 @@ class StorageForm extends Storage
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert)
-    {
+    public function beforeSave($insert) {
         if ($this->upload()) {
             $this->icon = $this->iconImage ? $this->iconImage->baseName . '.' . $this->iconImage->extension : null;
             return true;
@@ -101,13 +96,12 @@ class StorageForm extends Storage
      * Returns all countries
      * @return array
      */
-    public static function getCountries()
-    {
+    public static function getCountries() {
         return Location::find()
-            ->select('country')
-            ->indexBy('country')
-            ->orderBy(['country' => 'asc'])
-            ->column();
+                        ->select('country')
+                        ->indexBy('country')
+                        ->orderBy(['country' => 'asc'])
+                        ->column();
     }
 
     /**
@@ -115,14 +109,13 @@ class StorageForm extends Storage
      * @param $country
      * @return array
      */
-    public static function getCitiesByCountry($country)
-    {
+    public static function getCitiesByCountry($country) {
         return Location::find()
-            ->where(['country' => $country])
-            ->select('city')
-            ->indexBy('city')
-            ->orderBy(['city' => 'asc'])
-            ->column();
+                        ->where(['country' => $country])
+                        ->select('city')
+                        ->indexBy('city')
+                        ->orderBy(['city' => 'asc'])
+                        ->column();
     }
 
     /**
@@ -130,17 +123,16 @@ class StorageForm extends Storage
      * @param $country
      * @return array
      */
-    public static function getAddressByCountryAndCity($country, $city)
-    {
+    public static function getAddressByCountryAndCity($country, $city) {
         return Location::find()
-            ->where([
-                'country' => $country,
-                'city' => $city,
-            ])
-            ->select('address, id')
-            ->indexBy('id')
-            ->orderBy(['address' => 'asc'])
-            ->column();
+                        ->where([
+                            'country' => $country,
+                            'city' => $city,
+                        ])
+                        ->select('address, id')
+                        ->indexBy('id')
+                        ->orderBy(['address' => 'asc'])
+                        ->column();
     }
 
     /**
@@ -148,18 +140,18 @@ class StorageForm extends Storage
      * @param $country
      * @return array
      */
-    public static function getStoragesByCountryAndCity($country, $city)
-    {
+    public static function getStoragesByCountryAndCity($country, $city) {
         return Storage::find()
-            ->alias('t')
-            ->joinWith('location l')
-            ->where([
-                'l.country' => $country,
-                'l.city' => $city,
-            ])
-            ->select('t.name as tname, t.id as tid')
-            ->indexBy('tid')
-            ->orderBy(['tname' => 'asc'])
-            ->column();
+                        ->alias('t')
+                        ->joinWith('location l')
+                        ->where([
+                            'l.country' => $country,
+                            'l.city' => $city,
+                        ])
+                        ->select('t.name as tname, t.id as tid')
+                        ->indexBy('tid')
+                        ->orderBy(['tname' => 'asc'])
+                        ->column();
     }
+
 }

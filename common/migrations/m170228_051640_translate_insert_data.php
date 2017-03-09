@@ -2,16 +2,15 @@
 
 use yii\db\Migration;
 
-class m170228_051640_translate_insert_data extends Migration
-{
-    public function up()
-    {
+class m170228_051640_translate_insert_data extends Migration {
+
+    public function up() {
         $this->execute("TRUNCATE `translate_message`;");
         $this->execute("SET FOREIGN_KEY_CHECKS = 0;");
         $this->execute("TRUNCATE `translate_source_message`;");
         $this->execute("SET FOREIGN_KEY_CHECKS = 1;");
 
-$this->execute("INSERT INTO `translate_source_message` (`id`, `category`, `message`) VALUES
+        $this->execute("INSERT INTO `translate_source_message` (`id`, `category`, `message`) VALUES
 (1, 'shop', 'Your cart'),
 (2, 'shop', 'Summary'),
 (3, 'shop', 'Quantity'),
@@ -233,7 +232,7 @@ $this->execute("INSERT INTO `translate_source_message` (`id`, `category`, `messa
 (233, 'shop', 'for');");
 
 
-$this->execute("INSERT INTO `translate_message` (`id`, `language`, `translation`) VALUES
+        $this->execute("INSERT INTO `translate_message` (`id`, `language`, `translation`) VALUES
 (1, 'en', ''),
 (1, 'ru', 'Ваша корзина'),
 (2, 'en', ''),
@@ -672,12 +671,9 @@ $this->execute("INSERT INTO `translate_message` (`id`, `language`, `translation`
 (232, 'ru', 'Поставщика'),
 (233, 'en', ''),
 (233, 'ru', 'за');");
-
     }
 
-
-    public function down()
-    {
+    public function down() {
         $this->execute("TRUNCATE `translate_message`;");
         $this->execute("SET FOREIGN_KEY_CHECKS = 0;");
         $this->execute("TRUNCATE `translate_source_message`;");

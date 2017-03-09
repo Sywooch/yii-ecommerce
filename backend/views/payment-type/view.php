@@ -17,28 +17,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php if (Yii::$app->user->can(PaymentType::UPDATE_PAYMENT_TYPE)) { ?>
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?php } ?>
-            <?php if (Yii::$app->user->can(PaymentType::DELETE_PAYMENT_TYPE)) { ?>
-                <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
+        <?php } ?>
+        <?php if (Yii::$app->user->can(PaymentType::DELETE_PAYMENT_TYPE)) { ?>
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
                     'method' => 'post',
-                    ],
-                    ]) ?>
-                    <?php } ?>
+                ],
+            ])
+            ?>
+        <?php } ?>
 
-                </div>
-                <div class="box-body">       
+    </div>
+    <div class="box-body">       
 
-                    <?= DetailView::widget([
-                        'model' => $model,
-                        'attributes' => [
-                        'id',
-                        'name',
-                        'label',
-                        ],
-                        ]) ?>
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'name',
+                'label',
+            ],
+        ])
+        ?>
 
-                    </div>
-                </div>
+    </div>
+</div>

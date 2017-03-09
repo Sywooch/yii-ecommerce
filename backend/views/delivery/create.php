@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Delivery */
 
@@ -11,5 +10,5 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Deliveries'), 'url'
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-    <?= $this->render('_form', compact('model', 'url')) ?>
+<?= $this->render('_form', compact('model', 'url')) ?>
 

@@ -6,6 +6,7 @@ use yii\base\Widget;
 
 class CountryWidget extends Widget
 {
+
     public $cssClass;
 
     public function init()
@@ -20,4 +21,5 @@ class CountryWidget extends Widget
     {
         return $this->render('country', ['cssClass' => $this->cssClass]);
     }
+
 }

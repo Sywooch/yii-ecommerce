@@ -39,7 +39,7 @@ use webdoka\yiiecommerce\common\models\PaymentType;
     <?= $form->field($orderModel, 'payment_type_id')->dropDownList(PaymentType::find()->indexBy('id')->select('label')->column()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app','Create'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

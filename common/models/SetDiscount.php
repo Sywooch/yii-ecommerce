@@ -15,21 +15,19 @@ use webdoka\yiiecommerce\common\queries\SetDiscountQuery;
  * @property Discount $discount
  * @property Set $set
  */
-class SetDiscount extends \yii\db\ActiveRecord
-{
+class SetDiscount extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'sets_discounts';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['set_id', 'discount_id'], 'required'],
             [['set_id', 'discount_id'], 'integer'],
@@ -41,8 +39,7 @@ class SetDiscount extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'set_id' => Yii::t('shop', 'Set ID'),
@@ -53,16 +50,14 @@ class SetDiscount extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDiscount()
-    {
+    public function getDiscount() {
         return $this->hasOne(Discount::className(), ['id' => 'discount_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSet()
-    {
+    public function getSet() {
         return $this->hasOne(Set::className(), ['id' => 'set_id']);
     }
 
@@ -70,8 +65,8 @@ class SetDiscount extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return SetDiscountQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new SetDiscountQuery(get_called_class());
     }
+
 }

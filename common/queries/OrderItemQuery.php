@@ -9,10 +9,9 @@ use webdoka\yiiecommerce\common\models\OrderItem;
  *
  * @see OrderItem
  */
-class OrderItemQuery extends \yii\db\ActiveQuery
-{
-    public function noSet()
-    {
+class OrderItemQuery extends \yii\db\ActiveQuery {
+
+    public function noSet() {
         return $this->andWhere('order_set_id IS NULL');
     }
 
@@ -20,8 +19,7 @@ class OrderItemQuery extends \yii\db\ActiveQuery
      * @inheritdoc
      * @return OrderItem[]|array
      */
-    public function all($db = null)
-    {
+    public function all($db = null) {
         return parent::all($db);
     }
 
@@ -29,8 +27,8 @@ class OrderItemQuery extends \yii\db\ActiveQuery
      * @inheritdoc
      * @return OrderItem|array|null
      */
-    public function one($db = null)
-    {
+    public function one($db = null) {
         return parent::one($db);
     }
+
 }

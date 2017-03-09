@@ -9,19 +9,17 @@ use webdoka\yiiecommerce\common\models\Delivery;
  *
  * @see Delivery
  */
-class DeliveryQuery extends \yii\db\ActiveQuery
-{
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+class DeliveryQuery extends \yii\db\ActiveQuery {
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
      * @return Delivery[]|array
      */
-    public function all($db = null)
-    {
+    public function all($db = null) {
         return parent::all($db);
     }
 
@@ -29,8 +27,8 @@ class DeliveryQuery extends \yii\db\ActiveQuery
      * @inheritdoc
      * @return Delivery|array|null
      */
-    public function one($db = null)
-    {
+    public function one($db = null) {
         return parent::one($db);
     }
+
 }

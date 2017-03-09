@@ -21,7 +21,6 @@ use webdoka\yiiecommerce\common\models\ProductsOptionsPrices;
 /* @var $action string */
 /* @var $dataProvider \yii\data\ArrayDataProvider */
 /* @var $priceDataProvider \yii\data\ArrayDataProvider */
-
 use \yii\helpers\Url;
 
 $pjaxUrl = Url::to([$action]);
@@ -35,7 +34,7 @@ $this->registerJs('
    }); 
    ');
 
-if(!$model->isNewRecord){
+if (!$model->isNewRecord) {
 
     $this->registerJs('
 
@@ -44,16 +43,15 @@ if(!$model->isNewRecord){
         $(".nav-tabs a[href=\""+tabpage+"\"]").tab("show");
 
         ');
-}else{
+} else {
     $this->registerJs('
 
     $(document).on("click",".nav-tabs a[href=\"#options\"]", function(event, key) {
-        alert("'.Yii::t('shop', 'Create prduct first!').'");
+        alert("' . Yii::t('shop', 'Create prduct first!') . '");
         return false;
         });
 
         ');
-
 }
 
 $this->registerJs('
@@ -97,65 +95,68 @@ $this->registerJs('
 });
 
 ');
-
 ?>
 
 <div class="box box-primary">
     <div class="box-header with-border">
 
-<ul class="nav nav-tabs">
+        <ul class="nav nav-tabs">
 
-    <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?=Yii::t('shop', 'Product')?></a></li>
+            <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Product') ?></a></li>
 
-    <li class="<?= ($model->isNewRecord)?('disabled'):('');?>" role="presentation"><a href="#options" aria-controls="options" role="tab" <?= (!$model->isNewRecord)?('data-toggle="tab"'):('');?> ><?=Yii::t('shop', 'Product Options')?></a></li>
+            <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation"><a href="#options" aria-controls="options" role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Product Options') ?></a></li>
 
 
-</ul>
+        </ul>
     </div>
- <div class="box-body">
-<div class="tab-content" role="tablist">
+    <div class="box-body">
+        <div class="tab-content" role="tablist">
 
-    <div role="tabpanel" class="tab-pane fade in active" id="products">
+            <div role="tabpanel" class="tab-pane fade in active" id="products">
 
 
-        <div class="product-form">
+                <div class="product-form">
 
-            <?php $form = ActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin(); ?>
 
-            <?= Html::hiddenInput('action', $model->isNewRecord ? 'create' : 'update') ?>
+                    <?= Html::hiddenInput('action', $model->isNewRecord ? 'create' : 'update') ?>
 
-            <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
+                    <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
-            <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
+                    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
-            <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Unit::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
+                    <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Unit::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'price')->textInput() ?>
+                    <?= $form->field($model, 'price')->textInput() ?>
 
-            <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
+                    <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
 
-            <h2><?=Yii::t('shop', 'Prices')?></h2>
+                    <h2><?= Yii::t('shop', 'Prices') ?></h2>
 
-            <div class="well">
-                <?= ListView::widget([
-                    'itemView' => '_price',
-                    'dataProvider' => $priceDataProvider,
-                    'summary' => false,
-                    ]); ?>
-                </div>
+                    <div class="well">
+                        <?=
+                        ListView::widget([
+                            'itemView' => '_price',
+                            'dataProvider' => $priceDataProvider,
+                            'summary' => false,
+                        ]);
+                        ?>
+                    </div>
 
-                <h2><?=Yii::t('shop', 'Features')?></h2>
+                    <h2><?= Yii::t('shop', 'Features') ?></h2>
 
-                <div class="well">
-                    <?php Pjax::begin(['id' => 'features']) ?>
+                    <div class="well">
+                        <?php Pjax::begin(['id' => 'features']) ?>
 
-                    <?= ListView::widget([
-                        'itemView' => '_feature',
-                        'dataProvider' => $dataProvider,
-                        'summary' => false,
-                        ]); ?>
+                        <?=
+                        ListView::widget([
+                            'itemView' => '_feature',
+                            'dataProvider' => $dataProvider,
+                            'summary' => false,
+                        ]);
+                        ?>
 
                         <?php Pjax::end() ?>
                     </div>
@@ -173,40 +174,41 @@ $this->registerJs('
 
                 <div class="product-form">
 
-                    <h2><?=Yii::t('shop', 'Product Options')?></h2>
-                    <?= TreeView::widget([
-                    'query' => ProductsOptions::find()->addOrderBy('root, lft')->active(),
-                    'id'=>'products_options_product',
-                    'options'=>['id'=>'products_options_product','enctype' => 'multipart/form-data'],
-                    'nodeFormOptions'=>['enctype' => 'multipart/form-data'],
-                    'showCheckbox'=>true,
-                    'multiple'=>true,
-                    'value'=>ProductsOptions::CheckedTree($model->id),
-                    'showIDAttribute' => false,
-                    'nodeAddlViews' => [
-                    Module::VIEW_PART_2 => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_formnode'
-                    ],
-                    'nodeActions' => [
-                    Module::NODE_MANAGE => Url::to(['/treemanager/node/manage','id'=>$model->id]),
-                    Module::NODE_SAVE => Url::to(['/admin/shop/products-options/save/','pid'=>$model->id]),
-                    // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
-                    // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
-                    ],
-                    'headingOptions' => ['label' => 'Option'],
-                    'fontAwesome' => false,     // optional
-                    'isAdmin' => ProductsOptions::isAdminTree(),     // optional (toggle to enable admin mode)
-                    'displayValue' => 1,        // initial display value
-                    'softDelete' => true,       // defaults to true
-                    'cacheSettings' => [        
-                        'enableCache' => false   // defaults to true
-                    ],
-                ]);
-        ?>
+                    <h2><?= Yii::t('shop', 'Product Options') ?></h2>
+                    <?=
+                    TreeView::widget([
+                        'query' => ProductsOptions::find()->addOrderBy('root, lft')->active(),
+                        'id' => 'products_options_product',
+                        'options' => ['id' => 'products_options_product', 'enctype' => 'multipart/form-data'],
+                        'nodeFormOptions' => ['enctype' => 'multipart/form-data'],
+                        'showCheckbox' => true,
+                        'multiple' => true,
+                        'value' => ProductsOptions::CheckedTree($model->id),
+                        'showIDAttribute' => false,
+                        'nodeAddlViews' => [
+                            Module::VIEW_PART_2 => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_formnode'
+                        ],
+                        'nodeActions' => [
+                            Module::NODE_MANAGE => Url::to(['/treemanager/node/manage', 'id' => $model->id]),
+                            Module::NODE_SAVE => Url::to(['/admin/shop/products-options/save/', 'pid' => $model->id]),
+                        // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
+                        // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
+                        ],
+                        'headingOptions' => ['label' => 'Option'],
+                        'fontAwesome' => false, // optional
+                        'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
+                        'displayValue' => 1, // initial display value
+                        'softDelete' => true, // defaults to true
+                        'cacheSettings' => [
+                            'enableCache' => false   // defaults to true
+                        ],
+                    ]);
+                    ?>
 
+                </div>
+
+            </div>
+
+        </div>
     </div>
-
-</div>
-
-</div>
-</div>
 </div>

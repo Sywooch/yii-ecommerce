@@ -14,21 +14,19 @@ use webdoka\yiiecommerce\common\models\Cart as CartModel;
  * Class Cart
  * @package webdoka\yiiecommerce\common\components
  */
-class Cart extends Component
-{
+class Cart extends Component {
+
     const SETS = '_sets';
     const POSITIONS = '_positions';
 
     protected $_positions = [], $_sets = [];
-
     public $id = __CLASS__;
     public $session = 'session';
 
     /**
      * Init positions
      */
-    public function init()
-    {
+    public function init() {
         $this->loadFromSession();
     }
 
@@ -36,8 +34,7 @@ class Cart extends Component
      * Load positions from session by cart id
      * @throws \yii\base\InvalidConfigException
      */
-    public function loadFromSession()
-    {
+    public function loadFromSession() {
         // Default load from session
         $this->session = Instance::ensure($this->session, Session::className());
         if ($this->session[$this->id . self::POSITIONS]) {
@@ -59,15 +56,15 @@ class Cart extends Component
             }
 
             if (
-                empty($cart->productsNoSet) && !empty($this->_positions) ||
-                empty($cart->sets) && !empty($this->_sets)
+                    empty($cart->productsNoSet) && !empty($this->_positions) ||
+                    empty($cart->sets) && !empty($this->_sets)
             ) {
-                
+
                 // Sync session -> db
                 $this->saveToSession();
             } elseif (
-                !empty($cart->productsNoSet) && empty($this->_positions) ||
-                !empty($cart->sets) && empty($this->_sets)) {
+                    !empty($cart->productsNoSet) && empty($this->_positions) ||
+                    !empty($cart->sets) && empty($this->_sets)) {
 
                 // Sync db -> session
                 $this->_positions = [];
@@ -79,8 +76,8 @@ class Cart extends Component
                         $product->setQuantity($cartProduct->quantity);
                         $product->setOption_id($cartProduct->option_id);
 
-                        if (array_key_exists($product->id.$cartProduct->option_id, $this->_positions)) {
-                            $this->_positions[$product->id.$cartProduct->option_id] = $product;
+                        if (array_key_exists($product->id . $cartProduct->option_id, $this->_positions)) {
+                            $this->_positions[$product->id . $cartProduct->option_id] = $product;
                         }
                     }
                 }
@@ -102,8 +99,7 @@ class Cart extends Component
     /**
      * Save serialized positions to session
      */
-    public function saveToSession()
-    {
+    public function saveToSession() {
         // Default save to session
         $this->session[$this->id . self::POSITIONS] = serialize($this->_positions);
         $this->session[$this->id . self::SETS] = serialize($this->_sets);
@@ -117,7 +113,7 @@ class Cart extends Component
 
                 foreach ($this->_positions as $position) {
 
-                    $optid=$this->session[$position->id.'-optionid'];
+                    $optid = $this->session[$position->id . '-optionid'];
 
                     $cartProduct = new CartProduct();
                     $cartProduct->cart_id = $cart->id;
@@ -151,8 +147,7 @@ class Cart extends Component
      * Returns positions
      * @return array
      */
-    public function getPositions()
-    {
+    public function getPositions() {
         return $this->_positions;
     }
 
@@ -160,8 +155,7 @@ class Cart extends Component
      * Set positions filtered by instance of IPosition
      * @param $positions
      */
-    public function setPositions($positions)
-    {
+    public function setPositions($positions) {
         $this->_positions = array_filter($positions, function ($position) {
             return $position instanceof IPosition;
         });
@@ -173,8 +167,7 @@ class Cart extends Component
      * Returns sets
      * @return array
      */
-    public function getSets()
-    {
+    public function getSets() {
         return $this->_sets;
     }
 
@@ -182,8 +175,7 @@ class Cart extends Component
      * Set sets filtered by instance of IPosition
      * @param $sets
      */
-    public function setSets($sets)
-    {
+    public function setSets($sets) {
         $this->_sets = array_filter($sets, function ($position) {
             return $position instanceof IPosition;
         });
@@ -195,8 +187,7 @@ class Cart extends Component
      * Check on empty
      * @return bool
      */
-    public function getIsEmpty()
-    {
+    public function getIsEmpty() {
         return empty($this->_positions);
     }
 
@@ -204,8 +195,7 @@ class Cart extends Component
      * Returns count of positions
      * @return int
      */
-    public function getCount()
-    {
+    public function getCount() {
         $count = 0;
 
         foreach ($this->_positions as $position) {
@@ -220,13 +210,12 @@ class Cart extends Component
     /**
      * Returns summary cost of existing positions and sets
      */
-    public function getCost()
-    {
+    public function getCost() {
         $cost = 0;
 
         foreach ($this->_positions as $position) {
 
-            $cost += $position->getCostWithDiscounters($position->getQuantity(),$position->getOption_id());
+            $cost += $position->getCostWithDiscounters($position->getQuantity(), $position->getOption_id());
         }
 
         foreach ($this->_sets as $set) {
@@ -240,22 +229,20 @@ class Cart extends Component
      * Put position to cart, or increase existing quantity
      * @param IPosition $position
      */
-    public function put(IPosition $position)
-    {
+    public function put(IPosition $position) {
         $id = $position->getId();
-        $optid=$this->session[$position->id.'-optionid'];
+        $optid = $this->session[$position->id . '-optionid'];
 
         $position->setOption_id($optid);
 
         if ($position->getQuantity() == 0)
             $position->setQuantity(1);
 
-        if (isset($this->_positions[$id.$optid])){
-            $this->_positions[$id.$optid]->setQuantity($this->_positions[$id.$optid]->getQuantity() + $position->getQuantity());
-            $this->_positions[$id.$optid]->setOption_id((int)$optid);
-        }
-        else{
-            $this->_positions[$position->getId().$optid] = $position;
+        if (isset($this->_positions[$id . $optid])) {
+            $this->_positions[$id . $optid]->setQuantity($this->_positions[$id . $optid]->getQuantity() + $position->getQuantity());
+            $this->_positions[$id . $optid]->setOption_id((int) $optid);
+        } else {
+            $this->_positions[$position->getId() . $optid] = $position;
         }
 
         $this->saveToSession();
@@ -265,8 +252,7 @@ class Cart extends Component
      * Put position to cart, or increase existing quantity
      * @param Set $set
      */
-    public function putSet(Set $set)
-    {
+    public function putSet(Set $set) {
         $this->_sets[$set->tmpId] = $set;
 
         $this->saveToSession();
@@ -276,21 +262,19 @@ class Cart extends Component
      * If position quantity == 0, removes position, else updates this
      * @param IPosition $position
      */
-    public function update(IPosition $position)
-    {
+    public function update(IPosition $position) {
         if (!$position->getQuantity()) {
             $this->remove($position);
             return;
         }
-        $optid=$this->session[$position->id.'-optionid'];
+        $optid = $this->session[$position->id . '-optionid'];
         $position->setOption_id($optid);
 
-        if (isset($this->_positions[$position->getId().$optid])){
-            $this->_positions[$position->getId().$optid]->setQuantity($position->getQuantity());
-            $this->_positions[$position->getId().$optid]->setOption_id((int)$optid);
-        }
-        else{
-            $this->_positions[$position->getId().$optid] = $position;
+        if (isset($this->_positions[$position->getId() . $optid])) {
+            $this->_positions[$position->getId() . $optid]->setQuantity($position->getQuantity());
+            $this->_positions[$position->getId() . $optid]->setOption_id((int) $optid);
+        } else {
+            $this->_positions[$position->getId() . $optid] = $position;
         }
 
         $this->saveToSession();
@@ -300,67 +284,61 @@ class Cart extends Component
      * If position quantity == 0, removes position, else updates this
      * @param IPosition $position
      */
-    public function updateopt(IPosition $position,$option,$oldoption,$quant)
-    {
+    public function updateopt(IPosition $position, $option, $oldoption, $quant) {
 
 
         $id = $position->getId();
 
         $position->setOption_id($option);
-        $position->setQuantity((int)$quant);
+        $position->setQuantity((int) $quant);
 
-        if (isset($this->_positions[$id.$oldoption]) && isset($this->_positions[$id.$option])){
-            $this->_positions[$id.$option]->setQuantity($this->_positions[$id.$option]->getQuantity() + (int)$quant);
-            $this->_positions[$id.$option]->setOption_id((int)$option);
-            $this->remove($position,$oldoption);
-        }else{
-            $this->remove($position,$oldoption);
-            if (isset($this->_positions[$id.$option])){
-                $this->_positions[$id.$option]->setQuantity((int)$quant);
-                $this->_positions[$id.$option]->setOption_id((int)$option);
-            }else{
-                $this->_positions[$position->getId().$option] = $position;
+        if (isset($this->_positions[$id . $oldoption]) && isset($this->_positions[$id . $option])) {
+            $this->_positions[$id . $option]->setQuantity($this->_positions[$id . $option]->getQuantity() + (int) $quant);
+            $this->_positions[$id . $option]->setOption_id((int) $option);
+            $this->remove($position, $oldoption);
+        } else {
+            $this->remove($position, $oldoption);
+            if (isset($this->_positions[$id . $option])) {
+                $this->_positions[$id . $option]->setQuantity((int) $quant);
+                $this->_positions[$id . $option]->setOption_id((int) $option);
+            } else {
+                $this->_positions[$position->getId() . $option] = $position;
             }
         }
 
         $this->saveToSession();
     }
 
-
     /**
      * Remove position
      * @param IPosition $position
      */
-    public function remove(IPosition $position,$optionid)
-    {
-        $this->removeById($position->getId(),$optionid);
+    public function remove(IPosition $position, $optionid) {
+        $this->removeById($position->getId(), $optionid);
     }
 
     /**
      * Remove position by id
      * @param $id
      */
-    public function removeById($id,$optionid)
-    {
+    public function removeById($id, $optionid) {
 
-        if($optionid != null){
-            $optid=$optionid;
-        }else{
-            $optid=0;
+        if ($optionid != null) {
+            $optid = $optionid;
+        } else {
+            $optid = 0;
         }
 
-        if (array_key_exists($id.$optid, $this->_positions)) {
-            unset($this->_positions[$id.$optid]);
+        if (array_key_exists($id . $optid, $this->_positions)) {
+            unset($this->_positions[$id . $optid]);
             $this->saveToSession();
         }
-
     }
 
     /**
      * @param $id
      */
-    public function removeSetById($id)
-    {
+    public function removeSetById($id) {
         if (array_key_exists($id, $this->_sets)) {
             unset($this->_sets[$id]);
             $this->saveToSession();
@@ -370,8 +348,7 @@ class Cart extends Component
     /**
      * Remove all positions and sets
      */
-    public function removeAll()
-    {
+    public function removeAll() {
         $this->_positions = [];
         $this->_sets = [];
 
@@ -382,8 +359,7 @@ class Cart extends Component
      * Return hash of cart, that's can be useful for detecting of cart changes
      * @return string
      */
-    public function getHash()
-    {
+    public function getHash() {
         $data = [];
 
         foreach ($this->_positions as $position)
@@ -394,4 +370,5 @@ class Cart extends Component
 
         return md5(serialize($data));
     }
+
 }

@@ -14,27 +14,25 @@ use webdoka\yiiecommerce\common\queries\CountryQuery;
  * @property integer $exists_tax
  * @property double $tax
  */
-class Country extends \yii\db\ActiveRecord
-{
+class Country extends \yii\db\ActiveRecord {
+
     const LIST_COUNTRY = 'shopListCountry';
     const VIEW_COUNTRY = 'shopViewCountry';
     const CREATE_COUNTRY = 'shopCreateCountry';
     const UPDATE_COUNTRY = 'shopUpdateCountry';
     const DELETE_COUNTRY = 'shopDeleteCountry';
-    
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'countries';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'abbr'], 'required'],
             [['exists_tax'], 'integer'],
@@ -47,8 +45,7 @@ class Country extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'name' => Yii::t('shop', 'Name'),
@@ -62,8 +59,8 @@ class Country extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return CountryQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new CountryQuery(get_called_class());
     }
+
 }

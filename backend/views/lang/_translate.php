@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use webdoka\yiiecommerce\common\models\Lang;
 
 /* @var $model \webdoka\yiiecommerce\common\models\Feature */
-
 ?>
 <div class="form-group">
     <div class="row">

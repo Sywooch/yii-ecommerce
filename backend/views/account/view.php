@@ -17,50 +17,56 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Account::UPDATE_ACCOUNT)) { ?>
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?php } ?>
-            <?php if (Yii::$app->user->can(Account::DELETE_ACCOUNT)) { ?>
-                <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
+        <?php } ?>
+        <?php if (Yii::$app->user->can(Account::DELETE_ACCOUNT)) { ?>
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
                     'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
-                    ],
-                    ]) ?>
-                    <?php } ?>
-                </div>
-                <div class="box-body">
-                    <?= DetailView::widget([
-                        'model' => $model,
-                        'attributes' => [
-                        'id',
-                        'name',
-                        'balance',
-                        'currency.symbol',
-                        'profile.user.username',
-                        'default',
-                        ],
-                        ]) ?>
+                ],
+            ])
+            ?>
+        <?php } ?>
+    </div>
+    <div class="box-body">
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'name',
+                'balance',
+                'currency.symbol',
+                'profile.user.username',
+                'default',
+            ],
+        ])
+        ?>
 
-                        <div class="well">
-                            <h2><?= Yii::t('shop', 'Transactions')?></h2>
+        <div class="well">
+            <h2><?= Yii::t('shop', 'Transactions') ?></h2>
 
-                            <?= GridView::widget([
-                                'dataProvider' => $dataProvider,
-                                'summaryOptions' => ['class' => 'well'],
-                                'columns' => [
-                                'id',
-                                'type',
-                                'amount',
-                                'description',
-                                'created_at:datetime',
-                                'updated_at:datetime',
-                                'account.name',
-                                'transaction.id:text:Rollback transaction',
-                                ]
-                                ]) ?>
-                            </div>
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'summaryOptions' => ['class' => 'well'],
+                'columns' => [
+                    'id',
+                    'type',
+                    'amount',
+                    'description',
+                    'created_at:datetime',
+                    'updated_at:datetime',
+                    'account.name',
+                    'transaction.id:text:Rollback transaction',
+                ]
+            ])
+            ?>
+        </div>
 
-                        </div>
+    </div>
 
-                    </div>
+</div>
 

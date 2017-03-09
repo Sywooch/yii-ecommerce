@@ -17,21 +17,19 @@ use Yii;
  * @property Product $order
  * @property Order $order0
  */
-class OrderItem extends \yii\db\ActiveRecord
-{
+class OrderItem extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'order_items';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['order_id', 'product_id', 'quantity'], 'integer'],
             [['product_id'], 'exist', 'skipOnError' => false, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
@@ -42,8 +40,7 @@ class OrderItem extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'order_id' => Yii::t('shop', 'Order ID'),
@@ -55,24 +52,21 @@ class OrderItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder()
-    {
+    public function getOrder() {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderSet()
-    {
+    public function getOrderSet() {
         return $this->hasOne(OrderSet::className(), ['id' => 'order_set_id']);
     }
 
@@ -80,8 +74,8 @@ class OrderItem extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return OrderItemQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new OrderItemQuery(get_called_class());
     }
+
 }

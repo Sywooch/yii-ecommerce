@@ -7,31 +7,29 @@ use webdoka\yiiecommerce\common\models\SetProduct;
 use yii\helpers\ArrayHelper;
 use Yii;
 
-class SetConfigForm extends Set
-{
+class SetConfigForm extends Set {
+
     public $_relSetsProducts = [];
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return ArrayHelper::merge([
-            ['relSetsProducts', 'validateSetsProducts'],
-        ], parent::rules());
+                    ['relSetsProducts', 'validateSetsProducts'],
+                        ], parent::rules());
     }
 
-    public function validateSetsProducts()
-    {
+    public function validateSetsProducts() {
         foreach ($this->_relSetsProducts as $i => $relSetProduct) {
             if (!$setProduct = SetProduct::find()->where([
-                'set_id' => $relSetProduct['set_id'],
-                'product_id' => $relSetProduct['product_id']
-            ])->one()) {
-                $this->addError('relSetsProducts[' . $i . '][set_id]', Yii::t('shop','SetProduct not found.'));
+                        'set_id' => $relSetProduct['set_id'],
+                        'product_id' => $relSetProduct['product_id']
+                    ])->one()) {
+                $this->addError('relSetsProducts[' . $i . '][set_id]', Yii::t('shop', 'SetProduct not found.'));
             } else {
                 if ($setProduct->quantity > $relSetProduct['quantity']) {
-                    $this->addError('relSetsProducts[' . $i . '][quantity]', Yii::t('shop','Quantity must be equal or more then') . ' ' . $setProduct->quantity . '.');
+                    $this->addError('relSetsProducts[' . $i . '][quantity]', Yii::t('shop', 'Quantity must be equal or more then') . ' ' . $setProduct->quantity . '.');
                 }
             }
         }
@@ -40,19 +38,17 @@ class SetConfigForm extends Set
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return ArrayHelper::merge([
-            'relSetsProducts' => Yii::t('shop','Products'),
-        ], parent::attributeLabels());
+                    'relSetsProducts' => Yii::t('shop', 'Products'),
+                        ], parent::attributeLabels());
     }
 
     /**
      * Buffer variable for related setsProducts.
      * @return array
      */
-    public function getRelSetsProducts()
-    {
+    public function getRelSetsProducts() {
         return $this->_relSetsProducts;
     }
 
@@ -60,8 +56,8 @@ class SetConfigForm extends Set
      * Set related setsProducts
      * @param $setsProducts
      */
-    public function setRelSetsProducts($setsProducts)
-    {
+    public function setRelSetsProducts($setsProducts) {
         $this->_relSetsProducts = $setsProducts;
     }
+
 }

@@ -1,91 +1,84 @@
-<?php 
+<?php
+
 use webdoka\yiiecommerce\common\models\Lang;
-use webdoka\yiiecommerce\common\models\TranslateDynamicText;      
+use webdoka\yiiecommerce\common\models\TranslateDynamicText;
 ?>
 
 <div class="box box-widget collapsed-box">
 
 
-  <div class="box-tools pull-right">
-    <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-plus"></i> <?=Yii::t('shop', 'Translate')?>
-    </button>
-</div>
-<!-- /.box-tools -->
+    <div class="box-tools pull-right">
+        <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-plus"></i> <?= Yii::t('shop', 'Translate') ?>
+        </button>
+    </div>
+    <!-- /.box-tools -->
 
-<!-- /.box-header -->
-<div class="box-body" style="display: none;">
+    <!-- /.box-header -->
+    <div class="box-body" style="display: none;">
 
-    <?php $langs=Lang::find()->all();?>
+        <?php $langs = Lang::find()->all(); ?>
 
-    <?php foreach ($langs as $key => $lang): ?>
+        <?php foreach ($langs as $key => $lang): ?>
 
-        <?php 
+            <?php
+            $translate = TranslateDynamicText::find()->where(['itemID' => $model->id])->andWhere(['modelID' => get_class($model)])->andWhere(['lang' => $lang->url])->one();
 
-        $translate = TranslateDynamicText::find()->where(['itemID'=>$model->id])->andWhere(['modelID'=>get_class($model)])->andWhere(['lang'=>$lang->url])->one();
+            $value = '';
 
-        $value='';
+            if ($translate != null) {
 
-        if($translate != null){
+                if ($field == 'name') {
 
-            if($field == 'name'){
+                    if ($translate->name) {
+                        $value = $translate->name;
+                    } else {
+                        $value = '';
+                    }
 
-                if($translate->name){
-                    $value = $translate->name;
-                }else{
-                    $value = '';
+                    echo $form->field($model, "[$lang->url]" . $attr)->textInput(['value' => $value])->label(Yii::t('shop', ucfirst($attr)) . ' ' . $lang->name);
                 }
 
-                echo $form->field($model, "[$lang->url]".$attr)->textInput(['value'=>$value])->label(Yii::t('shop', ucfirst($attr)).' '.$lang->name);
+                if ($field == 'description') {
 
-            }
+                    if ($translate->description) {
+                        $value = $translate->description;
+                    } else {
+                        $value = '';
+                    }
 
-            if($field == 'description'){
+                    if ($formtype == 'string') {
+                        echo $form->field($model, "[$lang->url]" . $attr)->textInput(['value' => $value])->label(Yii::t('shop', ucfirst($attr)) . ' ' . $lang->name);
+                    }
 
-                if($translate->description){
-                    $value = $translate->description;
-                }else{
-                    $value = '';
+                    if ($formtype == 'text') {
+                        echo $form->field($model, "[$lang->url]" . $attr)->textarea(['rows' => '6', 'value' => $value])->label(Yii::t('shop', ucfirst($attr)) . ' ' . $lang->name);
+                    }
                 }
 
-                if($formtype == 'string'){
-                  echo $form->field($model, "[$lang->url]".$attr)->textInput(['value'=>$value])->label(Yii::t('shop', ucfirst($attr)).' '.$lang->name);
-              }
+                if ($field == 'short_description') {
 
-              if($formtype == 'text'){
-                  echo $form->field($model, "[$lang->url]".$attr)->textarea(['rows' => '6','value'=>$value])->label(Yii::t('shop', ucfirst($attr)).' '.$lang->name);
-              }
-          }
+                    if ($translate->short_description) {
+                        $value = $translate->short_description;
+                    } else {
+                        $value = '';
+                    }
 
-          if($field == 'short_description'){
+                    if ($formtype == 'string') {
 
-            if($translate->short_description){
-                $value = $translate->short_description;
-            }else{
-                $value = '';
+                        echo $form->field($model, "[$lang->url]" . $attr)->textInput(['value' => $value])->label(Yii::t('shop', ucfirst($attr)) . ' ' . $lang->name);
+                    }
+
+                    if ($formtype == 'text') {
+
+                        echo $form->field($model, "[$lang->url]" . $attr)->textarea(['rows' => '6', 'value' => $value])->label(Yii::t('shop', ucfirst($attr)) . ' ' . $lang->name);
+                    }
+                }
+            } else {
+
+                echo $form->field($model, "[$lang->url]" . $attr)->textInput(['value' => ''])->label(Yii::t('shop', ucfirst($attr)) . ' ' . $lang->name);
             }
-
-            if($formtype == 'string'){
-
-              echo $form->field($model, "[$lang->url]".$attr)->textInput(['value'=>$value])->label(Yii::t('shop', ucfirst($attr)).' '.$lang->name);
-
-          }
-
-          if($formtype == 'text'){
-
-              echo $form->field($model, "[$lang->url]".$attr)->textarea(['rows' => '6','value'=>$value])->label(Yii::t('shop', ucfirst($attr)).' '.$lang->name);
-          }
-
-      }
-
-
-
-  }else{
-
-      echo $form->field($model, "[$lang->url]".$attr)->textInput(['value'=>''])->label(Yii::t('shop', ucfirst($attr)).' '.$lang->name);
-  }
-
-  ?>
-<?php endforeach ?>
-</div>
-<!-- /.box-body -->
+            ?>
+        <?php endforeach ?>
+    </div>
+    <!-- /.box-body -->
 </div>

@@ -15,21 +15,19 @@ use webdoka\yiiecommerce\common\queries\ProductDiscountQuery;
  * @property Discount $discount
  * @property Product $product
  */
-class ProductDiscount extends \yii\db\ActiveRecord
-{
+class ProductDiscount extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'products_discounts';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['product_id', 'discount_id'], 'required'],
             [['product_id', 'discount_id'], 'integer'],
@@ -41,8 +39,7 @@ class ProductDiscount extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'product_id' => Yii::t('shop', 'Product ID'),
@@ -53,16 +50,14 @@ class ProductDiscount extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDiscount()
-    {
+    public function getDiscount() {
         return $this->hasOne(Discount::className(), ['id' => 'discount_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
@@ -70,8 +65,8 @@ class ProductDiscount extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return ProductDiscountQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new ProductDiscountQuery(get_called_class());
     }
+
 }

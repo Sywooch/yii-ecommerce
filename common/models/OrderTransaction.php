@@ -15,21 +15,19 @@ use webdoka\yiiecommerce\common\queries\OrderTransactionQuery;
  * @property Transaction $transaction
  * @property Order $order
  */
-class OrderTransaction extends \yii\db\ActiveRecord
-{
+class OrderTransaction extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'orders_transactions';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['order_id', 'transaction_id'], 'required'],
             [['order_id', 'transaction_id'], 'integer'],
@@ -41,8 +39,7 @@ class OrderTransaction extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'order_id' => Yii::t('shop', 'Order ID'),
@@ -53,16 +50,14 @@ class OrderTransaction extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTransaction()
-    {
+    public function getTransaction() {
         return $this->hasOne(Transaction::className(), ['id' => 'transaction_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder()
-    {
+    public function getOrder() {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
@@ -70,8 +65,8 @@ class OrderTransaction extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return OrderTransactionQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new OrderTransactionQuery(get_called_class());
     }
+
 }

@@ -15,14 +15,14 @@ use webdoka\yiiecommerce\backend\widgets\Translateform;
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-        <?= Translateform::widget(['form'=>$form,'model'=>$model,'attr'=>'name']); ?>
+        <?= Translateform::widget(['form' => $form, 'model' => $model, 'attr' => 'name']); ?>
 
-</div>
-<div class="box-footer">
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-</div>
-<?php ActiveForm::end(); ?>
+    <div class="box-footer">
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+    </div>
+    <?php ActiveForm::end(); ?>
 
 </div>

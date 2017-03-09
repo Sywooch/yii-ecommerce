@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use webdoka\yiiecommerce\common\models\Lang;
 use webdoka\yiiecommerce\common\models\TranslateSourceMessage;
+
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -17,79 +18,73 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->user->can(Lang::CREATE_LANG)) { ?>
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Translation'), ['trcreate'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-      </div>
+    </div>
     <div class="box-body">  
 
-<?php 
-$cheklang=[];
-$alllang=Lang::find()->all();
+        <?php
+        $cheklang = [];
+        $alllang = Lang::find()->all();
 
-foreach ($alllang as $value) {
+        foreach ($alllang as $value) {
 
-    $cheklang[]=$value->url;
-}
+            $cheklang[] = $value->url;
+        }
 
-Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        Pjax::begin();
+        ?>    <?=
+        GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'category',
+                'message',
+                [
+                    'attribute' => Yii::t('shop', 'Translations'),
+                    'format' => 'raw',
+                    'value' => function ($model) use ($cheklang) {
+                        $trdata = '';
+                        foreach ($model->translateMessages as $data) {
+                            if (in_array($data->language, $cheklang)) {
 
-            'category',
-            'message',
-            [
-                'attribute' => Yii::t('shop', 'Translations'),
-                'format' => 'raw',
-                'value' => function ($model) use ($cheklang) {
-                    $trdata='';
-                    foreach ($model->translateMessages as $data){
-                        if(in_array($data->language,$cheklang)){
+                                $trdata .= '<p>' . $data->language . ' - ' . $data->translation . '</p>';
+                            }
+                        }
 
-                        $trdata .= '<p>'.$data->language.' - '. $data->translation.'</p>';
-
-                    }
-
-                    }
-
-                    return $trdata;
-                },
-            ],            
-
-                        [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete}',
-                'buttons' => [
-
-                    'view' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Lang::UPDATE_LANG) ?
-                            Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/admin/shop/lang/trview','id'=>$model->id], [
-                                'title' => Yii::t('yii', 'View'),
-                            ]) : '';
+                        return $trdata;
                     },
-
-
-                    'update' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Lang::UPDATE_LANG) ?
-                            Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/admin/shop/lang/trupdate','id'=>$model->id], [
-                                'title' => Yii::t('yii', 'Update'),
-                            ]) : '';
-                    },
-
-                    'delete' => function ($url, $model, $key) {
-                        return Yii::$app->user->can(Lang::UPDATE_LANG) ?
-                            Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/admin/shop/lang/trdelete','id'=>$model->id], [
-                                'title' => Yii::t('yii', 'Delete'),
-                                'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
-                                'data-method' => 'post',                                
-                            ]) : '';
-                    },
-
-
                 ],
-            ],
-        ],
-    ]); ?>
-<?php Pjax::end(); ?>
-</div>
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view} {update} {delete}',
+                    'buttons' => [
+
+                        'view' => function ($url, $model, $key) {
+                            return Yii::$app->user->can(Lang::UPDATE_LANG) ?
+                                    Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/admin/shop/lang/trview', 'id' => $model->id], [
+                                        'title' => Yii::t('yii', 'View'),
+                                    ]) : '';
+                        },
+                                'update' => function ($url, $model, $key) {
+                            return Yii::$app->user->can(Lang::UPDATE_LANG) ?
+                                    Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/admin/shop/lang/trupdate', 'id' => $model->id], [
+                                        'title' => Yii::t('yii', 'Update'),
+                                    ]) : '';
+                        },
+                                'delete' => function ($url, $model, $key) {
+                            return Yii::$app->user->can(Lang::UPDATE_LANG) ?
+                                    Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/admin/shop/lang/trdelete', 'id' => $model->id], [
+                                        'title' => Yii::t('yii', 'Delete'),
+                                        'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                                        'data-method' => 'post',
+                                    ]) : '';
+                        },
+                            ],
+                        ],
+                    ],
+                ]);
+                ?>
+                <?php Pjax::end(); ?>
+    </div>
 
 </div>

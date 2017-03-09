@@ -11,24 +11,24 @@ use webdoka\yiiecommerce\common\models\Property;
 <div class="box box-primary property-form">
     <div class="box-body">
 
-    <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->dropDownList(Property::getTypes()) ?>
+        <?= $form->field($model, 'type')->dropDownList(Property::getTypes()) ?>
 
-    <?= $form->field($model, 'profile_type')->dropDownList(Property::getProfileTypes()) ?>
+        <?= $form->field($model, 'profile_type')->dropDownList(Property::getProfileTypes()) ?>
 
-    <?= $form->field($model, 'required')->checkbox() ?>
+        <?= $form->field($model, 'required')->checkbox() ?>
 
+    </div>
+    <div class="box-footer">
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         </div>
-        <div class="box-footer">
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-            </div>
-        </div>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div>

@@ -21,19 +21,21 @@ use yii\helpers\ArrayHelper;
 
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'relFeatures')->dropDownList(
-                ArrayHelper::map(Feature::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'), [
+            <?=
+            $form->field($model, 'relFeatures')->dropDownList(
+                    ArrayHelper::map(Feature::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'), [
                 'class' => 'form-control',
                 'multiple' => true,
-                ]) ?>
-            </div> 
-        </div>
-        <div class="box-footer">
-            <div class="form-group">
-                <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-            </div>
-        </div>
-        <?php ActiveForm::end(); ?>
-
+            ])
+            ?>
+        </div> 
     </div>
+    <div class="box-footer">
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+    </div>
+    <?php ActiveForm::end(); ?>
+
+</div>
 

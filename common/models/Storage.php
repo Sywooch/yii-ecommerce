@@ -20,27 +20,25 @@ use Yii;
  * @property Delivery[] $deliveries
  * @property Location $location
  */
-class Storage extends UidModel
-{
+class Storage extends UidModel {
+
     const LIST_STORAGE = 'shopListStorage';
     const VIEW_STORAGE = 'shopViewStorage';
     const CREATE_STORAGE = 'shopCreateStorage';
     const UPDATE_STORAGE = 'shopUpdateStorage';
     const DELETE_STORAGE = 'shopDeleteStorage';
-    
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'storages';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'location_id', 'schedule'], 'required'],
             [['location_id'], 'integer'],
@@ -53,8 +51,7 @@ class Storage extends UidModel
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'uid' => Yii::t('shop', 'Uid'),
@@ -71,16 +68,14 @@ class Storage extends UidModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDeliveries()
-    {
+    public function getDeliveries() {
         return $this->hasMany(Delivery::className(), ['storage_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLocation()
-    {
+    public function getLocation() {
         return $this->hasOne(Location::className(), ['id' => 'location_id']);
     }
 
@@ -88,13 +83,12 @@ class Storage extends UidModel
      * @inheritdoc
      * @return StorageQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new StorageQuery(get_called_class());
     }
 
-    public function getIconUrl()
-    {
+    public function getIconUrl() {
         return Yii::getAlias('@web') . '/uploads/' . $this->icon;
     }
+
 }

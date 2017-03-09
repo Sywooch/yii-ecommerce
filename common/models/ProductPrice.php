@@ -16,21 +16,19 @@ use webdoka\yiiecommerce\common\queries\ProductPriceQuery;
  * @property Price $price
  * @property Product $product
  */
-class ProductPrice extends \yii\db\ActiveRecord
-{
+class ProductPrice extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'products_prices';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['product_id', 'price_id'], 'required'],
             [['product_id', 'price_id'], 'integer'],
@@ -43,8 +41,7 @@ class ProductPrice extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('shop', 'ID'),
             'product_id' => Yii::t('shop', 'Product ID'),
@@ -56,16 +53,14 @@ class ProductPrice extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPrice()
-    {
+    public function getPrice() {
         return $this->hasOne(Price::className(), ['id' => 'price_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
@@ -73,8 +68,8 @@ class ProductPrice extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return ProductPriceQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new ProductPriceQuery(get_called_class());
     }
+
 }

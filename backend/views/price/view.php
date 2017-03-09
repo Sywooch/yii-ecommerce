@@ -15,29 +15,33 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Price::UPDATE_PRICE)) { ?>
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?php } ?>
-            <?php if (Yii::$app->user->can(Price::DELETE_PRICE)) { ?>
-                <?= Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
-                    'data' => [
+        <?php } ?>
+        <?php if (Yii::$app->user->can(Price::DELETE_PRICE)) { ?>
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
                     'method' => 'post',
-                    ],
-                    ]) ?>
-                    <?php } ?>
-                </div>
-                <div class="box-body">       
+                ],
+            ])
+            ?>
+        <?php } ?>
+    </div>
+    <div class="box-body">       
 
 
-                    <?= DetailView::widget([
-                        'model' => $model,
-                        'attributes' => [
-                        'id',
-                        'label',
-                        'name',
-                        'auth_item_name',
-                        ],
-                        ]) ?>
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'label',
+                'name',
+                'auth_item_name',
+            ],
+        ])
+        ?>
 
-                    </div>
-                </div>
+    </div>
+</div>
