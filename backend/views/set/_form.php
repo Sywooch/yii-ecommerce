@@ -36,9 +36,6 @@ $this->registerJs('
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-        <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
 
         <h2><?= Yii::t('shop', 'Discounts') ?></h2>
 
@@ -78,7 +75,12 @@ $this->registerJs('
 
 <?php } ?>
 
+
         </div>
+
+         <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>       
 
 <?php ActiveForm::end(); ?>
 

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Feature;
+use webdoka\yiiecommerce\common\models\Category;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -13,9 +14,24 @@ use yii\helpers\ArrayHelper;
     <div class="box-body">
         <div class="category-form">
 
-            <?php $form = ActiveForm::begin(); ?>
+            <?php $form = ActiveForm::begin();
 
-            <?= $form->field($model, 'parent_id')->textInput() ?>
+if($model->isNewRecord){
+
+    $parent=Category::find()->all();
+
+}else{
+    
+    $parent=Category::find()->andWhere(['<>','id',$model->id])->all();
+}
+
+            ?>
+
+            <?=
+                $form->field($model, 'parent_id')->dropDownList(
+                ArrayHelper::map($parent, 'id', 'name'), ['prompt' => Yii::t('shop', 'Choose Category')]
+                )
+            ?>
 
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

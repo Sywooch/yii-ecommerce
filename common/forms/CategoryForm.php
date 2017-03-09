@@ -16,7 +16,7 @@ class CategoryForm extends Category {
      */
     public function rules() {
         return ArrayHelper::merge([
-                    ['relFeatures', 'each', 'rule' => ['integer'], 'skipOnEmpty' => false, 'message' => 'Specify Feature']
+                    ['relFeatures', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => 'Specify Feature']
                         ], parent::rules());
     }
 
@@ -51,6 +51,7 @@ class CategoryForm extends Category {
      * @return bool
      */
     public function beforeSave($insert) {
+
         if (parent::beforeSave($insert)) {
             $this->saveFeaturesToRelation();
             return true;
@@ -65,6 +66,8 @@ class CategoryForm extends Category {
     private function saveFeaturesToRelation() {
         $features = [];
 
+    if(!empty($this->_relFeatures)){
+        
         foreach ($this->_relFeatures as $relFeature) {
             if ($feature = Feature::findOne($relFeature)) {
                 $features[] = $feature;
@@ -72,6 +75,7 @@ class CategoryForm extends Category {
         }
 
         $this->populateRelation('features', $features);
+    }
     }
 
 }

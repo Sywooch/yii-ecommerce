@@ -104,7 +104,12 @@ $this->registerJs('
 
             <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Product') ?></a></li>
 
+            <li role="presentation"><a href="#characteristics" aria-controls="characteristics" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Сharacteristics') ?></a></li>            
+
+            <li role="presentation"><a href="#prices" aria-controls="prices" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Prices') ?></a></li>
+
             <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation"><a href="#options" aria-controls="options" role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Product Options') ?></a></li>
+
 
 
         </ul>
@@ -123,29 +128,27 @@ $this->registerJs('
 
                     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>                   
+
                     <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
+
+
+                       <div class="form-group">
+                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                    </div>
+
+                </div>
+
+            </div> 
+
+
+<div role="tabpanel" class="tab-pane fade in" id="characteristics">
+
 
                     <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Unit::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
-                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'price')->textInput() ?>
-
-                    <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
-
-                    <h2><?= Yii::t('shop', 'Prices') ?></h2>
-
-                    <div class="well">
-                        <?=
-                        ListView::widget([
-                            'itemView' => '_price',
-                            'dataProvider' => $priceDataProvider,
-                            'summary' => false,
-                        ]);
-                        ?>
-                    </div>
-
-                    <h2><?= Yii::t('shop', 'Features') ?></h2>
+                    <label><?= Yii::t('shop', 'Features') ?></label>
 
                     <div class="well">
                         <?php Pjax::begin(['id' => 'features']) ?>
@@ -161,20 +164,57 @@ $this->registerJs('
                         <?php Pjax::end() ?>
                     </div>
 
-                    <div class="form-group">
+
+                       <div class="form-group">
+                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                    </div>              
+
+        </div> 
+
+
+
+        <div role="tabpanel" class="tab-pane fade in" id="prices">
+
+                    <label><?= Yii::t('shop', 'Prices') ?></label>
+
+                    <div class="well">
+                       <?= $form->field($model, 'price',[
+                        'template' => "<div class='form-group'>
+                        <div class='row'>
+                            <div class='col-xs-2'>{label} </div>
+                            <div class='col-xs-10'>{input}\n{hint}\n{error}
+                            </div>
+                        </div>
+                    </div>"
+                    ])->textInput() ?>
+                        <?=
+                        ListView::widget([
+                            'itemView' => '_price',
+                            'dataProvider' => $priceDataProvider,
+                            'summary' => false,
+                        ]);
+                        ?>
+                    </div>
+
+                    <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
+
+
+                       <div class="form-group">
                         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                     </div>
 
-                    <?php ActiveForm::end(); ?>
-                </div>
+                    <?php ActiveForm::end(); ?>                 
 
-            </div>  
+</div>  
+
+
+
 
             <div role="tabpanel" class="tab-pane fade" id="options">
 
                 <div class="product-form">
 
-                    <h2><?= Yii::t('shop', 'Product Options') ?></h2>
+                    <label><?= Yii::t('shop', 'Product Options') ?></label>
                     <?=
                     TreeView::widget([
                         'query' => ProductsOptions::find()->addOrderBy('root, lft')->active(),
@@ -211,4 +251,5 @@ $this->registerJs('
 
         </div>
     </div>
+
 </div>
