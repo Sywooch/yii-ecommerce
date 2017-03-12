@@ -96,11 +96,15 @@ class Price extends \yii\db\ActiveRecord {
      * @return mixed
      */
     public static function getOptPrice($roles, $productId, $optid) {
-        return self::find()
-                        ->andWhere(['in', 'auth_item_name', $roles])
-                        ->andWhere(['pop.product_id' => $productId])
-                        ->andWhere(['pop.product_options_id' => $optid])
-                        ->innerJoinWith('productsOptionsPrices pop')->min('pop.value');
+
+
+$role=self::find()->where(['in', 'auth_item_name', $roles])->all();
+$arrroles=[];
+
+foreach ($role as $rules) {
+   $arrroles[]=$rules->id;
+}
+ return ProductsOptionsPrices::find()->andWhere(['product_id' => $productId])->andWhere(['in','product_options_id', $optid])->andWhere(['in','price_id', $arrroles])->all();
     }
 
 }

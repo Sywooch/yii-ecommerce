@@ -10,12 +10,14 @@ class ProductsOptions extends \yii\base\Widget
 {
 
     public $model;
+    public $rootid;
+    public $child;
     public $url = '/shop/product/index/';
-    public $oldoption = 0;
+    public $oldoption = [];
 
     public function run()
     {
-        return $this->render('productoptions', ['model' => $this->model, 'url' => $this->url, 'oldoption' => $this->oldoption]);
+        return $this->render('productoptions', ['model' => $this->model, 'url' => $this->url, 'rootid' => $this->rootid, 'child' => $this->child, 'oldoption' => $this->oldoption]);
     }
 
 }

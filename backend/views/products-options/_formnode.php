@@ -29,7 +29,7 @@ echo $form->field($node, 'imagef')->fileInput();
 ?>
 <?php if (ProductsOptions::isOption($node->id) == false): ?>
 
-    <h2><?= Yii::t('shop', 'Prices') ?></h2>
+    <label><?= Yii::t('shop', 'Prices') ?></label>
 
     <div class="well">
 

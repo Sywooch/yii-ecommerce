@@ -56,7 +56,10 @@ $positions = Yii::$app->cart->getPositions();
                         : <?= Html::encode($featureProduct->value) ?></p>
                 <?php } ?>
                 <p><?= Yii::t('shop', 'Price') ?>
-                    : <?= Yii::$app->formatter->asCurrency($data->getOptionPrice($data->Option_id)) ?></p>
+                    : <?php
+                    //var_dump($data->Optid);
+                    echo Yii::$app->formatter->asCurrency($data->getOptionPrice(explode(',', $data->Optid))['price'])
+                    ?></p>
                 <?=
                 Html::a('<i class="zmdi zmdi-close"></i>', [
                     'cart/remove', 'id' => $data->id, 'option' => (isset($data->Option_id) && $data->Option_id != 0) ? ($data->Option_id) : (0)

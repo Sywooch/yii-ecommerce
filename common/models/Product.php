@@ -31,7 +31,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition {
     const DELETE_PRODUCT = 'shopDeleteProduct';
 
     private $_quantity;
-    //private $_optionid;
+    private $_optionid;
     private $_option_id;
 
     /**
@@ -118,15 +118,39 @@ class Product extends \yii\db\ActiveRecord implements IPosition {
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
 
         // Get min price
-        $price = Price::getOptPrice($roles, $this->id, $optid) ? : $price;
+        $getoptprice = Price::getOptPrice($roles, $this->id, $optid);
 
+        $pricearray=[];
+        $pricemin=[];
+
+        foreach ($getoptprice as $key => $value) {
+
+            $pricearray[$value->product_options_id][] = $value->value;
+
+           
+        if(count($pricearray[$value->product_options_id]) >= 2){
+
+                    $pricemin[$value->product_options_id]=min($pricearray[$value->product_options_id]);
+
+                }else{
+
+                    $pricemin[$value->product_options_id][]=$pricearray[$value->product_options_id];
+                }
+         
+        }
+
+        $baseprice = Price::getMinPrice($roles, $this->id) ? : $price;
+
+        $price = $baseprice + array_sum($pricemin);
 
         // Price + VAT
         if ($country = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one()) {
             $price += $price * $country->tax / 100;
         }
 
-        return $price;
+        $detailprice=['price'=>$price,'baseprice'=>$baseprice,'optionsprice'=>array_sum($pricemin),'detailoptionsprice'=>$pricemin];
+
+        return $detailprice;
     }
 
     public function getBranchOption($option_id) {
@@ -142,7 +166,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition {
      * @param $quantity
      * @return float|int|mixed
      */
-    public function getCostWithDiscounters($quantity, $optionid = 0) {
+    public function getCostWithDiscounters($quantity = 1, $optionid = 0) {
 
 
         if ($optionid == 0 || $optionid == null) {
@@ -150,7 +174,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition {
             $price = $this->realPrice;
         } else {
 
-            $price = $this->getOptionPrice($optionid);
+            $price = $this->getOptionPrice(explode(',',$optionid))["price"] ;
+            //var_dump( $price );exit;
         }
 
         $discounts = $this->availableDiscounts;

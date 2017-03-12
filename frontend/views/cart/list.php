@@ -58,8 +58,10 @@ $this->params['breadcrumbs'][] = Yii::t('shop', 'Cart');
                 <tr>
                     <th class="product"><?= Yii::t('shop', 'Product') ?></th>
                     <th class="price"><?= Yii::t('shop', 'Price') ?></th>
-                    <th class="stock"><?= Yii::t('shop', 'Stock') ?></th>
                     <th class="qty"><?= Yii::t('shop', 'Quantity') ?></th>
+                    <th class="price"><?= Yii::t('shop', 'Discount') ?></th>
+                    <th class="price"><?= Yii::t('shop', 'Total Price') ?></th>
+                    <th class="stock"><?= Yii::t('shop', 'Selected') . ' ' . Yii::t('shop', 'Product Options') ?></th>
                     <th class="remove"><?= Yii::t('shop', 'Remove') ?></th>
                 </tr>
                 </thead>

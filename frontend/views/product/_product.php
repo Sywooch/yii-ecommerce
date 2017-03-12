@@ -54,19 +54,42 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
                     </div>
                 </div>
             </div>
+            <?php
+            $option = [];
+
+            foreach ($_GET as $key => $value) {
+
+                if (stripos($key, 'option') !== false)
+
+                    $option[] = urldecode($value);
+
+            }
+            asort($option);
+
+            ?>
             <div class="single-product-content fix">
                 <h3 class="single-pro-title"><?= Html::encode($model->name) ?></h3>
                 <div class="single-product-price-ratting fix">
                     <h3 class="single-pro-price float-left">
-                    <span class="new">                    <?php if ((int)Yii::$app->request->get('option', 0) != 0): ?>
-                            <?= Yii::$app->formatter->asCurrency($model->getOptionPrice((int)Yii::$app->request->get('option'))) ?>
+                    <span class="new">                    
+
+                        <?php
+                        if (!empty($option)): ?>
+                            <?php $detailprice = $model->getOptionPrice($option) ?>
+                            <?= Yii::$app->formatter->asCurrency($detailprice['price']) ?>
+
                             <small> <?= Yii::t('shop', 'for') ?> <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>
+                            <span class="old"><?= Yii::$app->formatter->asCurrency($detailprice['baseprice']) ?></span>
                         <?php else: ?>
+
                             <?= Yii::$app->formatter->asCurrency($model->realPrice) ?>
                             <small> <?= Yii::t('shop', 'for') ?> <?= Html::encode($model->unit->name) ?> <?= $vatIncluded ? '(VAT included)' : '' ?></small>
-                        <?php endif ?></span>
+                        <?php endif ?>
+
+                </span>
                         <!--<span class="old">$80.00</span>-->
                     </h3>
+
                     <p class="single-pro-ratting float-right">
                         <i class="zmdi zmdi-star"></i>
                         <i class="zmdi zmdi-star"></i>
@@ -76,6 +99,7 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
                         <span>(24)</span>
                     </p>
                 </div>
+
                 <p>There are many variations of passages of Lorem Ipsum available, but the majority have be</p>
                 <!--<div class="single-pro-color">
                     <h5>Color</h5>
@@ -135,25 +159,114 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
                         </div>
                     </div>
 
-                    <?php $chk = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->one(); ?>
-
-                    <?php if ($chk != null): ?>
-
-                        <div class="single-pro-size-2 float-left">
-                            <a type="button" id="element" class="btn btn-default" data-container="body"
-                               data-toggle="popover"
-                               data-placement="bottom" data-popover-content="#a1">
-                                <?= Yii::t('shop', 'Options') ?>
-                            </a>
-                        </div>
-
-                    <?php endif ?>
 
                 </div>
+                <div class="product-quantity-size fix">
+                    <div class="pro-qty-wrap-2">
+                        <?php
+
+                        $roots = ProductsOptions::find()->roots()->all();
+                        foreach ($roots as $key => $value) {
+
+                            $rootid = $value->id;
+
+                            $getchild = $value->children()->all();
+
+                            $child = [];
+
+                            foreach ($getchild as $children) {
+
+                                $child[] = $children->id;
+
+                            }
+
+
+                            $chk = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->andWhere(['in', 'product_options_id', $child])->all();
+                            ?>
+
+                            <?php if ($chk != null): ?>
+
+                                <div class="single-pro-size-2 float-left" style="margin-left:5px;">
+                                    <a id="element" data-container="body"
+                                       class="btn btn-default"
+                                       data-toggle="popover"
+                                       data-placement="bottom" data-popover-content="#a<?= $rootid ?>">
+                                        <?= $value->name ?>
+                                    </a>
+                                </div>
+
+                                <div class="hidden col-xs-12" id="a<?= $rootid ?>">
+                                    <div class="popover-heading">
+                                        <?= Yii::t('shop', 'Options from') ?>: <?= $model->name; ?>
+                                    </div>
+
+                                    <div class="popover-body">
+
+                                        <?= OptionWidget::widget(compact('model', 'rootid', 'child')); ?>
+
+                                    </div>
+                                </div>
+
+
+                                <?php
+                            endif;
+                        }
+                        ?>
+
+
+                    </div>
+
+
+                </div>
+                <?php if (!empty($option)) { ?>
+
+                    <div class="single-product-action-quantity fix" style="padding-bottom:20px;">
+                        <b><?= Yii::t('shop', 'Selected') . ' ' . Yii::t('shop', 'Product Options') ?>:</b>
+                        <div class="pro-qty-wrap-2">
+
+                            <?php foreach ($option as $value) {
+
+                                $parents = $model->getBranchOption($value);
+                                $branch = '';
+                                $rootid = '';
+                                if ($parents != null) {
+                                    foreach ($parents['branch'] as $parent) {
+
+                                        $branch .= Html::encode($parent->name) . ' » ';
+                                        if ($parent->lvl === 0) {
+                                            $rootid = $parent->id;
+                                        }
+
+                                    }
+                                    $branch .= Html::encode($parents['option']->name);
+                                }
+                                $pa = $parents['option']->parents(1)->one();
+
+                                echo '<p>' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b><a href="#" class="btn btn-box-tool remover" onclick="return false;" data-id="option' . $rootid . '-' . $pa->id . '=' . $value . '"><i class="zmdi zmdi-close-circle-o"></i></a></p>';
+                            }
+
+                            $options_IDs = implode(',', $option);
+
+                            ?>
+
+
+                        </div>
+
+                    </div>
+
+                    <?php
+
+                } else {
+
+                    $options_IDs = 0;
+
+                }
+                ?>
+
                 <div class="single-product-action-quantity fix">
                     <div class="pro-details-action pro-details-action-2 float-left">
 
-                        <?= Html::a('<i class="zmdi zmdi-shopping-cart"></i>' . Yii::t('shop', 'Add to cart'), ['cart/add', 'id' => $model->id, 'option' => (int)Yii::$app->request->get('option', 0), 'qty' => 1], ['class' => 'pro-details-act-btn btn-text active']) ?>
+                        <?= Html::a('<i class="zmdi zmdi-shopping-cart"></i>' . Yii::t('shop', 'Add to cart'), ['cart/add', 'id' => $model->id, 'option' => $options_IDs, 'qty' => 1], ['class' => 'pro-details-act-btn btn-text active']) ?>
                         <button class="pro-details-act-btn btn-icon"><i class="zmdi zmdi-favorite-outline"></i></button>
                     </div>
                 </div>
@@ -169,18 +282,27 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
     </div>
 
 
-    <div class="hidden col-xs-12" id="a1">
-        <div class="popover-heading">
-            <?= Yii::t('shop', 'Options from') ?>: <?= $model->name; ?>
-        </div>
-
-        <div class="popover-body">
-
-            <?= OptionWidget::widget(compact('model')); ?>
-
-        </div>
-    </div>
 <?php
+
+$app_js = <<<JS
+
+
+$(document).on('click','.remover',function() {      
+
+    var value = $( this ).data('id');
+  
+    var url = window.location.toString();
+
+        var pattern = new RegExp('&' + value,'gim');
+
+        var newUrl = url.replace(pattern, "");
+    
+    location.href = newUrl;
+});
+JS;
+$this->registerJs($app_js);
+
+
 $app_js = <<<JS
 $('.pro-qty-2').append('<span class="inc qtybtn-2"><i class="zmdi zmdi-chevron-up"></i></span>');
 $('.pro-qty-2').append('<span class="dec qtybtn-2"><i class="zmdi zmdi-chevron-down"></i></span>');

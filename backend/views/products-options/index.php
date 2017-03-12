@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id' => 'products_options',
                 'options' => ['id' => 'products_options', 'enctype' => 'multipart/form-data'],
                 'showIDAttribute' => false,
+                'nodeView' => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_formtree',
                 'nodeAddlViews' => [
                     Module::VIEW_PART_2 => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_form'
                 ],
@@ -36,9 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
                 // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
                 ],
-                'headingOptions' => ['label' => 'Options'],
+                //'headingOptions' => ['label' => 'Options'],
                 'fontAwesome' => false, // optional
-                'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
+                //'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
+                'isAdmin' => false,
                 'displayValue' => 1, // initial display value
                 'softDelete' => true, // defaults to true
                 'cacheSettings' => [

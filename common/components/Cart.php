@@ -74,7 +74,7 @@ class Cart extends Component {
                     if (!$cartProduct->cart_set_id) {
                         $product = $cartProduct->product;
                         $product->setQuantity($cartProduct->quantity);
-                        $product->setOption_id($cartProduct->option_id);
+                        $product->setOptid($cartProduct->option_id);
 
                         if (array_key_exists($product->id . $cartProduct->option_id, $this->_positions)) {
                             $this->_positions[$product->id . $cartProduct->option_id] = $product;
@@ -113,13 +113,14 @@ class Cart extends Component {
 
                 foreach ($this->_positions as $position) {
 
-                    $optid = $this->session[$position->id . '-optionid'];
+//var_dump($position->Optid);exit;
 
+                    //$optid = $this->session[$position->id . '-optionid'];
                     $cartProduct = new CartProduct();
                     $cartProduct->cart_id = $cart->id;
                     $cartProduct->product_id = $position->id;
                     $cartProduct->quantity = $position->quantity;
-                    $cartProduct->option_id = $position->option_id;
+                    $cartProduct->option_id = $position->Optid;
                     $cartProduct->save();
                 }
 
@@ -215,7 +216,7 @@ class Cart extends Component {
 
         foreach ($this->_positions as $position) {
 
-            $cost += $position->getCostWithDiscounters($position->getQuantity(), $position->getOption_id());
+            $cost += $position->getCostWithDiscounters($position->getQuantity(), $position->getOptid());
         }
 
         foreach ($this->_sets as $set) {
@@ -230,19 +231,22 @@ class Cart extends Component {
      * @param IPosition $position
      */
     public function put(IPosition $position) {
-        $id = $position->getId();
-        $optid = $this->session[$position->id . '-optionid'];
 
-        $position->setOption_id($optid);
+        $id = $position->getId();
+
+        $option_IDs=$position->getOptid();
+
+        $optid=$option_IDs;
 
         if ($position->getQuantity() == 0)
             $position->setQuantity(1);
 
-        if (isset($this->_positions[$id . $optid])) {
-            $this->_positions[$id . $optid]->setQuantity($this->_positions[$id . $optid]->getQuantity() + $position->getQuantity());
-            $this->_positions[$id . $optid]->setOption_id((int) $optid);
+        if (isset($this->_positions[$id . '-' .$optid])) {
+            $this->_positions[$id . '-' .$optid]->setQuantity($this->_positions[$id . '-' .$optid]->getQuantity() + $position->getQuantity());
+            $this->_positions[$id . '-' .$optid]->setOption_id($optid);
+            $this->_positions[$id . '-' .$optid]->setOptid($option_IDs);
         } else {
-            $this->_positions[$position->getId() . $optid] = $position;
+            $this->_positions[$position->getId() . '-' .$optid] = $position;
         }
 
         $this->saveToSession();
@@ -263,18 +267,25 @@ class Cart extends Component {
      * @param IPosition $position
      */
     public function update(IPosition $position) {
+
         if (!$position->getQuantity()) {
             $this->remove($position);
             return;
         }
-        $optid = $this->session[$position->id . '-optionid'];
-        $position->setOption_id($optid);
+        //$optid = $this->session[$position->id . '-optionid'];
+        $option_IDs = $position->getOptid();
 
-        if (isset($this->_positions[$position->getId() . $optid])) {
-            $this->_positions[$position->getId() . $optid]->setQuantity($position->getQuantity());
-            $this->_positions[$position->getId() . $optid]->setOption_id((int) $optid);
+        $optid=$option_IDs;
+
+        $position->setOption_id($optid);
+        $position->setOptid($option_IDs);
+
+        if (isset($this->_positions[$position->getId() . '-' .$optid])) {
+            $this->_positions[$position->getId() . '-' .$optid]->setQuantity($position->getQuantity());
+            $this->_positions[$position->getId() . '-' .$optid]->setOption_id($optid);
+            $this->_positions[$id . '-' .$optid]->setOptid($option_IDs);
         } else {
-            $this->_positions[$position->getId() . $optid] = $position;
+            $this->_positions[$position->getId() . '-' .$optid] = $position;
         }
 
         $this->saveToSession();
@@ -289,20 +300,42 @@ class Cart extends Component {
 
         $id = $position->getId();
 
-        $position->setOption_id($option);
-        $position->setQuantity((int) $quant);
+       /* if ($oldoption == 0) {
+            $oldoption='';
+        } */
+        
 
-        if (isset($this->_positions[$id . $oldoption]) && isset($this->_positions[$id . $option])) {
-            $this->_positions[$id . $option]->setQuantity($this->_positions[$id . $option]->getQuantity() + (int) $quant);
-            $this->_positions[$id . $option]->setOption_id((int) $option);
+        $position->setQuantity((int) $quant);
+        
+        $position->setOptid($option);
+/*
+echo "<pre>";
+var_dump($this->_positions[$id . '-' .$option]);
+echo "</pre>";
+exit;
+*/
+        if (isset($this->_positions[$id . '-' .$oldoption]) && isset($this->_positions[$id . '-' .$option])) {
+            if(isset($quant)){
+                $this->_positions[$id . '-' .$option]->setQuantity($this->_positions[$id . '-' .$option]->getQuantity() + (int) $quant);
+            }else{
+                $this->_positions[$id . '-' .$option]->setQuantity($this->_positions[$id . '-' .$option]->getQuantity() + 1);
+            }
+            
+            $this->_positions[$id . '-' .$option]->setOption_id($option);
+            $this->_positions[$id . '-' .$option]->setOptid($option);
             $this->remove($position, $oldoption);
         } else {
+
             $this->remove($position, $oldoption);
-            if (isset($this->_positions[$id . $option])) {
-                $this->_positions[$id . $option]->setQuantity((int) $quant);
-                $this->_positions[$id . $option]->setOption_id((int) $option);
+
+            if (isset($this->_positions[$id . '-' .$option])) {
+                $this->_positions[$id . '-' .$option]->setQuantity((int) $quant);
+                $this->_positions[$id . '-' .$option]->setOption_id($option);
+                $this->_positions[$id . '-' .$option]->setOptid($option);
             } else {
-                $this->_positions[$position->getId() . $option] = $position;
+                $this->_positions[$position->getId() . '-' .$option] = $position;
+                $this->_positions[$position->getId() . '-' .$option]->setOption_id($option);
+                $this->_positions[$position->getId() . '-' .$option]->setOptid($option);
             }
         }
 
@@ -323,14 +356,19 @@ class Cart extends Component {
      */
     public function removeById($id, $optionid) {
 
-        if ($optionid != null) {
+         $optid = $optionid;
+
+        /*if ($optionid != 0) {
             $optid = $optionid;
         } else {
-            $optid = 0;
-        }
+            $optid = '';
+        }*/
 
-        if (array_key_exists($id . $optid, $this->_positions)) {
-            unset($this->_positions[$id . $optid]);
+        if (array_key_exists($id . '-' .$optid, $this->_positions)) {
+            unset($this->_positions[$id . '-' .$optid]);
+            $this->saveToSession();
+        }elseif(array_key_exists($id . '-', $this->_positions)){
+            unset($this->_positions[$id . '-']);
             $this->saveToSession();
         }
     }

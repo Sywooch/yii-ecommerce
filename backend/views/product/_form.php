@@ -55,6 +55,22 @@ if (!$model->isNewRecord) {
 }
 
 $this->registerJs('
+    $(function(){
+        $("[data-toggle=popover]").popover({
+            html : true,
+            content: function() {
+              var content = $(this).attr("data-popover-content");
+              return $(content).children(".popover-body").html();
+          },
+          title: function() {
+              var title = $(this).attr("data-popover-content");
+              return $(title).children(".popover-heading").html();
+          }
+      });
+  });    
+  ');
+
+$this->registerJs('
     $(function () {
 
         var $category = $("#productform-category_id");
@@ -213,8 +229,12 @@ $this->registerJs('
             <div role="tabpanel" class="tab-pane fade" id="options">
 
                 <div class="product-form">
+                            <a style="float:right; cursor:pointer;" id="element" data-container="body"
+                               data-toggle="popover"
+                               data-placement="bottom" data-popover-content="#taboptions">
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
 
-                    <label><?= Yii::t('shop', 'Product Options') ?></label>
                     <?=
                     TreeView::widget([
                         'query' => ProductsOptions::find()->addOrderBy('root, lft')->active(),
@@ -225,6 +245,7 @@ $this->registerJs('
                         'multiple' => true,
                         'value' => ProductsOptions::CheckedTree($model->id),
                         'showIDAttribute' => false,
+                        'nodeView' => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_formtree',
                         'nodeAddlViews' => [
                             Module::VIEW_PART_2 => '@vendor/webdoka/yii-ecommerce/backend/views/products-options/_formnode'
                         ],
@@ -234,11 +255,12 @@ $this->registerJs('
                         // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
                         // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
                         ],
-                        'headingOptions' => ['label' => 'Option'],
+                        //'headingOptions' => ['label' => Yii::t('shop', 'Product Options')],
                         'fontAwesome' => false, // optional
-                        'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
+                       // 'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
+                        'isAdmin' => false,
                         'displayValue' => 1, // initial display value
-                        'softDelete' => true, // defaults to true
+                        'softDelete' => false, // defaults to true
                         'cacheSettings' => [
                             'enableCache' => false   // defaults to true
                         ],
@@ -253,3 +275,16 @@ $this->registerJs('
     </div>
 
 </div>
+
+
+    <div class="hidden col-xs-12" id="taboptions">
+        <div class="popover-heading">
+            Как это работает?
+        </div>
+
+        <div class="popover-body">
+
+Каждая рут категория создаёт кнопку которая открывает Popover с вложенной в эту категорию веткой свойств.
+В каждой вложенной ветке свойств можно выбрать одно свойство которое изменит цену на значение выставленное в разделе "Товары" >> Выбрать товар для редактирования >> вкладка "Свойства товара" >> нажать на свойство "Цены". Если выставленное значение должно уменьшать базовую цену, тогда значение должно быть отрицательным числом.
+        </div>
+    </div>

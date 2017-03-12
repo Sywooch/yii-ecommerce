@@ -184,7 +184,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'raw',
                             'value' => function($model) {
                                 if ($model->option_id > 0) {
-                                    return Yii::$app->formatter->asCurrency($model->product->getOptionPrice($model->option_id));
+                                    //var_dump($model->option_id);exit;
+                                    return Yii::$app->formatter->asCurrency($model->product->getOptionPrice(explode(',',$model->option_id))['price']);
                                 } else {
                                     return Yii::$app->formatter->asCurrency($model->product->realPrice);
                                 }
@@ -194,7 +195,58 @@ $this->params['breadcrumbs'][] = $this->title;
                             'header' => Yii::t('shop', 'OptionBranch'),
                             'format' => 'raw',
                             'value' => function($model) {
-                                if ($model->option_id > 0) {
+$retu='';
+          if (!empty($model->option_id)) {
+
+        $retu .='<table class="table table-striped">
+            <tbody>';
+
+            foreach (explode(',', $model->option_id) as $value) {
+                $detailprice = $model->product->getOptionPrice(explode(',', $value));
+                $parents = $model->product->getBranchOption($value);
+
+                $branch = '';
+                $rootid = '';
+                if ($parents != null) {
+                    foreach ($parents['branch'] as $parent) {
+
+                        $branch .= Html::encode($parent->name) . ' » ';
+                        if ($parent->lvl === 0) {
+                            $rootid = $parent->id;
+                        }
+
+                    }
+                    $branch .= Html::encode($parents['option']->name);
+                }
+                $pa = $parents['option']->parents(1)->one();
+
+                $retu .= '
+                                <tr>
+                                    <td>
+                                    ' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>';
+            }
+
+
+           $retu .=  '</tbody>
+        </table>';
+            
+}
+
+           
+
+        
+            return $retu;
+
+
+
+
+
+
+                                /*if ($model->option_id > 0) {
                                     $parents = $model->product->getBranchOption($model->option_id);
                                     $branch = '';
                                     if ($parents != null) {
@@ -204,7 +256,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }
                                         return $branch .= Html::encode($parents['option']->name);
                                     }
-                                }
+                                }*/
                             },
                         ],
                         'quantity',

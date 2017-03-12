@@ -22,21 +22,33 @@ $this->registerJs('
   });    
   ');
 
+//$all = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->all();
 
-$all = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->all();
 
-$curentoption = Yii::$app->request->get('option', 0);
+//$curentoption = Yii::$app->request->get('option'.$rootid, 0);
+
 
 $search = [];
 $parent_id = 0;
 
-foreach ($all as $value) {
+$optionItem = ProductsOptions::findOne(['id' => $rootid]);
 
-    $optionItem = ProductsOptions::findOne(['id' => $value->product_options_id]);
+$getchild = $optionItem->children()->all();
+
+foreach ($child as $value) {
+
+//foreach ($all as $value) {
+
+    //$optionItem = ProductsOptions::findOne(['id' => $value->product_options_id]);
+    $all = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id, 'product_options_id' => $value])->andWhere('[[status]]=1')->one();
+
+
+    $optionItem = ProductsOptions::findOne(['id' => $value]);
 
     $leaves = $optionItem->leaves()->all();
 
-    if ($leaves == null) {
+
+    if ($leaves == null && $all != null) {
 
         $leaves = $optionItem->parents()->all();
 
@@ -77,23 +89,83 @@ foreach ($all as $value) {
         if (isset($model->quantity)) {
 
             $urlparam = [$url, 'id' => $model->id,
-                'option' => $optionItem->id,
+                'option' . $rootid . '-' . $parent->id => $optionItem->id,
                 'quant' => Html::encode($model->quantity),
-                'oldoption' => $oldoption
+                'change' => implode(',', $oldoption)
             ];
+            $onclick = '';
+
         } else {
 
             $urlparam = [$url, 'id' => $model->id,
-                'option' => $optionItem->id
+                'option[' . $rootid . ']' => $optionItem->id
             ];
+            $onclick = 'js:return false;';
+
         }
 
-        if ($optionItem->id == $curentoption || (isset($oldoption) && $optionItem->id == $oldoption)) {
+        if (isset($parent->id) && isset($_GET['option' . $rootid . '-' . $parent->id])) {
+
+            $curentoption = $_GET['option' . $rootid . '-' . $parent->id];
+
+            $chk = 1;
+
+        } else {
+
+            $curentoption = 0;
+
+            $chk = 0;
+
+        }
+
+        if ($optionItem->id == $curentoption || (in_array($optionItem->id, $oldoption))) {
             $cssclass = 'class="lastdivboxselect"';
         } else {
             $cssclass = 'class="lastdivbox"';
         }
-        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<br>' . $img . '</div>', $urlparam, ['class' => 'selectoption']);
+        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<br>' . $img . '</div>', $urlparam, ['class' => 'selectoption optionclick' . $rootid, 'onclick' => $onclick, 'data-id' => $optionItem->id, 'data-parent' => $parent->id]);
     }
 }
+?>
+<?php
+
+$app_js = <<<JS
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+$(document).on('click','.optionclick$rootid',function() {      
+
+    var value = $( this ).data('id');
+    var parent = $( this ).data('parent');
+    var chk = $chk;
+    var url = window.location.toString();
+    if(getUrlVars()["option{$rootid}-"+parent] > 0){
+
+        //var reExp = "option{$rootid}-"+parent+"=/\d+";
+        var reExp = "option{$rootid}-"+parent+"="+getUrlVars()["option{$rootid}-"+parent];
+        var pattern = new RegExp(reExp,'gim');
+
+        var newUrl = url.replace(reExp, "option{$rootid}-"+parent+"=" + value);
+    }else{
+
+        var select="option{$rootid}-" + parent;
+
+        var params = {} ;
+
+        params[select]=value ;
+
+        var newUrl = url + ( url.indexOf('?') >= 0 ? '&' : '?' ) + jQuery.param( params );   
+    }
+    
+    location.href = newUrl;
+});
+JS;
+$this->registerJs($app_js);
+
 ?>
