@@ -39,7 +39,8 @@ use Yii;
  *
  * @property ProductsOptionsPrices[] $productsOptionsPrices
  */
-class ProductsOptions extends \yii\db\ActiveRecord {
+class ProductsOptions extends \yii\db\ActiveRecord
+{
 
     const LIST_POPTIONS = 'shopListOptionsProducts';
     const VIEW_POPTIONS = 'shopViewOptionsProducts';
@@ -92,14 +93,16 @@ class ProductsOptions extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'products_options';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             //[['tree', 'lft', 'rgt', 'depth', 'name', 'lvl'], 'required'],
             [['tree', 'lft', 'rgt', 'depth', 'status', 'icon_type', 'active', 'selected', 'disabled', 'readonly', 'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l', 'movable_r', 'removable', 'removable_all', 'root', 'lvl'], 'integer'],
@@ -112,7 +115,8 @@ class ProductsOptions extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'tree' => Yii::t('shop', 'Tree'),
@@ -142,7 +146,8 @@ class ProductsOptions extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
@@ -154,7 +159,8 @@ class ProductsOptions extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function transactions() {
+    public function transactions()
+    {
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
@@ -163,37 +169,43 @@ class ProductsOptions extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductsOptionsPrices() {
+    public function getProductsOptionsPrices()
+    {
         return $this->hasMany(ProductsOptionsPrices::className(), ['product_options_id' => 'id'])->where('status = 1');
     }
 
-    public function isDisabled() {
+    public function isDisabled()
+    {
         if (
-                Yii::$app->user->can(self::CREATE_POPTIONS) &&
-                Yii::$app->user->can(self::UPDATE_POPTIONS) &&
-                Yii::$app->user->can(self::DELETE_POPTIONS) &&
-                Yii::$app->user->can(Product::CREATE_PRODUCT) &&
-                Yii::$app->user->can(Product::UPDATE_PRODUCT) &&
-                Yii::$app->user->can(Product::DELETE_PRODUCT)) {
+            Yii::$app->user->can(self::CREATE_POPTIONS) &&
+            Yii::$app->user->can(self::UPDATE_POPTIONS) &&
+            Yii::$app->user->can(self::DELETE_POPTIONS) &&
+            Yii::$app->user->can(Product::CREATE_PRODUCT) &&
+            Yii::$app->user->can(Product::UPDATE_PRODUCT) &&
+            Yii::$app->user->can(Product::DELETE_PRODUCT)
+        ) {
             return $this->parentIsDisabled();
         }
         return true;
     }
 
-    public static function isAdminTree() {
+    public static function isAdminTree()
+    {
         if (
-                Yii::$app->user->can(self::CREATE_POPTIONS) &&
-                Yii::$app->user->can(self::UPDATE_POPTIONS) &&
-                Yii::$app->user->can(self::DELETE_POPTIONS) &&
-                Yii::$app->user->can(Product::CREATE_PRODUCT) &&
-                Yii::$app->user->can(Product::UPDATE_PRODUCT) &&
-                Yii::$app->user->can(Product::DELETE_PRODUCT)) {
+            Yii::$app->user->can(self::CREATE_POPTIONS) &&
+            Yii::$app->user->can(self::UPDATE_POPTIONS) &&
+            Yii::$app->user->can(self::DELETE_POPTIONS) &&
+            Yii::$app->user->can(Product::CREATE_PRODUCT) &&
+            Yii::$app->user->can(Product::UPDATE_PRODUCT) &&
+            Yii::$app->user->can(Product::DELETE_PRODUCT)
+        ) {
             return true;
         }
         return false;
     }
 
-    public function upload() {
+    public function upload()
+    {
 
         if ($this->validate()) {
 
@@ -211,7 +223,8 @@ class ProductsOptions extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function CheckedTree($id) {
+    public static function CheckedTree($id)
+    {
 
         $curroptions = ProductsOptionsPrices::find()->where(['=', "product_id", $id])->andWhere(['=', "status", 1])->groupBy(['product_options_id'])->all();
 
@@ -232,7 +245,8 @@ class ProductsOptions extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function isOption($id) {
+    public static function isOption($id)
+    {
 
         $getchild = ProductsOptions::findOne($id);
 
@@ -247,16 +261,17 @@ class ProductsOptions extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPricesWithValues($id, $prid = null) {
+    public function getPricesWithValues($id, $prid = null)
+    {
         $data = [];
 
         $prices = Price::find()->all();
         foreach ($prices as $price) {
             $productPrice = ProductsOptionsPrices::find()->where([
-                        'product_options_id' => $id,
-                        'price_id' => $price->id,
-                        'product_id' => $prid,
-                    ])->one();
+                'product_options_id' => $id,
+                'price_id' => $price->id,
+                'product_id' => $prid,
+            ])->one();
 
             $data[] = [
                 'id' => $price->id,
@@ -272,7 +287,8 @@ class ProductsOptions extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return ProductsOptionsQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new ProductsOptionsQuery(get_called_class());
     }
 

@@ -16,19 +16,22 @@ use webdoka\yiiecommerce\common\queries\CartSetQuery;
  * @property Set $set
  * @property Cart $carts
  */
-class CartSet extends \yii\db\ActiveRecord {
+class CartSet extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'carts_sets';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['cart_id', 'set_id'], 'required'],
             [['cart_id', 'set_id'], 'integer'],
@@ -40,7 +43,8 @@ class CartSet extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'cart_id' => Yii::t('shop', 'Cart ID'),
@@ -51,21 +55,24 @@ class CartSet extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCartsProducts() {
+    public function getCartsProducts()
+    {
         return $this->hasMany(CartProduct::className(), ['cart_set_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSet() {
+    public function getSet()
+    {
         return $this->hasOne(Set::className(), ['id' => 'set_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCarts() {
+    public function getCarts()
+    {
         return $this->hasOne(Cart::className(), ['id' => 'cart_id']);
     }
 
@@ -73,7 +80,8 @@ class CartSet extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return CartSetQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new CartSetQuery(get_called_class());
     }
 

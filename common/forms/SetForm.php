@@ -9,7 +9,8 @@ use webdoka\yiiecommerce\common\models\SetProduct;
 use yii\helpers\ArrayHelper;
 use Yii;
 
-class SetForm extends Set {
+class SetForm extends Set
+{
 
     public $_relSetsProducts = [];
     public $_relDiscounts = [];
@@ -17,14 +18,16 @@ class SetForm extends Set {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return ArrayHelper::merge([
-                    ['relSetsProducts', 'validateSetsProducts'],
-                    ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Discounts')],
-                        ], parent::rules());
+            ['relSetsProducts', 'validateSetsProducts'],
+            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Discounts')],
+        ], parent::rules());
     }
 
-    public function validateSetsProducts() {
+    public function validateSetsProducts()
+    {
         if (empty($this->_relSetsProducts)) {
             $this->addError('name', Yii::t('shop', 'Specify just one product.'));
         } else {
@@ -45,18 +48,20 @@ class SetForm extends Set {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return ArrayHelper::merge([
-                    'relSetsProducts' => Yii::t('shop', 'Products'),
-                    'relDiscounts' => Yii::t('shop', 'Discounts'),
-                        ], parent::attributeLabels());
+            'relSetsProducts' => Yii::t('shop', 'Products'),
+            'relDiscounts' => Yii::t('shop', 'Discounts'),
+        ], parent::attributeLabels());
     }
 
     /**
      * Buffer variable for related setsProducts.
      * @return array
      */
-    public function getRelSetsProducts() {
+    public function getRelSetsProducts()
+    {
         return $this->_relSetsProducts;
     }
 
@@ -64,7 +69,8 @@ class SetForm extends Set {
      * Set related setsProducts
      * @param $setsProducts
      */
-    public function setRelSetsProducts($setsProducts) {
+    public function setRelSetsProducts($setsProducts)
+    {
         $this->_relSetsProducts = $setsProducts;
     }
 
@@ -72,7 +78,8 @@ class SetForm extends Set {
      * Buffer variable for related discounts.
      * @return array
      */
-    public function getRelDiscounts() {
+    public function getRelDiscounts()
+    {
         return $this->_relDiscounts;
     }
 
@@ -80,7 +87,8 @@ class SetForm extends Set {
      * Set related discounts
      * @param $discounts
      */
-    public function setRelDiscounts($discounts) {
+    public function setRelDiscounts($discounts)
+    {
         $this->_relDiscounts = $discounts;
     }
 
@@ -89,7 +97,8 @@ class SetForm extends Set {
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if (parent::beforeSave($insert)) {
             $this->saveSetsProductsToRelation();
             $this->saveDiscountsToRelation();
@@ -102,7 +111,8 @@ class SetForm extends Set {
     /**
      * Populating setsProducts to relation
      */
-    private function saveSetsProductsToRelation() {
+    private function saveSetsProductsToRelation()
+    {
         $setsProducts = [];
 
         foreach ($this->_relSetsProducts as $productId => $relSetsProduct) {
@@ -119,7 +129,8 @@ class SetForm extends Set {
     /**
      * Populating discounts to relation
      */
-    private function saveDiscountsToRelation() {
+    private function saveDiscountsToRelation()
+    {
         $discounts = [];
 
         foreach ($this->_relDiscounts as $relDiscount) {

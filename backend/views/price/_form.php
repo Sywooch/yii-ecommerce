@@ -21,9 +21,9 @@ use app\models\AuthItem;
 
         <?=
         $form->field($model, 'auth_item_name')->dropDownList(
-                AuthItem::find()->rolesOnly()->available()
-                        ->indexBy('name')
-                        ->select('name')->column(), ['prompt' => 'Choose role']
+            AuthItem::find()->rolesOnly()->available()
+                ->indexBy('name')
+                ->select('name')->column(), ['prompt' => 'Choose role']
         )
         ?>
     </div>

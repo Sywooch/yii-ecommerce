@@ -4,9 +4,11 @@ namespace webdoka\yiiecommerce\backend\commands;
 
 use yii\console\Controller;
 
-class ShopRbacController extends Controller {
+class ShopRbacController extends Controller
+{
 
-    public function actionInit() {
+    public function actionInit()
+    {
         $auth = \Yii::$app->authManager;
 
         $actions = [];

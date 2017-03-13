@@ -23,13 +23,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <ul class="nav nav-tabs">
 
-            <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Info') ?></a></li>
+            <li role="presentation" class="active"><a href="#info" aria-controls="info" role="tab"
+                                                      data-toggle="tab"><?= Yii::t('shop', 'Info') ?></a></li>
 
-            <li role="presentation"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Products') ?></a></li>
+            <li role="presentation"><a href="#products" aria-controls="products" role="tab"
+                                       data-toggle="tab"><?= Yii::t('shop', 'Products') ?></a></li>
 
-            <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Transactions') ?></a></li>
+            <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab"
+                                       data-toggle="tab"><?= Yii::t('shop', 'Transactions') ?></a></li>
 
-            <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab"><?= Yii::t('shop', 'History') ?></a></li>
+            <li role="presentation"><a href="#history" aria-controls="history" role="tab"
+                                       data-toggle="tab"><?= Yii::t('shop', 'History') ?></a></li>
 
         </ul>
 
@@ -135,8 +139,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'header' => Yii::t('shop', 'Discount'),
                             'value' => function ($model) {
                                 return implode(', ', array_map(function ($model) {
-                                                    return $model->name;
-                                                }, $model->set->discounts));
+                                    return $model->name;
+                                }, $model->set->discounts));
                             }
                         ],
                     ]
@@ -182,10 +186,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'header' => Yii::t('shop', 'Cost from unit'),
                             'format' => 'raw',
-                            'value' => function($model) {
+                            'value' => function ($model) {
                                 if ($model->option_id > 0) {
                                     //var_dump($model->option_id);exit;
-                                    return Yii::$app->formatter->asCurrency($model->product->getOptionPrice(explode(',',$model->option_id))['price']);
+                                    return Yii::$app->formatter->asCurrency($model->product->getOptionPrice(explode(',', $model->option_id))['price']);
                                 } else {
                                     return Yii::$app->formatter->asCurrency($model->product->realPrice);
                                 }
@@ -194,33 +198,33 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'header' => Yii::t('shop', 'OptionBranch'),
                             'format' => 'raw',
-                            'value' => function($model) {
-$retu='';
-          if (!empty($model->option_id)) {
+                            'value' => function ($model) {
+                                $retu = '';
+                                if (!empty($model->option_id)) {
 
-        $retu .='<table class="table table-striped">
+                                    $retu .= '<table class="table table-striped">
             <tbody>';
 
-            foreach (explode(',', $model->option_id) as $value) {
-                $detailprice = $model->product->getOptionPrice(explode(',', $value));
-                $parents = $model->product->getBranchOption($value);
+                                    foreach (explode(',', $model->option_id) as $value) {
+                                        $detailprice = $model->product->getOptionPrice(explode(',', $value));
+                                        $parents = $model->product->getBranchOption($value);
 
-                $branch = '';
-                $rootid = '';
-                if ($parents != null) {
-                    foreach ($parents['branch'] as $parent) {
+                                        $branch = '';
+                                        $rootid = '';
+                                        if ($parents != null) {
+                                            foreach ($parents['branch'] as $parent) {
 
-                        $branch .= Html::encode($parent->name) . ' » ';
-                        if ($parent->lvl === 0) {
-                            $rootid = $parent->id;
-                        }
+                                                $branch .= Html::encode($parent->name) . ' » ';
+                                                if ($parent->lvl === 0) {
+                                                    $rootid = $parent->id;
+                                                }
 
-                    }
-                    $branch .= Html::encode($parents['option']->name);
-                }
-                $pa = $parents['option']->parents(1)->one();
+                                            }
+                                            $branch .= Html::encode($parents['option']->name);
+                                        }
+                                        $pa = $parents['option']->parents(1)->one();
 
-                $retu .= '
+                                        $retu .= '
                                 <tr>
                                     <td>
                                     ' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b>
@@ -228,22 +232,16 @@ $retu='';
                                     <td>
                                     </td>
                                 </tr>';
-            }
+                                    }
 
 
-           $retu .=  '</tbody>
+                                    $retu .= '</tbody>
         </table>';
-            
-}
 
-           
-
-        
-            return $retu;
+                                }
 
 
-
-
+                                return $retu;
 
 
                                 /*if ($model->option_id > 0) {
@@ -330,7 +328,7 @@ $retu='';
                                 return isset($model->transaction->description) ? $model->transaction->description : '';
                             }
                         ],
-                    //'transaction.description:text:Description',
+                        //'transaction.description:text:Description',
                     ]
                 ])
                 ?>

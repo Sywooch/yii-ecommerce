@@ -5,12 +5,14 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `storage`.
  */
-class m160620_064342_create_storage extends Migration {
+class m160620_064342_create_storage extends Migration
+{
 
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function up()
+    {
         $this->createTable('storages', [
             'id' => $this->primaryKey(),
             'uid' => $this->string()->notNull(),
@@ -28,7 +30,8 @@ class m160620_064342_create_storage extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function down()
+    {
         $this->dropTable('storages');
     }
 

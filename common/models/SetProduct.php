@@ -16,19 +16,22 @@ use webdoka\yiiecommerce\common\queries\SetProductQuery;
  * @property Product $product
  * @property Set $set
  */
-class SetProduct extends \yii\db\ActiveRecord {
+class SetProduct extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'sets_products';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['set_id', 'product_id'], 'required'],
             [['set_id', 'product_id', 'quantity'], 'integer'],
@@ -40,7 +43,8 @@ class SetProduct extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'set_id' => Yii::t('shop', 'Set ID'),
@@ -52,14 +56,16 @@ class SetProduct extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct() {
+    public function getProduct()
+    {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSet() {
+    public function getSet()
+    {
         return $this->hasOne(Set::className(), ['id' => 'set_id']);
     }
 
@@ -67,7 +73,8 @@ class SetProduct extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return SetProductQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new SetProductQuery(get_called_class());
     }
 

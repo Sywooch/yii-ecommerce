@@ -11,15 +11,18 @@ use Yii;
  *
  * @see ProductsOptions
  */
-class ProductsOptionsQuery extends \yii\db\ActiveQuery {
+class ProductsOptionsQuery extends \yii\db\ActiveQuery
+{
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             NestedSetsQueryBehavior::className(),
         ];
     }
 
-    public function active() {
+    public function active()
+    {
         return $this->andWhere('[[status]]=1');
     }
 
@@ -27,7 +30,8 @@ class ProductsOptionsQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return ProductsOptions[]|array
      */
-    public function all($db = null) {
+    public function all($db = null)
+    {
         return parent::all($db);
     }
 
@@ -35,7 +39,8 @@ class ProductsOptionsQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return ProductsOptions|array|null
      */
-    public function one($db = null) {
+    public function one($db = null)
+    {
         return parent::one($db);
     }
 

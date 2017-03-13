@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'exists_tax')->checkbox() ?>
 
             <?= $form->field($model, 'tax')->textInput() ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

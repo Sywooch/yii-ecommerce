@@ -5,9 +5,11 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `cart_table`.
  */
-class m160610_082029_create_cart_table extends Migration {
+class m160610_082029_create_cart_table extends Migration
+{
 
-    public function safeUp() {
+    public function safeUp()
+    {
         $this->createTable('carts', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
@@ -24,7 +26,8 @@ class m160610_082029_create_cart_table extends Migration {
         $this->addForeignKey('fk-carts_products-product_id-products-id', 'carts_products', 'product_id', 'products', 'id', 'CASCADE', 'CASCADE');
     }
 
-    public function safeDown() {
+    public function safeDown()
+    {
         $this->dropTable('carts_products');
         $this->dropTable('carts');
     }

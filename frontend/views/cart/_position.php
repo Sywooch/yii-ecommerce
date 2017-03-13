@@ -48,7 +48,6 @@ foreach ($_GET as $key => $value) {
                 </table>
 
 
-
             </div>
         </div>
     </td>
@@ -72,27 +71,27 @@ foreach ($_GET as $key => $value) {
     </td>
 
     <td><p class="cart-price">
-                <?php if ($model->discounts) { ?>
+            <?php if ($model->discounts) { ?>
 
-                            <?php foreach ($model->availableDiscounts as $discount) {
+                <?php foreach ($model->availableDiscounts as $discount) {
 
-                                if ($discount->dimension == 'percent') {
-                                    $dimension = Html::encode($discount->value) . ' %';
-                                } elseif ($discount->dimension == 'fixed') {
-                                    $dimension = Yii::$app->formatter->asCurrency(Html::encode($discount->value));
-                                } elseif ($discount->dimension == 'set') {
-                                    $dimension = Html::encode($discount->value) . ' set';
-                                }
-                                ?>
+                    if ($discount->dimension == 'percent') {
+                        $dimension = Html::encode($discount->value) . ' %';
+                    } elseif ($discount->dimension == 'fixed') {
+                        $dimension = Yii::$app->formatter->asCurrency(Html::encode($discount->value));
+                    } elseif ($discount->dimension == 'set') {
+                        $dimension = Html::encode($discount->value) . ' set';
+                    }
+                    ?>
 
-                                <span><?= $dimension ?> </span>
-                            <?php } ?>
-
+                    <span><?= $dimension ?> </span>
                 <?php } ?>
 
-        </p></td>      
-  <td><p class="cart-price">
-<?= Yii::$app->formatter->asCurrency($model->getCostWithDiscounters($model->quantity,$model->Optid)) ?>
+            <?php } ?>
+
+        </p></td>
+    <td><p class="cart-price">
+            <?= Yii::$app->formatter->asCurrency($model->getCostWithDiscounters($model->quantity, $model->Optid)) ?>
         </p></td>
 
 
@@ -127,16 +126,16 @@ foreach ($_GET as $key => $value) {
                                     <td>
                                     ' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b>
                                     </td>
-                                    <td>'.
+                                    <td>' .
 
-        Html::a('<i class="zmdi zmdi-close-circle-o"></i>', [
-            'cart/update', 'id' => $model->id, 'minus' => $value, 'change' => (isset($model->Optid) && $model->Optid != 0) ? ($model->Optid) : (0),'quant' =>$model->quantity,
-        ], [
-            'class' => 'cart-pro-remove',
-            'title' => Yii::t('shop', 'Remove')
-        ])
-       
-.'
+                    Html::a('<i class="zmdi zmdi-close-circle-o"></i>', [
+                        'cart/update', 'id' => $model->id, 'minus' => $value, 'change' => (isset($model->Optid) && $model->Optid != 0) ? ($model->Optid) : (0), 'quant' => $model->quantity,
+                    ], [
+                        'class' => 'cart-pro-remove',
+                        'title' => Yii::t('shop', 'Remove')
+                    ])
+
+                    . '
                                     </td>
                                 </tr>';
             }
@@ -146,14 +145,13 @@ foreach ($_GET as $key => $value) {
             ?>
 
 
-
             </tbody>
         </table>
 
-                    <?php } else {
-                $options_IDs = 0;
-            }
-            ?>
+        <?php } else {
+            $options_IDs = 0;
+        }
+        ?>
         </p>
 
     </td>
@@ -170,77 +168,77 @@ foreach ($_GET as $key => $value) {
     </td>
 </tr>
 <tr>
-<td>
-    
-                <?php
+    <td>
 
-                $roots = ProductsOptions::find()->roots()->all();
-                foreach ($roots as $key => $value) {
+        <?php
 
-                    $rootid = $value->id;
+        $roots = ProductsOptions::find()->roots()->all();
+        foreach ($roots as $key => $value) {
 
-                    $getchild = $value->children()->all();
+            $rootid = $value->id;
 
-                    $child = [];
+            $getchild = $value->children()->all();
 
-                    foreach ($getchild as $children) {
+            $child = [];
 
-                        $child[] = $children->id;
+            foreach ($getchild as $children) {
 
-                    }
+                $child[] = $children->id;
 
-                    $chk = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->andWhere(['in', 'product_options_id', $child])->all();
+            }
 
-                    if ($chk != null) { ?>
+            $chk = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->andWhere(['in', 'product_options_id', $child])->all();
 
-                        <div class="single-pro-size-2 float-left" style="margin-left:5px;">
-                            <a id="element" data-container="body"
-                               class="btn btn-default"
-                               data-toggle="popover"
-                               data-placement="bottom" data-popover-content="#a<?= $rootid ?>-<?= $index ?>">
-                                <?= $value->name ?>
-                            </a>
-                        </div>
+            if ($chk != null) { ?>
 
-                        <div class="hidden col-xs-12" id="a<?= $rootid ?>-<?= $index ?>">
-                            <div class="popover-heading">
-                                <?= Yii::t('shop', 'Options from') ?>: <?= $model->name; ?>
-                            </div>
+                <div class="single-pro-size-2 float-left" style="margin-left:5px;">
+                    <a id="element" data-container="body"
+                       class="btn btn-default"
+                       data-toggle="popover"
+                       data-placement="bottom" data-popover-content="#a<?= $rootid ?>-<?= $index ?>">
+                        <?= $value->name ?>
+                    </a>
+                </div>
 
-                            <div class="popover-body">
+                <div class="hidden col-xs-12" id="a<?= $rootid ?>-<?= $index ?>">
+                    <div class="popover-heading">
+                        <?= Yii::t('shop', 'Options from') ?>: <?= $model->name; ?>
+                    </div>
 
-                                <?php
-                                $oldoptionid = [];
+                    <div class="popover-body">
 
-                                if (isset($model->Optid)) {
+                        <?php
+                        $oldoptionid = [];
 
-                                    $oldoptionid = explode(',', $model->Optid);
-                                }
-                                ?>
+                        if (isset($model->Optid)) {
 
-
-                                <?php
-                                echo OptionWidget::widget([
-                                    'model' => $model,
-                                    'url' => 'cart/update',
-                                    'oldoption' => $oldoptionid,
-                                    'rootid' => $rootid,
-                                    'child' => $child
-                                ]);
-                                ?>
-
-
-                            </div>
-                        </div>
+                            $oldoptionid = explode(',', $model->Optid);
+                        }
+                        ?>
 
 
                         <?php
-                    }
-                }
-                ?>
+                        echo OptionWidget::widget([
+                            'model' => $model,
+                            'url' => 'cart/update',
+                            'oldoption' => $oldoptionid,
+                            'rootid' => $rootid,
+                            'child' => $child
+                        ]);
+                        ?>
 
 
-</td>
+                    </div>
+                </div>
+
+
+                <?php
+            }
+        }
+        ?>
+
+
+    </td>
 </tr>
 
 <?php /*

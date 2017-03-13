@@ -6,11 +6,13 @@ use Yii;
 use yii\web\Request;
 use webdoka\yiiecommerce\common\models\Lang;
 
-class LangRequest extends Request {
+class LangRequest extends Request
+{
 
     private $_lang_url;
 
-    public function getLangUrl() {
+    public function getLangUrl()
+    {
         if ($this->_lang_url === null) {
             $this->_lang_url = $this->getUrl();
 
@@ -21,7 +23,8 @@ class LangRequest extends Request {
             Lang::setCurrent($lang_url);
 
             if ($lang_url !== null && $lang_url === Lang::getCurrent()->url &&
-                    strpos($this->_lang_url, Lang::getCurrent()->url) === 1) {
+                strpos($this->_lang_url, Lang::getCurrent()->url) === 1
+            ) {
                 $this->_lang_url = substr($this->_lang_url, strlen(Lang::getCurrent()->url) + 1);
             }
         }
@@ -29,7 +32,8 @@ class LangRequest extends Request {
         return $this->_lang_url;
     }
 
-    protected function resolvePathInfo() {
+    protected function resolvePathInfo()
+    {
         $pathInfo = $this->getLangUrl();
 
         if (($pos = strpos($pathInfo, '?')) !== false) {
@@ -70,7 +74,7 @@ class LangRequest extends Request {
             $pathInfo = substr($pathInfo, 1);
         }
 
-        return (string) $pathInfo;
+        return (string)$pathInfo;
     }
 
 }

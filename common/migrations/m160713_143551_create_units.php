@@ -5,12 +5,14 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `units`.
  */
-class m160713_143551_create_units extends Migration {
+class m160713_143551_create_units extends Migration
+{
 
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function up()
+    {
         $this->createTable('units', [
             'id' => $this->primaryKey(),
             'uid' => $this->string()->notNull(),
@@ -25,7 +27,8 @@ class m160713_143551_create_units extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function down()
+    {
         $this->dropForeignKey('fk-products-unit_id-units-id', 'products');
         $this->dropTable('units');
     }

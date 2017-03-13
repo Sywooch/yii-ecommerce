@@ -21,7 +21,8 @@ use yii\widgets\ActiveForm;
  *
  * @property OrderProperty[] $ordersProperties
  */
-class Property extends \yii\db\ActiveRecord {
+class Property extends \yii\db\ActiveRecord
+{
 
     const INPUT_TYPE = 'input';
     const CHECKBOX_TYPE = 'checkbox';
@@ -35,14 +36,16 @@ class Property extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'properties';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['label', 'name', 'profile_type'], 'required'],
             [['type'], 'string'],
@@ -55,7 +58,8 @@ class Property extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'label' => Yii::t('shop', 'Label'),
@@ -69,7 +73,8 @@ class Property extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdersProperties() {
+    public function getOrdersProperties()
+    {
         return $this->hasMany(OrderProperty::className(), ['property_id' => 'id']);
     }
 
@@ -77,14 +82,16 @@ class Property extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return PropertyQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new PropertyQuery(get_called_class());
     }
 
     /**
      * @return array
      */
-    public static function getTypes() {
+    public static function getTypes()
+    {
         return [
             self::INPUT_TYPE => ucfirst(self::INPUT_TYPE),
             self::CHECKBOX_TYPE => ucfirst(self::CHECKBOX_TYPE),
@@ -95,7 +102,8 @@ class Property extends \yii\db\ActiveRecord {
     /**
      * @return array
      */
-    public static function getProfileTypes() {
+    public static function getProfileTypes()
+    {
         return Profile::getTypes();
     }
 

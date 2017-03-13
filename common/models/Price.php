@@ -15,7 +15,8 @@ use webdoka\yiiecommerce\common\queries\PriceQuery;
  *
  * @property ProductPrice[] $productsPrices
  */
-class Price extends \yii\db\ActiveRecord {
+class Price extends \yii\db\ActiveRecord
+{
 
     const LIST_PRICE = 'shopListPrice';
     const VIEW_PRICE = 'shopViewPrice';
@@ -26,14 +27,16 @@ class Price extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'prices';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['label', 'name'], 'required'],
             [['label', 'name'], 'string', 'max' => 255],
@@ -44,7 +47,8 @@ class Price extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'label' => Yii::t('shop', 'Label'),
@@ -56,14 +60,16 @@ class Price extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductsPrices() {
+    public function getProductsPrices()
+    {
         return $this->hasMany(ProductPrice::className(), ['price_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductsOptionsPrices() {
+    public function getProductsOptionsPrices()
+    {
         return $this->hasMany(ProductsOptionsPrices::className(), ['price_id' => 'id']);
     }
 
@@ -71,7 +77,8 @@ class Price extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return PriceQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new PriceQuery(get_called_class());
     }
 
@@ -81,12 +88,13 @@ class Price extends \yii\db\ActiveRecord {
      * @param $productId
      * @return mixed
      */
-    public static function getMinPrice($roles, $productId) {
+    public static function getMinPrice($roles, $productId)
+    {
         return self::find()
-                        ->andWhere(['in', 'auth_item_name', $roles])
-                        ->andWhere(['pp.product_id' => $productId])
-                        ->innerJoinWith('productsPrices pp')
-                        ->min('pp.value');
+            ->andWhere(['in', 'auth_item_name', $roles])
+            ->andWhere(['pp.product_id' => $productId])
+            ->innerJoinWith('productsPrices pp')
+            ->min('pp.value');
     }
 
     /**
@@ -95,16 +103,17 @@ class Price extends \yii\db\ActiveRecord {
      * @param $productId
      * @return mixed
      */
-    public static function getOptPrice($roles, $productId, $optid) {
+    public static function getOptPrice($roles, $productId, $optid)
+    {
 
 
-$role=self::find()->where(['in', 'auth_item_name', $roles])->all();
-$arrroles=[];
+        $role = self::find()->where(['in', 'auth_item_name', $roles])->all();
+        $arrroles = [];
 
-foreach ($role as $rules) {
-   $arrroles[]=$rules->id;
-}
- return ProductsOptionsPrices::find()->andWhere(['product_id' => $productId])->andWhere(['in','product_options_id', $optid])->andWhere(['in','price_id', $arrroles])->all();
+        foreach ($role as $rules) {
+            $arrroles[] = $rules->id;
+        }
+        return ProductsOptionsPrices::find()->andWhere(['product_id' => $productId])->andWhere(['in', 'product_options_id', $optid])->andWhere(['in', 'price_id', $arrroles])->all();
     }
 
 }

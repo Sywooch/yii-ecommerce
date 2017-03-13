@@ -14,7 +14,8 @@ use webdoka\yiiecommerce\common\queries\PaymentTypeQuery;
  *
  * @property Order[] $orders
  */
-class PaymentType extends \yii\db\ActiveRecord {
+class PaymentType extends \yii\db\ActiveRecord
+{
 
     const LIST_PAYMENT_TYPE = 'shopListPaymentType';
     const VIEW_PAYMENT_TYPE = 'shopViewPaymentType';
@@ -25,21 +26,24 @@ class PaymentType extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'payment_types';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name', 'label'], 'required'],
             [['name', 'label'], 'string', 'max' => 255],
         ];
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
 
         return [
             'translate' => [
@@ -55,7 +59,8 @@ class PaymentType extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'name' => Yii::t('shop', 'Name'),
@@ -66,7 +71,8 @@ class PaymentType extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrders() {
+    public function getOrders()
+    {
         return $this->hasMany(Order::className(), ['payment_type_id' => 'id']);
     }
 
@@ -74,7 +80,8 @@ class PaymentType extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return PaymentTypeQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new PaymentTypeQuery(get_called_class());
     }
 

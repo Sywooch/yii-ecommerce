@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Category'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
     </div>
-    <div class="box-body">         
+    <div class="box-body">
         <div class="category-index">
             <?=
             GridView::widget([
@@ -36,29 +36,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         'buttons' => [
                             'view' => function ($url, $model, $key) {
                                 return Yii::$app->user->can(Category::VIEW_CATEGORY) ?
-                                        Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                            'title' => Yii::t('yii', 'View'),
-                                        ]) : '';
+                                    Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                        'title' => Yii::t('yii', 'View'),
+                                    ]) : '';
                             },
-                                    'update' => function ($url, $model, $key) {
+                            'update' => function ($url, $model, $key) {
                                 return Yii::$app->user->can(Category::UPDATE_CATEGORY) ?
-                                        Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                            'title' => Yii::t('yii', 'Update'),
-                                        ]) : '';
+                                    Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                        'title' => Yii::t('yii', 'Update'),
+                                    ]) : '';
                             },
-                                    'delete' => function ($url, $model, $key) {
+                            'delete' => function ($url, $model, $key) {
                                 return Yii::$app->user->can(Category::DELETE_CATEGORY) ?
-                                        Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                            'title' => Yii::t('yii', 'Delete'),
-                                            'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
-                                            'data-method' => 'post',
-                                        ]) : '';
+                                    Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                        'title' => Yii::t('yii', 'Delete'),
+                                        'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                                        'data-method' => 'post',
+                                    ]) : '';
                             },
-                                ],
-                            ],
                         ],
-                    ]);
-                    ?>
+                    ],
+                ],
+            ]);
+            ?>
         </div>
     </div>
 

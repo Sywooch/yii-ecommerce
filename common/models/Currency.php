@@ -14,7 +14,8 @@ use Yii;
  *
  * @property Account[] $accounts
  */
-class Currency extends \yii\db\ActiveRecord {
+class Currency extends \yii\db\ActiveRecord
+{
 
     const LIST_CURRENCY = 'shopListCurrency';
     const VIEW_CURRENCY = 'shopViewCurrency';
@@ -25,14 +26,16 @@ class Currency extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'currencies';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name', 'symbol', 'abbr'], 'required'],
             [['name', 'symbol', 'abbr'], 'string', 'max' => 255],
@@ -42,7 +45,8 @@ class Currency extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'name' => Yii::t('shop', 'Name'),
@@ -54,7 +58,8 @@ class Currency extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccount() {
+    public function getAccount()
+    {
         return $this->hasMany(Account::className(), ['currency_id' => 'id']);
     }
 

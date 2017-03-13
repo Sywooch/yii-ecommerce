@@ -9,7 +9,8 @@ use webdoka\yiiecommerce\common\models\Price;
  *
  * @see Price
  */
-class PriceQuery extends \yii\db\ActiveQuery {
+class PriceQuery extends \yii\db\ActiveQuery
+{
     /* public function active()
       {
       return $this->andWhere('[[status]]=1');
@@ -19,7 +20,8 @@ class PriceQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return Price[]|array
      */
-    public function all($db = null) {
+    public function all($db = null)
+    {
         return parent::all($db);
     }
 
@@ -27,7 +29,8 @@ class PriceQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return Price|array|null
      */
-    public function one($db = null) {
+    public function one($db = null)
+    {
         return parent::one($db);
     }
 

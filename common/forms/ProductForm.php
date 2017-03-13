@@ -12,7 +12,8 @@ use webdoka\yiiecommerce\common\models\ProductPrice;
 use yii\helpers\ArrayHelper;
 use Yii;
 
-class ProductForm extends Product {
+class ProductForm extends Product
+{
 
     public $_relFeatures = [];
     public $_relPrices = [];
@@ -21,30 +22,33 @@ class ProductForm extends Product {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return ArrayHelper::merge([
-                    ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Feature')],
-                    ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Price')],
-                    ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Discount')],
-                        ], parent::rules());
+            ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Feature')],
+            ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Price')],
+            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Discount')],
+        ], parent::rules());
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return ArrayHelper::merge([
-                    'relFeatures' => Yii::t('shop', 'Features'),
-                    'relPrices' => Yii::t('shop', 'Prices'),
-                    'relDiscounts' => Yii::t('shop', 'Discounts'),
-                        ], parent::attributeLabels());
+            'relFeatures' => Yii::t('shop', 'Features'),
+            'relPrices' => Yii::t('shop', 'Prices'),
+            'relDiscounts' => Yii::t('shop', 'Discounts'),
+        ], parent::attributeLabels());
     }
 
     /**
      * Buffer variable for related features of category.
      * @return array
      */
-    public function getRelFeatures() {
+    public function getRelFeatures()
+    {
         return $this->_relFeatures;
     }
 
@@ -52,15 +56,17 @@ class ProductForm extends Product {
      * Set related types
      * @param $types
      */
-    public function setRelFeatures($features) {
-        $this->_relFeatures = $features ? : [];
+    public function setRelFeatures($features)
+    {
+        $this->_relFeatures = $features ?: [];
     }
 
     /**
      * Buffer variable for related prices
      * @return array
      */
-    public function getRelPrices() {
+    public function getRelPrices()
+    {
         return $this->_relPrices;
     }
 
@@ -68,15 +74,17 @@ class ProductForm extends Product {
      * Set related prices
      * @param $types
      */
-    public function setRelPrices($prices) {
-        $this->_relPrices = $prices ? : [];
+    public function setRelPrices($prices)
+    {
+        $this->_relPrices = $prices ?: [];
     }
 
     /**
      * Buffer variable for related discounts
      * @return array
      */
-    public function getRelDiscounts() {
+    public function getRelDiscounts()
+    {
         return $this->_relDiscounts;
     }
 
@@ -84,8 +92,9 @@ class ProductForm extends Product {
      * Set related discounts
      * @param $types
      */
-    public function setRelDiscounts($discounts) {
-        $this->_relDiscounts = $discounts ? : [];
+    public function setRelDiscounts($discounts)
+    {
+        $this->_relDiscounts = $discounts ?: [];
     }
 
     /**
@@ -93,7 +102,8 @@ class ProductForm extends Product {
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if (parent::beforeSave($insert)) {
             $this->saveFeaturesToRelation();
             $this->savePricesToRelation();
@@ -107,7 +117,8 @@ class ProductForm extends Product {
     /**
      * Populating features to relation
      */
-    private function saveFeaturesToRelation() {
+    private function saveFeaturesToRelation()
+    {
         $features = [];
 
         foreach ($this->_relFeatures as $relFeature => $value) {
@@ -126,7 +137,8 @@ class ProductForm extends Product {
     /**
      * Populating prices to relation
      */
-    private function savePricesToRelation() {
+    private function savePricesToRelation()
+    {
         $prices = [];
 
         foreach ($this->_relPrices as $relPrice => $value) {
@@ -145,7 +157,8 @@ class ProductForm extends Product {
     /**
      * Populating discounts to relation
      */
-    private function saveDiscountsToRelation() {
+    private function saveDiscountsToRelation()
+    {
         $discounts = [];
 
         foreach ($this->_relDiscounts as $relDiscount) {

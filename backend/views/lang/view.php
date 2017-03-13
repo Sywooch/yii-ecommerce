@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->user->can(Lang::UPDATE_LANG)) { ?>
             <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
-        <?php if (Yii::$app->user->can(Lang::DELETE_LANG)) { ?>        
+        <?php if (Yii::$app->user->can(Lang::DELETE_LANG)) { ?>
             <?=
             Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',

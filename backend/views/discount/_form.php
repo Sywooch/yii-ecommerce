@@ -43,10 +43,10 @@ use webdoka\yiiecommerce\common\models\Discount;
 
             <?=
             $form->field($model, 'relProducts')->dropDownList(
-                    ArrayHelper::map(Product::find()->all(), 'id', 'name', 'category.name'), ['multiple' => true, 'size' => 10]
+                ArrayHelper::map(Product::find()->all(), 'id', 'name', 'category.name'), ['multiple' => true, 'size' => 10]
             )->label(false)
             ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

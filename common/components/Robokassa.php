@@ -9,19 +9,21 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
-class Robokassa extends Component implements IPaymentSystem {
+class Robokassa extends Component implements IPaymentSystem
+{
 
     const URL = 'https://merchant.roboxchange.com/Index.aspx';
 
     public
-            $shopId = false,
-            $password1 = false,
-            $password2 = false,
-            $testPassword1 = false,
-            $testPassword2 = false,
-            $isTest = true;
+        $shopId = false,
+        $password1 = false,
+        $password2 = false,
+        $testPassword1 = false,
+        $testPassword2 = false,
+        $isTest = true;
 
-    public function requestPayment($invoiceId) {
+    public function requestPayment($invoiceId)
+    {
         if (!$invoice = Invoice::find()->where(['id' => $invoiceId])->one()) {
             throw new InvalidParamException('Invalid $invoiceId.');
         }
@@ -41,19 +43,20 @@ class Robokassa extends Component implements IPaymentSystem {
         $crc = strtoupper($crc);
 
         return Yii::$app->view->render('@webdoka/common/components/views/robokassa.php', [
-                    'action' => self::URL,
-                    'merchant' => $merchant,
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'description' => $description,
-                    'invoiceId' => $invoice->id,
-                    'crc' => $crc,
-                    'shopItem' => $shopItem,
-                    'isTest' => intval($this->isTest)
+            'action' => self::URL,
+            'merchant' => $merchant,
+            'amount' => $amount,
+            'currency' => $currency,
+            'description' => $description,
+            'invoiceId' => $invoice->id,
+            'crc' => $crc,
+            'shopItem' => $shopItem,
+            'isTest' => intval($this->isTest)
         ]);
     }
 
-    public function handleResult() {
+    public function handleResult()
+    {
         $amount = Yii::$app->request->post('OutSum');
         $invoiceId = Yii::$app->request->post('InvId');
         $shopItem = Yii::$app->request->post('Shp_item');
@@ -77,7 +80,8 @@ class Robokassa extends Component implements IPaymentSystem {
         die('OK');
     }
 
-    public function handleSuccess() {
+    public function handleSuccess()
+    {
         $invoiceId = Yii::$app->request->post('InvId');
 
         // Check invoice
@@ -88,7 +92,8 @@ class Robokassa extends Component implements IPaymentSystem {
         }
     }
 
-    public function handleFail() {
+    public function handleFail()
+    {
         $invoiceId = Yii::$app->request->post('InvId');
 
         // Check invoice

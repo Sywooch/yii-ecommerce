@@ -31,7 +31,8 @@ use yii\web\UploadedFile;
 /**
  * ProductsOptionsController implements the CRUD actions for ProductsOptions model.
  */
-class ProductsOptionsController extends Controller {
+class ProductsOptionsController extends Controller
+{
 
     /**
      * @var array the list of keys in $_POST which must be cast as boolean
@@ -49,7 +50,8 @@ class ProductsOptionsController extends Controller {
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -105,13 +107,14 @@ class ProductsOptionsController extends Controller {
      * Lists all ProductsOptions models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $dataProvider = new ActiveDataProvider([
             'query' => ProductsOptions::find(),
         ]);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -120,9 +123,10 @@ class ProductsOptionsController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -131,14 +135,15 @@ class ProductsOptionsController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new ProductsOptions();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -149,19 +154,21 @@ class ProductsOptionsController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
 
-    public function actionUpload() {
+    public function actionUpload()
+    {
         $model = new UploadForm();
 
         if (Yii::$app->request->isPost) {
@@ -178,7 +185,8 @@ class ProductsOptionsController extends Controller {
     /**
      * Ajax options-price-product saver
      */
-    public function actionAjax() {
+    public function actionAjax()
+    {
         $post = Yii::$app->request->post();
         $data = static::getPostData();
 
@@ -190,12 +198,12 @@ class ProductsOptionsController extends Controller {
 
                 foreach ($prices as $pricedata) {
 
-                    $getoptions = ProductsOptionsPrices::find()->where(['=', "product_id", (int) $data["prodid"]])->andWhere(['=', 'product_options_id', (int) $value])->andWhere(['=', 'price_id', $pricedata->id])->one();
+                    $getoptions = ProductsOptionsPrices::find()->where(['=', "product_id", (int)$data["prodid"]])->andWhere(['=', 'product_options_id', (int)$value])->andWhere(['=', 'price_id', $pricedata->id])->one();
 #Add to list
                     if ($getoptions == null) {
                         $addopt = new ProductsOptionsPrices();
-                        $addopt->product_id = (int) $data["prodid"];
-                        $addopt->product_options_id = (int) $value;
+                        $addopt->product_id = (int)$data["prodid"];
+                        $addopt->product_options_id = (int)$value;
                         $addopt->price_id = $pricedata->id;
                         $addopt->value = 0;
                         $addopt->save();
@@ -203,17 +211,17 @@ class ProductsOptionsController extends Controller {
                 }
             }
 
-            $condition = ['=', "product_id", (int) $data["prodid"]];
+            $condition = ['=', "product_id", (int)$data["prodid"]];
             ProductsOptionsPrices::updateAll(['status' => 0], $condition);
 
             $condition = ['and',
-                ['=', "product_id", (int) $data["prodid"]],
+                ['=', "product_id", (int)$data["prodid"]],
                 ['in', 'product_options_id', $data["optid"]],
             ];
             ProductsOptionsPrices::updateAll(['status' => 1], $condition);
         } else {
             $condition = ['and',
-                ['=', "product_id", (int) $data["prodid"]],
+                ['=', "product_id", (int)$data["prodid"]],
                 ['=', 'status', 1],
             ];
 
@@ -224,7 +232,8 @@ class ProductsOptionsController extends Controller {
     /**
      * Saves a node once form is submitted
      */
-    public function actionSave() {
+    public function actionSave()
+    {
         $post = Yii::$app->request->post();
         static::checkValidRequest(false, !isset($post['treeNodeModify']));
         $treeNodeModify = $parentKey = $currUrl = $treeSaveHash = null;
@@ -270,7 +279,7 @@ class ProductsOptionsController extends Controller {
 
         if (isset($data[$tag]["relPrices"])) {
 
-            $pid = (int) Yii::$app->request->get('pid');
+            $pid = (int)Yii::$app->request->get('pid');
 
             foreach ($data[$tag]["relPrices"] as $key => $value) {
 
@@ -347,7 +356,8 @@ class ProductsOptionsController extends Controller {
      *
      * @throws InvalidCallException
      */
-    protected static function checkValidRequest($isJsonResponse = true, $isInvalid = null) {
+    protected static function checkValidRequest($isJsonResponse = true, $isInvalid = null)
+    {
         $app = Yii::$app;
         if ($isJsonResponse) {
             $app->response->format = Response::FORMAT_JSON;
@@ -365,7 +375,8 @@ class ProductsOptionsController extends Controller {
      *
      * @return array
      */
-    protected static function getPostData() {
+    protected static function getPostData()
+    {
         if (empty($_POST)) {
             return [];
         }
@@ -382,7 +393,8 @@ class ProductsOptionsController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -395,7 +407,8 @@ class ProductsOptionsController extends Controller {
      * @return ProductsOptions the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = ProductsOptions::findOne($id)) !== null) {
             return $model;
         } else {

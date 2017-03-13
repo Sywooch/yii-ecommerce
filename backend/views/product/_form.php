@@ -118,14 +118,19 @@ $this->registerJs('
 
         <ul class="nav nav-tabs">
 
-            <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Product') ?></a></li>
+            <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab"
+                                                      data-toggle="tab"><?= Yii::t('shop', 'Product') ?></a></li>
 
-            <li role="presentation"><a href="#characteristics" aria-controls="characteristics" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Сharacteristics') ?></a></li>            
+            <li role="presentation"><a href="#characteristics" aria-controls="characteristics" role="tab"
+                                       data-toggle="tab"><?= Yii::t('shop', 'Сharacteristics') ?></a></li>
 
-            <li role="presentation"><a href="#prices" aria-controls="prices" role="tab" data-toggle="tab"><?= Yii::t('shop', 'Prices') ?></a></li>
+            <li role="presentation"><a href="#prices" aria-controls="prices" role="tab"
+                                       data-toggle="tab"><?= Yii::t('shop', 'Prices') ?></a></li>
 
-            <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation"><a href="#options" aria-controls="options" role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Product Options') ?></a></li>
-
+            <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation"><a href="#options"
+                                                                                                   aria-controls="options"
+                                                                                                   role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Product Options') ?></a>
+            </li>
 
 
         </ul>
@@ -144,57 +149,56 @@ $this->registerJs('
 
                     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
-                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>                   
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
 
-                       <div class="form-group">
+                    <div class="form-group">
                         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                     </div>
 
                 </div>
 
-            </div> 
+            </div>
 
 
-<div role="tabpanel" class="tab-pane fade in" id="characteristics">
+            <div role="tabpanel" class="tab-pane fade in" id="characteristics">
 
 
-                    <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Unit::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
+                <?= $form->field($model, 'unit_id')->dropDownList(ArrayHelper::map(Unit::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
 
-                    <label><?= Yii::t('shop', 'Features') ?></label>
+                <label><?= Yii::t('shop', 'Features') ?></label>
 
-                    <div class="well">
-                        <?php Pjax::begin(['id' => 'features']) ?>
+                <div class="well">
+                    <?php Pjax::begin(['id' => 'features']) ?>
 
-                        <?=
-                        ListView::widget([
-                            'itemView' => '_feature',
-                            'dataProvider' => $dataProvider,
-                            'summary' => false,
-                        ]);
-                        ?>
+                    <?=
+                    ListView::widget([
+                        'itemView' => '_feature',
+                        'dataProvider' => $dataProvider,
+                        'summary' => false,
+                    ]);
+                    ?>
 
-                        <?php Pjax::end() ?>
-                    </div>
-
-
-                       <div class="form-group">
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                    </div>              
-
-        </div> 
+                    <?php Pjax::end() ?>
+                </div>
 
 
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
 
-        <div role="tabpanel" class="tab-pane fade in" id="prices">
+            </div>
 
-                    <label><?= Yii::t('shop', 'Prices') ?></label>
 
-                    <div class="well">
-                       <?= $form->field($model, 'price',[
+            <div role="tabpanel" class="tab-pane fade in" id="prices">
+
+                <label><?= Yii::t('shop', 'Prices') ?></label>
+
+                <div class="well">
+                    <?= $form->field($model, 'price', [
                         'template' => "<div class='form-group'>
                         <div class='row'>
                             <div class='col-xs-2'>{label} </div>
@@ -203,37 +207,35 @@ $this->registerJs('
                         </div>
                     </div>"
                     ])->textInput() ?>
-                        <?=
-                        ListView::widget([
-                            'itemView' => '_price',
-                            'dataProvider' => $priceDataProvider,
-                            'summary' => false,
-                        ]);
-                        ?>
-                    </div>
+                    <?=
+                    ListView::widget([
+                        'itemView' => '_price',
+                        'dataProvider' => $priceDataProvider,
+                        'summary' => false,
+                    ]);
+                    ?>
+                </div>
 
-                    <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
-
-
-                       <div class="form-group">
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                    </div>
-
-                    <?php ActiveForm::end(); ?>                 
-
-</div>  
+                <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
 
 
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+
+            </div>
 
 
             <div role="tabpanel" class="tab-pane fade" id="options">
 
                 <div class="product-form">
-                            <a style="float:right; cursor:pointer;" id="element" data-container="body"
-                               data-toggle="popover"
-                               data-placement="bottom" data-popover-content="#taboptions">
-                                <span class="glyphicon glyphicon-question-sign"></span>
-                            </a>
+                    <a style="float:right; cursor:pointer;" id="element" data-container="body"
+                       data-toggle="popover"
+                       data-placement="bottom" data-popover-content="#taboptions">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </a>
 
                     <?=
                     TreeView::widget([
@@ -252,12 +254,12 @@ $this->registerJs('
                         'nodeActions' => [
                             Module::NODE_MANAGE => Url::to(['/treemanager/node/manage', 'id' => $model->id]),
                             Module::NODE_SAVE => Url::to(['/admin/shop/products-options/save/', 'pid' => $model->id]),
-                        // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
-                        // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
+                            // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
+                            // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
                         ],
                         //'headingOptions' => ['label' => Yii::t('shop', 'Product Options')],
                         'fontAwesome' => false, // optional
-                       // 'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
+                        // 'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
                         'isAdmin' => false,
                         'displayValue' => 1, // initial display value
                         'softDelete' => false, // defaults to true
@@ -277,14 +279,16 @@ $this->registerJs('
 </div>
 
 
-    <div class="hidden col-xs-12" id="taboptions">
-        <div class="popover-heading">
-            Как это работает?
-        </div>
-
-        <div class="popover-body">
-
-Каждая рут категория создаёт кнопку которая открывает Popover с вложенной в эту категорию веткой свойств.
-В каждой вложенной ветке свойств можно выбрать одно свойство которое изменит цену на значение выставленное в разделе "Товары" >> Выбрать товар для редактирования >> вкладка "Свойства товара" >> нажать на свойство "Цены". Если выставленное значение должно уменьшать базовую цену, тогда значение должно быть отрицательным числом.
-        </div>
+<div class="hidden col-xs-12" id="taboptions">
+    <div class="popover-heading">
+        Как это работает?
     </div>
+
+    <div class="popover-body">
+
+        Каждая рут категория создаёт кнопку которая открывает Popover с вложенной в эту категорию веткой свойств.
+        В каждой вложенной ветке свойств можно выбрать одно свойство которое изменит цену на значение выставленное в
+        разделе "Товары" >> Выбрать товар для редактирования >> вкладка "Свойства товара" >> нажать на свойство "Цены".
+        Если выставленное значение должно уменьшать базовую цену, тогда значение должно быть отрицательным числом.
+    </div>
+</div>

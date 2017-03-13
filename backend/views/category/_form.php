@@ -16,21 +16,21 @@ use yii\helpers\ArrayHelper;
 
             <?php $form = ActiveForm::begin();
 
-if($model->isNewRecord){
+            if ($model->isNewRecord) {
 
-    $parent=Category::find()->all();
+                $parent = Category::find()->all();
 
-}else{
-    
-    $parent=Category::find()->andWhere(['<>','id',$model->id])->all();
-}
+            } else {
+
+                $parent = Category::find()->andWhere(['<>', 'id', $model->id])->all();
+            }
 
             ?>
 
             <?=
-                $form->field($model, 'parent_id')->dropDownList(
+            $form->field($model, 'parent_id')->dropDownList(
                 ArrayHelper::map($parent, 'id', 'name'), ['prompt' => Yii::t('shop', 'Choose Category')]
-                )
+            )
             ?>
 
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -39,12 +39,12 @@ if($model->isNewRecord){
 
             <?=
             $form->field($model, 'relFeatures')->dropDownList(
-                    ArrayHelper::map(Feature::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'), [
+                ArrayHelper::map(Feature::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'), [
                 'class' => 'form-control',
                 'multiple' => true,
             ])
             ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

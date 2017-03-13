@@ -8,7 +8,8 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Widget;
 use yii\helpers\Html;
 
-class Translateform extends Widget {
+class Translateform extends Widget
+{
 
     public $form;
     public $model;
@@ -19,13 +20,14 @@ class Translateform extends Widget {
     /**
      * Renders the widget.
      */
-    public function run() {
+    public function run()
+    {
         return $this->render('translateform', [
-                    'form' => $this->form,
-                    'model' => $this->model,
-                    'attr' => $this->attr,
-                    'field' => $this->field,
-                    'formtype' => $this->formtype,
+            'form' => $this->form,
+            'model' => $this->model,
+            'attr' => $this->attr,
+            'field' => $this->field,
+            'formtype' => $this->formtype,
         ]);
     }
 

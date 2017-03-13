@@ -12,12 +12,14 @@ use yii\filters\VerbFilter;
 /**
  * DiscountController implements the CRUD actions for Discount model.
  */
-class DiscountController extends Controller {
+class DiscountController extends Controller
+{
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -32,13 +34,14 @@ class DiscountController extends Controller {
      * Lists all Discount models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $dataProvider = new ActiveDataProvider([
             'query' => DiscountForm::find(),
         ]);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -47,9 +50,10 @@ class DiscountController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -58,14 +62,15 @@ class DiscountController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new DiscountForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -76,7 +81,8 @@ class DiscountController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
 
         if (!Yii::$app->request->isPost) {
@@ -87,7 +93,7 @@ class DiscountController extends Controller {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -98,7 +104,8 @@ class DiscountController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -111,7 +118,8 @@ class DiscountController extends Controller {
      * @return DiscountForm the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = DiscountForm::findOne($id)) !== null) {
             return $model;
         } else {

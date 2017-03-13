@@ -2,13 +2,15 @@
 
 use webdoka\yiiecommerce\common\models\Lang;
 use webdoka\yiiecommerce\common\models\TranslateDynamicText;
+
 ?>
 
 <div class="box box-widget collapsed-box">
 
 
     <div class="box-tools pull-right">
-        <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-plus"></i> <?= Yii::t('shop', 'Translate') ?>
+        <button data-widget="collapse" class="btn btn-box-tool" type="button"><i
+                    class="fa fa-plus"></i> <?= Yii::t('shop', 'Translate') ?>
         </button>
     </div>
     <!-- /.box-tools -->

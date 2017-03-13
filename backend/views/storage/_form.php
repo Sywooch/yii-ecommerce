@@ -49,19 +49,19 @@ $this->registerJs('
 
         <?=
         $form->field($model, 'country')->dropDownList(
-                ArrayHelper::merge(['' => 'Select country'], StorageForm::getCountries())
+            ArrayHelper::merge(['' => 'Select country'], StorageForm::getCountries())
         )
         ?>
 
         <?=
         $form->field($model, 'city')->dropDownList(
-                ArrayHelper::merge(['' => 'Select city'], StorageForm::getCitiesByCountry($model->country))
+            ArrayHelper::merge(['' => 'Select city'], StorageForm::getCitiesByCountry($model->country))
         )
         ?>
 
         <?=
         $form->field($model, 'address')->dropDownList(
-                ArrayHelper::merge(['' => 'Verify address'], StorageForm::getAddressByCountryAndCity($model->country, $model->city))
+            ArrayHelper::merge(['' => 'Verify address'], StorageForm::getAddressByCountryAndCity($model->country, $model->city))
         )
         ?>
 

@@ -5,12 +5,14 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `order_properties`.
  */
-class m160716_121236_create_properties extends Migration {
+class m160716_121236_create_properties extends Migration
+{
 
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function up()
+    {
         $this->createTable('properties', [
             'id' => $this->primaryKey(),
             'label' => $this->string()->notNull(),
@@ -33,7 +35,8 @@ class m160716_121236_create_properties extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function down()
+    {
         $this->dropForeignKey('fk-orders_properties-order_id-orders-id', 'orders_properties');
         $this->dropForeignKey('fk-orders_properties-property_id-properties-id', 'orders_properties');
 

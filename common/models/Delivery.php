@@ -16,7 +16,8 @@ use Yii;
  *
  * @property Location $location
  */
-class Delivery extends UidModel {
+class Delivery extends UidModel
+{
 
     const LIST_DELIVERY = 'shopListDelivery';
     const VIEW_DELIVERY = 'shopViewDelivery';
@@ -27,14 +28,16 @@ class Delivery extends UidModel {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'deliveries';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name', 'cost'], 'required'],
             [['cost'], 'number'],
@@ -47,7 +50,8 @@ class Delivery extends UidModel {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'uid' => Yii::t('shop', 'Uid'),
@@ -60,7 +64,8 @@ class Delivery extends UidModel {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStorage() {
+    public function getStorage()
+    {
         return $this->hasOne(Storage::className(), ['id' => 'storage_id']);
     }
 
@@ -68,7 +73,8 @@ class Delivery extends UidModel {
      * @inheritdoc
      * @return DeliveryQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new DeliveryQuery(get_called_class());
     }
 

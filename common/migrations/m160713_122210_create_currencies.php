@@ -5,12 +5,14 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `currencies`.
  */
-class m160713_122210_create_currencies extends Migration {
+class m160713_122210_create_currencies extends Migration
+{
 
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function up()
+    {
         $this->createTable('currencies', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
@@ -21,7 +23,8 @@ class m160713_122210_create_currencies extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function down()
+    {
         $this->dropTable('currencies');
     }
 

@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m170207_145138_add_products_options_tree extends Migration {
+class m170207_145138_add_products_options_tree extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->createTable('{{%products_options}}', [
             'id' => $this->primaryKey(),
             'tree' => $this->integer()->notNull(),
@@ -15,7 +17,8 @@ class m170207_145138_add_products_options_tree extends Migration {
         ]);
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropTable('{{%products_options}}');
     }
 

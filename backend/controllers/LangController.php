@@ -17,12 +17,14 @@ use yii\helpers\Json;
 /**
  * LangController implements the CRUD actions for Lang model.
  */
-class LangController extends Controller {
+class LangController extends Controller
+{
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -88,13 +90,14 @@ class LangController extends Controller {
      * Lists all Lang models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $dataProvider = new ActiveDataProvider([
             'query' => Lang::find(),
         ]);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -102,14 +105,15 @@ class LangController extends Controller {
      * Lists all TranslateLang models.
      * @return mixed
      */
-    public function actionTrindex() {
+    public function actionTrindex()
+    {
 
         $searchModel = new TranslateSourceMessage();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('trindex', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
         ]);
     }
 
@@ -118,9 +122,10 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -129,7 +134,8 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionTrview($id) {
+    public function actionTrview($id)
+    {
         $model = $this->findTRModel($id);
 
         $dataProvider = new ArrayDataProvider([
@@ -137,7 +143,7 @@ class LangController extends Controller {
             'allModels' => $model->translates,
         ]);
         return $this->render('trview', [
-                    'model' => $model, 'dataProvider' => $dataProvider,
+            'model' => $model, 'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -146,7 +152,8 @@ class LangController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new Lang();
 
         $post = Yii::$app->request->post();
@@ -155,13 +162,13 @@ class LangController extends Controller {
 
             if ($post["Lang"]["default"] > 0) {
 
-                Lang::updateDefaultLang((int) $model->id);
+                Lang::updateDefaultLang((int)$model->id);
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -171,7 +178,8 @@ class LangController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionTrcreate() {
+    public function actionTrcreate()
+    {
         $model = new TranslateSourceMessage();
 
         $dataProvider = new ArrayDataProvider([
@@ -207,8 +215,8 @@ class LangController extends Controller {
             return $this->redirect(['trview', 'id' => $model->id]);
         } else {
             return $this->render('trcreate', [
-                        'model' => $model,
-                        'dataProvider' => $dataProvider,
+                'model' => $model,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
@@ -219,7 +227,8 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
 
         $post = Yii::$app->request->post();
@@ -229,13 +238,13 @@ class LangController extends Controller {
 
             if ($post["Lang"]["default"] > 0) {
 
-                Lang::updateDefaultLang((int) $id);
+                Lang::updateDefaultLang((int)$id);
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -246,7 +255,8 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionTrupdate($id) {
+    public function actionTrupdate($id)
+    {
         $model = $this->findTRModel($id);
 
         $dataProvider = new ArrayDataProvider([
@@ -260,7 +270,7 @@ class LangController extends Controller {
 
             foreach ($getTraslate['TranslateMessage'] as $key => $value) {
 
-                $getmodel = TranslateMessage::find()->where(['and', ['id' => (int) $id, 'language' => $key]])->one();
+                $getmodel = TranslateMessage::find()->where(['and', ['id' => (int)$id, 'language' => $key]])->one();
 
                 if ($getmodel != null) {
 
@@ -280,7 +290,7 @@ class LangController extends Controller {
             return $this->redirect(['trview', 'id' => $model->id]);
         } else {
             return $this->render('trupdate', [
-                        'model' => $model, 'dataProvider' => $dataProvider,
+                'model' => $model, 'dataProvider' => $dataProvider,
             ]);
         }
     }
@@ -290,13 +300,14 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionAjax() {
+    public function actionAjax()
+    {
 
         $post = Yii::$app->request->post();
 
-        if ($post['type'] == 1 && isset($post['id']) && (int) $post['id'] > 0) {
+        if ($post['type'] == 1 && isset($post['id']) && (int)$post['id'] > 0) {
 
-            echo Json::encode(Lang::updateDefaultLang((int) $post['id']));
+            echo Json::encode(Lang::updateDefaultLang((int)$post['id']));
         }
     }
 
@@ -306,7 +317,8 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $model = $this->findModel($id);
 
         $random = Lang::find()->where(['<>', 'id', $model->id])->one();
@@ -338,16 +350,17 @@ class LangController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionTrdelete($id) {
+    public function actionTrdelete($id)
+    {
         $model = new TranslateMessage();
 
-        if ($model::find()->where(['id' => (int) $id])->one() != null) {
+        if ($model::find()->where(['id' => (int)$id])->one() != null) {
 
-            if ($model->deleteAll(['id' => (int) $id])) {
+            if ($model->deleteAll(['id' => (int)$id])) {
 
                 $this->findTRModel($id)->delete();
             } else {
-                
+
             }
         } else {
 
@@ -364,7 +377,8 @@ class LangController extends Controller {
      * @return Lang the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Lang::findOne($id)) !== null) {
             return $model;
         } else {
@@ -379,7 +393,8 @@ class LangController extends Controller {
      * @return Lang the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findTRModel($id) {
+    protected function findTRModel($id)
+    {
         if (($model = TranslateSourceMessage::findOne($id)) !== null) {
             return $model;
         } else {

@@ -41,7 +41,8 @@ $this->registerJs('
 
         <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->set()->all(), 'id', 'name'), ['multiple' => true]) ?>
 
-        <h2><?= Yii::t('shop', 'Products') ?> <span class="add-product btn btn-success pull-right"><?= Yii::t('shop', 'Add Product') ?></span></h2>
+        <h2><?= Yii::t('shop', 'Products') ?> <span
+                    class="add-product btn btn-success pull-right"><?= Yii::t('shop', 'Add Product') ?></span></h2>
 
         <?php if (Yii::$app->session->hasFlash('set-error')) { ?>
             <div class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('set-error')) ?></div>
@@ -54,16 +55,16 @@ $this->registerJs('
 
                     <div class="col-md-8">
                         <?=
-                                $form->field($model, 'relSetsProducts[' . $index . '][product_id]')
-                                ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
-                                ->label(false);
+                        $form->field($model, 'relSetsProducts[' . $index . '][product_id]')
+                            ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
+                            ->label(false);
                         ?>
                     </div>
 
                     <div class="col-md-2">
                         <?=
-                                $form->field($model, 'relSetsProducts[' . $index . '][quantity]')
-                                ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false)
+                        $form->field($model, 'relSetsProducts[' . $index . '][quantity]')
+                            ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false)
                         ?>
                     </div>
 
@@ -73,16 +74,16 @@ $this->registerJs('
 
                 </div>
 
-<?php } ?>
+            <?php } ?>
 
 
         </div>
 
-         <div class="form-group">
+        <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>       
+        </div>
 
-<?php ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
         <div class="product-template hide">
 
@@ -90,16 +91,16 @@ $this->registerJs('
 
                 <div class="col-md-8">
                     <?=
-                            $form->field($model, 'relSetsProducts[%set_product_id%][product_id]')
-                            ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
-                            ->label(false);
+                    $form->field($model, 'relSetsProducts[%set_product_id%][product_id]')
+                        ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
+                        ->label(false);
                     ?>
                 </div>
 
                 <div class="col-md-2">
                     <?=
-                            $form->field($model, 'relSetsProducts[%set_product_id%][quantity]')
-                            ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false)
+                    $form->field($model, 'relSetsProducts[%set_product_id%][quantity]')
+                        ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false)
                     ?>
                 </div>
 

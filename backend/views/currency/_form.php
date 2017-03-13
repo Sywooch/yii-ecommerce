@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'symbol')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'abbr')->textInput(['maxlength' => true]) ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

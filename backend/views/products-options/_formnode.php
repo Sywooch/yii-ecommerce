@@ -6,13 +6,13 @@ use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\helpers\Html;
 
-$prid = (int) Yii::$app->request->get('id');
+$prid = (int)Yii::$app->request->get('id');
 
 
 $priceDataProvider = new ArrayDataProvider([
     'pagination' => false,
     'allModels' => (new ProductsOptions)->getPricesWithValues($node->id, $prid),
-        ]);
+]);
 
 echo $form->field($node, 'description')->textarea(['rows' => 6]);
 ?>

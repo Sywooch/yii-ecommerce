@@ -5,12 +5,14 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `payment_types`.
  */
-class m160721_135825_create_payment_types extends Migration {
+class m160721_135825_create_payment_types extends Migration
+{
 
     /**
      * @inheritdoc
      */
-    public function up() {
+    public function up()
+    {
         $this->createTable('payment_types', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
@@ -23,7 +25,8 @@ class m160721_135825_create_payment_types extends Migration {
     /**
      * @inheritdoc
      */
-    public function down() {
+    public function down()
+    {
         $this->dropForeignKey('fk-orders-payment_type_id-payment_types-id', 'orders');
         $this->dropColumn('orders', 'payment_type_id');
 

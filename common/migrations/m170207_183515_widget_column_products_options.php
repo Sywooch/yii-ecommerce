@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m170207_183515_widget_column_products_options extends Migration {
+class m170207_183515_widget_column_products_options extends Migration
+{
 
-    public function safeUp() {
+    public function safeUp()
+    {
         $this->addColumn('{{%products_options}}', 'icon', $this->string(255));
         $this->addColumn('{{%products_options}}', 'icon_type', $this->smallInteger(1)->notNull()->defaultValue(1));
         $this->addColumn('{{%products_options}}', 'active', $this->boolean()->notNull()->defaultValue(true));
@@ -30,7 +32,8 @@ class m170207_183515_widget_column_products_options extends Migration {
         $this->createIndex('tree_NK6', '{{%products_options}}', 'id');
     }
 
-    public function safeDown() {
+    public function safeDown()
+    {
         $this->dropColumn('{{%products_options}}', 'icon');
         $this->dropColumn('{{%products_options}}', 'icon_type');
         $this->dropColumn('{{%products_options}}', 'active');

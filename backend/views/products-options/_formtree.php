@@ -15,29 +15,29 @@ use yii\helpers\Json;
 use yii\web\View;
 
 /**
- * @var View       $this
- * @var Tree       $node
+ * @var View $this
+ * @var Tree $node
  * @var ActiveForm $form
- * @var array      $formOptions
- * @var string     $keyAttribute
- * @var string     $nameAttribute
- * @var string     $iconAttribute
- * @var string     $iconTypeAttribute
- * @var string     $iconsList
- * @var string     $action
- * @var array      $breadcrumbs
- * @var array      $nodeAddlViews
- * @var mixed      $currUrl
- * @var boolean    $showIDAttribute
- * @var boolean    $showFormButtons
- * @var boolean    $allowNewRoots
- * @var string     $nodeSelected
- * @var array      $params
- * @var string     $keyField
- * @var string     $nodeView
- * @var string     $noNodesMessage
- * @var boolean    $softDelete
- * @var string     $modelClass
+ * @var array $formOptions
+ * @var string $keyAttribute
+ * @var string $nameAttribute
+ * @var string $iconAttribute
+ * @var string $iconTypeAttribute
+ * @var string $iconsList
+ * @var string $action
+ * @var array $breadcrumbs
+ * @var array $nodeAddlViews
+ * @var mixed $currUrl
+ * @var boolean $showIDAttribute
+ * @var boolean $showFormButtons
+ * @var boolean $allowNewRoots
+ * @var string $nodeSelected
+ * @var array $params
+ * @var string $keyField
+ * @var string $nodeView
+ * @var string $noNodesMessage
+ * @var boolean $softDelete
+ * @var string $modelClass
  */
 ?>
 
@@ -282,10 +282,10 @@ echo Html::hiddenInput('treeMoveHash', $security->hashData($dataToHash, $module-
                             $value = '';
                         }
                         return '<div class="radio">' . Html::radio($name, $checked, [
-                            'value' => $value,
-                            'label' => $label,
-                            'disabled' => !empty($inputOpts['readonly']) || !empty($inputOpts['disabled'])
-                        ]) . '</div>';
+                                'value' => $value,
+                                'label' => $label,
+                                'disabled' => !empty($inputOpts['readonly']) || !empty($inputOpts['disabled'])
+                            ]) . '</div>';
                     },
                     'selector' => 'radio',
                 ]) ?>

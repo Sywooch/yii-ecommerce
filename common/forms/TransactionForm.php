@@ -14,43 +14,46 @@ use webdoka\yiiecommerce\common\models\Transaction;
  * Class TransactionForm
  * @package webdoka\yiiecommerce\common\forms
  */
-class TransactionForm extends Transaction {
+class TransactionForm extends Transaction
+{
 
     public $profile, $order, $transaction;
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return ArrayHelper::merge([
-                    [['profile'], 'required'],
-                    [['order'],
-                        'exist',
-                        'skipOnEmpty' => false,
-                        'skipOnError' => false,
-                        'targetClass' => Order::className(),
-                        'targetAttribute' => ['order' => 'id'],
-                        'when' => function ($model) {
+            [['profile'], 'required'],
+            [['order'],
+                'exist',
+                'skipOnEmpty' => false,
+                'skipOnError' => false,
+                'targetClass' => Order::className(),
+                'targetAttribute' => ['order' => 'id'],
+                'when' => function ($model) {
                     return $model->type == self::WITHDRAW_TYPE;
                 }
-                    ],
-                    [['transaction'],
-                        'exist',
-                        'skipOnEmpty' => false,
-                        'skipOnError' => false,
-                        'targetClass' => Transaction::className(),
-                        'targetAttribute' => ['transaction' => 'id'],
-                        'when' => function ($model) {
+            ],
+            [['transaction'],
+                'exist',
+                'skipOnEmpty' => false,
+                'skipOnError' => false,
+                'targetClass' => Transaction::className(),
+                'targetAttribute' => ['transaction' => 'id'],
+                'when' => function ($model) {
                     return $model->type == self::ROLLBACK_TYPE;
                 }
-                    ],
-                        ], parent::rules());
+            ],
+        ], parent::rules());
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'profile' => Yii::t('shop', 'Profile'),
             'order' => Yii::t('shop', 'Order'),
@@ -68,11 +71,12 @@ class TransactionForm extends Transaction {
      * Returns all users
      * @return array
      */
-    public static function getUsers() {
+    public static function getUsers()
+    {
         return User::find()
-                        ->with('profile')
-                        ->orderBy('username')
-                        ->all();
+            ->with('profile')
+            ->orderBy('username')
+            ->all();
     }
 
     /**
@@ -80,13 +84,14 @@ class TransactionForm extends Transaction {
      * @param $profile
      * @return array
      */
-    public static function getAccountsByProfile($profile) {
+    public static function getAccountsByProfile($profile)
+    {
         return Account::find()
-                        ->select('name')
-                        ->indexBy('id')
-                        ->where(['profile_id' => $profile])
-                        ->orderBy(['name' => 'asc'])
-                        ->column();
+            ->select('name')
+            ->indexBy('id')
+            ->where(['profile_id' => $profile])
+            ->orderBy(['name' => 'asc'])
+            ->column();
     }
 
     /**
@@ -94,13 +99,14 @@ class TransactionForm extends Transaction {
      * @param $profile
      * @return array
      */
-    public static function getOrdersByProfile($profile) {
+    public static function getOrdersByProfile($profile)
+    {
         return Order::find()
-                        ->select('id')
-                        ->indexBy('id')
-                        ->where(['profile_id' => $profile])
-                        ->orderBy(['id' => 'asc'])
-                        ->column();
+            ->select('id')
+            ->indexBy('id')
+            ->where(['profile_id' => $profile])
+            ->orderBy(['id' => 'asc'])
+            ->column();
     }
 
     /**
@@ -108,15 +114,16 @@ class TransactionForm extends Transaction {
      * @param $account
      * @return array
      */
-    public static function getTransactionsByAccount($account) {
+    public static function getTransactionsByAccount($account)
+    {
         return Transaction::find()
-                        ->andWhere('account_id = :account_id')
-                        ->andWhere('type <> :type')
-                        ->params([':account_id' => $account, ':type' => self::ROLLBACK_TYPE])
-                        ->select('id')
-                        ->indexBy('id')
-                        ->orderBy(['id' => 'asc'])
-                        ->column();
+            ->andWhere('account_id = :account_id')
+            ->andWhere('type <> :type')
+            ->params([':account_id' => $account, ':type' => self::ROLLBACK_TYPE])
+            ->select('id')
+            ->indexBy('id')
+            ->orderBy(['id' => 'asc'])
+            ->column();
     }
 
 }

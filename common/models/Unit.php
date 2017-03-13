@@ -13,7 +13,8 @@ use Yii;
  *
  * @property Product[] $products
  */
-class Unit extends UidModel {
+class Unit extends UidModel
+{
 
     const LIST_UNIT = 'shopListUnit';
     const VIEW_UNIT = 'shopViewUnit';
@@ -24,11 +25,13 @@ class Unit extends UidModel {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'units';
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
 
         return [
             'translate' => [
@@ -44,7 +47,8 @@ class Unit extends UidModel {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name'], 'required'],
             [['uid', 'name'], 'string', 'max' => 255],
@@ -54,7 +58,8 @@ class Unit extends UidModel {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'uid' => Yii::t('shop', 'Uid'),
@@ -65,7 +70,8 @@ class Unit extends UidModel {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct() {
+    public function getProduct()
+    {
         return $this->hasMany(Product::className(), ['unit_id' => 'id']);
     }
 

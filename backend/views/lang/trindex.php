@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Translation'), ['trcreate'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
     </div>
-    <div class="box-body">  
+    <div class="box-body">
 
         <?php
         $cheklang = [];
@@ -61,30 +61,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         'view' => function ($url, $model, $key) {
                             return Yii::$app->user->can(Lang::UPDATE_LANG) ?
-                                    Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/admin/shop/lang/trview', 'id' => $model->id], [
-                                        'title' => Yii::t('yii', 'View'),
-                                    ]) : '';
+                                Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/admin/shop/lang/trview', 'id' => $model->id], [
+                                    'title' => Yii::t('yii', 'View'),
+                                ]) : '';
                         },
-                                'update' => function ($url, $model, $key) {
+                        'update' => function ($url, $model, $key) {
                             return Yii::$app->user->can(Lang::UPDATE_LANG) ?
-                                    Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/admin/shop/lang/trupdate', 'id' => $model->id], [
-                                        'title' => Yii::t('yii', 'Update'),
-                                    ]) : '';
+                                Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['/admin/shop/lang/trupdate', 'id' => $model->id], [
+                                    'title' => Yii::t('yii', 'Update'),
+                                ]) : '';
                         },
-                                'delete' => function ($url, $model, $key) {
+                        'delete' => function ($url, $model, $key) {
                             return Yii::$app->user->can(Lang::UPDATE_LANG) ?
-                                    Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/admin/shop/lang/trdelete', 'id' => $model->id], [
-                                        'title' => Yii::t('yii', 'Delete'),
-                                        'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
-                                        'data-method' => 'post',
-                                    ]) : '';
+                                Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/admin/shop/lang/trdelete', 'id' => $model->id], [
+                                    'title' => Yii::t('yii', 'Delete'),
+                                    'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                                    'data-method' => 'post',
+                                ]) : '';
                         },
-                            ],
-                        ],
                     ],
-                ]);
-                ?>
-                <?php Pjax::end(); ?>
+                ],
+            ],
+        ]);
+        ?>
+        <?php Pjax::end(); ?>
     </div>
 
 </div>

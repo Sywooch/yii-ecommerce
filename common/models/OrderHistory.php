@@ -17,19 +17,22 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Order $order
  */
-class OrderHistory extends \yii\db\ActiveRecord {
+class OrderHistory extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'order_history';
     }
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             TimestampBehavior::className(),
         ];
@@ -38,7 +41,8 @@ class OrderHistory extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['order_id', 'status'], 'required'],
             [['order_id', 'created_at', 'updated_at'], 'integer'],
@@ -50,7 +54,8 @@ class OrderHistory extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'order_id' => Yii::t('shop', 'Order ID'),
@@ -63,7 +68,8 @@ class OrderHistory extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
@@ -71,7 +77,8 @@ class OrderHistory extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return OrderHistoryQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new OrderHistoryQuery(get_called_class());
     }
 

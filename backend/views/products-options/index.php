@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="box box-primary">
-    <div class="box-body"> 
+    <div class="box-body">
         <div class="products-options-index">
 
             <?php
@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'nodeActions' => [
                     // Module::NODE_MANAGE => Url::to(['/treemanager/node/manage']),
                     Module::NODE_SAVE => Url::to(['/admin/shop/products-options/save/']),
-                // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
-                // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
+                    // Module::NODE_REMOVE => Url::to(['/treemanager/node/remove']),
+                    // Module::NODE_MOVE => Url::to(['/treemanager/node/move']),
                 ],
                 //'headingOptions' => ['label' => 'Options'],
                 'fontAwesome' => false, // optional

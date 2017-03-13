@@ -14,12 +14,14 @@ use yii\filters\VerbFilter;
 /**
  * CountryController implements the CRUD actions for Country model.
  */
-class CountryController extends Controller {
+class CountryController extends Controller
+{
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -55,13 +57,14 @@ class CountryController extends Controller {
      * Lists all Country models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $dataProvider = new ActiveDataProvider([
             'query' => Country::find(),
         ]);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -70,7 +73,8 @@ class CountryController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $model = $this->findModel($id);
 
         return $this->render('view', compact('model'));
@@ -82,14 +86,15 @@ class CountryController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -101,7 +106,8 @@ class CountryController extends Controller {
      * @return Country the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Country::findOne($id)) !== null) {
             return $model;
         } else {

@@ -16,19 +16,22 @@ use webdoka\yiiecommerce\common\queries\OrderPropertyQuery;
  * @property Property $property
  * @property Order $order
  */
-class OrderProperty extends \yii\db\ActiveRecord {
+class OrderProperty extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'orders_properties';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['order_id', 'property_id'], 'required'],
             [['order_id', 'property_id'], 'integer'],
@@ -41,7 +44,8 @@ class OrderProperty extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'order_id' => Yii::t('shop', 'Order ID'),
@@ -53,14 +57,16 @@ class OrderProperty extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProperty() {
+    public function getProperty()
+    {
         return $this->hasOne(Property::className(), ['id' => 'property_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
@@ -68,7 +74,8 @@ class OrderProperty extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return OrderPropertyQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new OrderPropertyQuery(get_called_class());
     }
 

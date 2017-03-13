@@ -23,7 +23,7 @@ use webdoka\yiiecommerce\common\forms\TransactionForm;
             <?= $form->field($model, 'currency_id')->dropDownList(Currency::find()->select('symbol')->indexBy('id')->column()) ?>
 
             <?= $form->field($model, 'profile_id')->dropDownList(ArrayHelper::map(TransactionForm::getUsers(), 'profile.id', 'username')) ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

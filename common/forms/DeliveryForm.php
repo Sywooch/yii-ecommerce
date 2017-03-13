@@ -10,25 +10,28 @@ use yii\helpers\ArrayHelper;
  * Class DeliveryForm
  * @package webdoka\yiiecommerce\common\forms
  */
-class DeliveryForm extends Delivery {
+class DeliveryForm extends Delivery
+{
 
     public
-            $country,
-            $city;
+        $country,
+        $city;
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return ArrayHelper::merge([
-                    [['country', 'city'], 'string', 'max' => 255],
-                        ], parent::rules());
+            [['country', 'city'], 'string', 'max' => 255],
+        ], parent::rules());
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'country' => Yii::t('shop', 'Country'),
             'city' => Yii::t('shop', 'City'),

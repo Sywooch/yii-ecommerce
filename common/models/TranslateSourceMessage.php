@@ -18,19 +18,22 @@ use yii\data\ArrayDataProvider;
  *
  * @property TranslateMessage[] $translateMessages
  */
-class TranslateSourceMessage extends \yii\db\ActiveRecord {
+class TranslateSourceMessage extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%translate_source_message}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['message'], 'string'],
             [['category'], 'string', 'max' => 255],
@@ -40,7 +43,8 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'category' => Yii::t('shop', 'Category'),
@@ -51,7 +55,8 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTranslateMessages() {
+    public function getTranslateMessages()
+    {
         return $this->hasMany(TranslateMessage::className(), ['id' => 'id']);
     }
 
@@ -59,7 +64,8 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord {
      * Returns Translates by category and product
      * @return array
      */
-    public function getTranslates() {
+    public function getTranslates()
+    {
         $data = [];
 
         if ($alllang = Lang::find()->orderBy('date_create')->all()) {
@@ -85,7 +91,8 @@ class TranslateSourceMessage extends \yii\db\ActiveRecord {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = TranslateSourceMessage::find();
 
         $dataProvider = new ActiveDataProvider([

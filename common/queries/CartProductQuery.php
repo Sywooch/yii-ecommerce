@@ -9,12 +9,14 @@ use webdoka\yiiecommerce\common\models\CartProduct;
  *
  * @see CartProduct
  */
-class CartProductQuery extends \yii\db\ActiveQuery {
+class CartProductQuery extends \yii\db\ActiveQuery
+{
 
     /**
      * @return $this
      */
-    public function noSet() {
+    public function noSet()
+    {
         return $this->andWhere('cart_set_id IS NULL');
     }
 
@@ -22,7 +24,8 @@ class CartProductQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return CartProduct[]|array
      */
-    public function all($db = null) {
+    public function all($db = null)
+    {
         return parent::all($db);
     }
 
@@ -30,7 +33,8 @@ class CartProductQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return CartProduct|array|null
      */
-    public function one($db = null) {
+    public function one($db = null)
+    {
         return parent::one($db);
     }
 

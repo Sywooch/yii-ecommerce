@@ -7,33 +7,37 @@ use webdoka\yiiecommerce\common\models\Product;
 use yii\helpers\ArrayHelper;
 use Yii;
 
-class DiscountForm extends Discount {
+class DiscountForm extends Discount
+{
 
     public $_relProducts = [];
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return ArrayHelper::merge([
-                    ['relProducts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Products')]
-                        ], parent::rules());
+            ['relProducts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Products')]
+        ], parent::rules());
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return ArrayHelper::merge([
-                    'relProducts' => Yii::t('shop', 'Products'),
-                        ], parent::attributeLabels());
+            'relProducts' => Yii::t('shop', 'Products'),
+        ], parent::attributeLabels());
     }
 
     /**
      * Buffer variable for related products of category.
      * @return array
      */
-    public function getRelProducts() {
+    public function getRelProducts()
+    {
         return $this->_relProducts;
     }
 
@@ -41,8 +45,9 @@ class DiscountForm extends Discount {
      * Set related types
      * @param $types
      */
-    public function setRelProducts($products) {
-        $this->_relProducts = $products ? : [];
+    public function setRelProducts($products)
+    {
+        $this->_relProducts = $products ?: [];
     }
 
     /**
@@ -50,7 +55,8 @@ class DiscountForm extends Discount {
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if (parent::beforeSave($insert)) {
             $this->saveProductsToRelation();
             return true;
@@ -62,7 +68,8 @@ class DiscountForm extends Discount {
     /**
      * Populating products to relation
      */
-    private function saveProductsToRelation() {
+    private function saveProductsToRelation()
+    {
         $products = [];
 
         foreach ($this->_relProducts as $relProduct) {

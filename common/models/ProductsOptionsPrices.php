@@ -16,19 +16,22 @@ use Yii;
  * @property Prices $price
  * @property ProductsOptions $productOptions
  */
-class ProductsOptionsPrices extends \yii\db\ActiveRecord {
+class ProductsOptionsPrices extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'products_options_prices';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['product_options_id', 'price_id'], 'required'],
             [['product_options_id', 'price_id'], 'integer'],
@@ -41,7 +44,8 @@ class ProductsOptionsPrices extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'product_options_id' => Yii::t('shop', 'Product Options ID'),
@@ -53,14 +57,16 @@ class ProductsOptionsPrices extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPrice() {
+    public function getPrice()
+    {
         return $this->hasOne(Prices::className(), ['id' => 'price_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductOptions() {
+    public function getProductOptions()
+    {
         return $this->hasOne(ProductsOptions::className(), ['id' => 'product_options_id']);
     }
 

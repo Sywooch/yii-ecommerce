@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m160728_041040_create_invoices extends Migration {
+class m160728_041040_create_invoices extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->createTable('invoices', [
             'id' => $this->primaryKey(),
             'amount' => $this->float(),
@@ -20,7 +22,8 @@ class m160728_041040_create_invoices extends Migration {
         $this->addForeignKey('fk-orders-order_id-orders-id', 'invoices', 'order_id', 'orders', 'id');
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropTable('invoices');
     }
 

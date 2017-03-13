@@ -5,9 +5,11 @@ namespace webdoka\yiiecommerce\common\components;
 use yii\web\UrlManager;
 use webdoka\yiiecommerce\common\models\Lang;
 
-class LangUrlManager extends UrlManager {
+class LangUrlManager extends UrlManager
+{
 
-    public function createUrl($params) {
+    public function createUrl($params)
+    {
         if (isset($params['lang_id'])) {
             //Если указан идентификатор языка, то делаем попытку найти язык в БД,
             //иначе работаем с языком по умолчанию

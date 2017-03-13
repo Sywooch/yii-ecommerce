@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'date_update')->hiddenInput(['value' => date('U')])->label(false) ?>
 
-    </div> 
+    </div>
     <div class="box-footer">
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

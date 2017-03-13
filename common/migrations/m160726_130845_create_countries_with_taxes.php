@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m160726_130845_create_countries_with_taxes extends Migration {
+class m160726_130845_create_countries_with_taxes extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->createTable('countries', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
@@ -26,7 +28,8 @@ class m160726_130845_create_countries_with_taxes extends Migration {
         $this->addColumn('orders', 'tax', 'FLOAT DEFAULT NULL');
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropColumn('orders', 'country');
         $this->dropColumn('orders', 'tax');
 

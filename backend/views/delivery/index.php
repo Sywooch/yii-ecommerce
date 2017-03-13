@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->user->can(Delivery::CREATE_DELIVERY)) { ?>
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop_spec', 'Delivery'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </div> 
-    <div class="box-body">   
+    </div>
+    <div class="box-body">
         <div class="delivery-index">
 
             <?php Pjax::begin(); ?>    <?=

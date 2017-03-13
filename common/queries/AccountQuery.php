@@ -9,7 +9,8 @@ use webdoka\yiiecommerce\common\models\Account;
  *
  * @see Country
  */
-class AccountQuery extends \yii\db\ActiveQuery {
+class AccountQuery extends \yii\db\ActiveQuery
+{
     /* public function active()
       {
       return $this->andWhere('[[status]]=1');
@@ -19,7 +20,8 @@ class AccountQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return Account[]|array
      */
-    public function all($db = null) {
+    public function all($db = null)
+    {
         return parent::all($db);
     }
 
@@ -27,14 +29,16 @@ class AccountQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return Account|array|null
      */
-    public function one($db = null) {
+    public function one($db = null)
+    {
         return parent::one($db);
     }
 
     /**
      * @inheritdoc
      */
-    public function default1() {
+    public function default1()
+    {
         return $this->andWhere(['default' => 1]);
     }
 

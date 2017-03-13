@@ -18,12 +18,14 @@ use yii\filters\VerbFilter;
 /**
  * OrderController implements the CRUD actions for Order model.
  */
-class OrderController extends Controller {
+class OrderController extends Controller
+{
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -59,13 +61,14 @@ class OrderController extends Controller {
      * Lists all Order models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $dataProvider = new ActiveDataProvider([
             'query' => Order::find(),
         ]);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -74,7 +77,8 @@ class OrderController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $model = $this->findModel($id);
 
         $pageSize = 10;
@@ -101,7 +105,7 @@ class OrderController extends Controller {
         $historyDataProvider->pagination->pageSize = $pageSize;
 
         return $this->render('view', compact(
-                                'model', 'contactDataProvider', 'productDataProvider', 'setDataProvider', 'transactionDataProvider', 'historyDataProvider'
+            'model', 'contactDataProvider', 'productDataProvider', 'setDataProvider', 'transactionDataProvider', 'historyDataProvider'
         ));
     }
 
@@ -111,14 +115,15 @@ class OrderController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionStatus($id) {
+    public function actionStatus($id)
+    {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -130,7 +135,8 @@ class OrderController extends Controller {
      * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Order::findOne($id)) !== null) {
             return $model;
         } else {

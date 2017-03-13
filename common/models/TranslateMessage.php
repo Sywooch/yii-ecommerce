@@ -13,19 +13,22 @@ use Yii;
  *
  * @property TranslateSourceMessage $id0
  */
-class TranslateMessage extends \yii\db\ActiveRecord {
+class TranslateMessage extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%translate_message}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id', 'language'], 'required'],
             [['id'], 'integer'],
@@ -38,7 +41,8 @@ class TranslateMessage extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'language' => Yii::t('shop', 'Language'),
@@ -49,7 +53,8 @@ class TranslateMessage extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getId0() {
+    public function getId0()
+    {
         return $this->hasOne(TranslateSourceMessage::className(), ['id' => 'id']);
     }
 

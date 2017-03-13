@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m170207_153102_add_products_options_columns extends Migration {
+class m170207_153102_add_products_options_columns extends Migration
+{
 
-    public function safeUp() {
+    public function safeUp()
+    {
         $this->addColumn('{{%products_options}}', 'description', $this->text());
         $this->addColumn('{{%products_options}}', 'image', $this->string());
         $this->addColumn('{{%carts_products}}', 'option_id', $this->integer()->Null()->defaultValue(0));
@@ -26,7 +28,8 @@ class m170207_153102_add_products_options_columns extends Migration {
         $this->addForeignKey('fk-products_options_prices-price_id-products_options-id', 'products_options_prices', 'price_id', 'prices', 'id', 'CASCADE');
     }
 
-    public function safeDown() {
+    public function safeDown()
+    {
         $this->dropColumn('{{%products_options}}', 'description');
         $this->dropColumn('{{%products_options}}', 'image');
         $this->dropColumn('{{%products_options}}', 'status');

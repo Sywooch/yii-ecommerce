@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m170228_051718_multilanguage_dynamic_text extends Migration {
+class m170228_051718_multilanguage_dynamic_text extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
 
         $this->execute("CREATE TABLE IF NOT EXISTS `translate_dynamic_text` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -19,7 +21,8 @@ class m170228_051718_multilanguage_dynamic_text extends Migration {
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropTable('translate_dynamic_text');
     }
 

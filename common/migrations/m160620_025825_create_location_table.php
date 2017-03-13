@@ -5,9 +5,11 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `locations`.
  */
-class m160620_025825_create_location_table extends Migration {
+class m160620_025825_create_location_table extends Migration
+{
 
-    public function safeUp() {
+    public function safeUp()
+    {
         $this->createTable('locations', [
             'id' => $this->primaryKey(),
             'uid' => $this->string()->notNull(),
@@ -21,7 +23,8 @@ class m160620_025825_create_location_table extends Migration {
         $this->createIndex('i_city', 'locations', 'city');
     }
 
-    public function safeDown() {
+    public function safeDown()
+    {
         $this->dropTable('locations');
     }
 

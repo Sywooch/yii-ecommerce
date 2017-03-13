@@ -16,19 +16,22 @@ use webdoka\yiiecommerce\common\queries\OrderSetQuery;
  * @property Set $set
  * @property Order $order
  */
-class OrderSet extends \yii\db\ActiveRecord {
+class OrderSet extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'order_sets';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['order_id', 'set_id'], 'required'],
             [['order_id', 'set_id'], 'integer'],
@@ -40,7 +43,8 @@ class OrderSet extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'order_id' => Yii::t('shop', 'Order ID'),
@@ -51,21 +55,24 @@ class OrderSet extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderItems() {
+    public function getOrderItems()
+    {
         return $this->hasMany(OrderItem::className(), ['order_set_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSet() {
+    public function getSet()
+    {
         return $this->hasOne(Set::className(), ['id' => 'set_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
@@ -73,7 +80,8 @@ class OrderSet extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return OrderSetQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new OrderSetQuery(get_called_class());
     }
 
@@ -81,7 +89,8 @@ class OrderSet extends \yii\db\ActiveRecord {
      * @param bool $insert
      * @param array $changedAttributes
      */
-    public function afterSave($insert, $changedAttributes) {
+    public function afterSave($insert, $changedAttributes)
+    {
         $relatedRecords = $this->getRelatedRecords();
 
         if ($this->isRelationPopulated('orderItems')) {

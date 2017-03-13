@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m170228_081131_add_language_rbak_data extends Migration {
+class m170228_081131_add_language_rbak_data extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
 
         $this->execute("INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
 ('shopCreateLang', 2, 'Create shop language', NULL, NULL, NULL, NULL),
@@ -22,7 +24,8 @@ class m170228_081131_add_language_rbak_data extends Migration {
 ('Manager', 'shopViewLang');");
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m170228_081131_add_language_rbak_data cannot be reverted.\n";
 
         return false;

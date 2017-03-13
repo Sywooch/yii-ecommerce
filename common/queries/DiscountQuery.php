@@ -9,7 +9,8 @@ use webdoka\yiiecommerce\common\models\Discount;
  *
  * @see Discount
  */
-class DiscountQuery extends \yii\db\ActiveQuery {
+class DiscountQuery extends \yii\db\ActiveQuery
+{
     /* public function active()
       {
       return $this->andWhere('[[status]]=1');
@@ -19,7 +20,8 @@ class DiscountQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return Discount[]|array
      */
-    public function all($db = null) {
+    public function all($db = null)
+    {
         return parent::all($db);
     }
 
@@ -27,14 +29,16 @@ class DiscountQuery extends \yii\db\ActiveQuery {
      * @inheritdoc
      * @return Discount|array|null
      */
-    public function one($db = null) {
+    public function one($db = null)
+    {
         return parent::one($db);
     }
 
     /**
      * Scope for date range
      */
-    public function available() {
+    public function available()
+    {
         $this->andWhere('started_at IS NULL OR started_at <= NOW()');
         $this->andWhere('finished_at IS NULL OR finished_at >= NOW()');
 
@@ -44,21 +48,24 @@ class DiscountQuery extends \yii\db\ActiveQuery {
     /**
      * @return $this
      */
-    public function set() {
+    public function set()
+    {
         return $this->andWhere(['dimension' => Discount::SET_DIMENSION]);
     }
 
     /**
      * @return $this
      */
-    public function percent() {
+    public function percent()
+    {
         return $this->andWhere(['dimension' => Discount::PERCENT_DIMENSION]);
     }
 
     /**
      * @return $this
      */
-    public function fixed() {
+    public function fixed()
+    {
         return $this->andWhere(['dimension' => Discount::FIXED_DIMENSION]);
     }
 

@@ -2,13 +2,16 @@
 
 use yii\db\Migration;
 
-class m160810_051806_add_label_payment_type extends Migration {
+class m160810_051806_add_label_payment_type extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->addColumn('payment_types', 'label', 'VARCHAR(255) NOT NULL');
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropColumn('payment_types', 'label');
     }
 

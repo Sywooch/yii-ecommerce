@@ -5,9 +5,11 @@ use webdoka\yiiecommerce\common\models\Account;
 use app\models\User;
 use webdoka\yiiecommerce\common\models\Cart;
 
-class m160811_042810_create_profile extends Migration {
+class m160811_042810_create_profile extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->createTable('profiles', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
@@ -28,7 +30,8 @@ class m160811_042810_create_profile extends Migration {
         }
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropForeignKey('fk-profiles-user_id-users-id', 'profiles');
         $this->dropTable('profiles');
     }

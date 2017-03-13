@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m160811_081947_create_sets extends Migration {
+class m160811_081947_create_sets extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
         $this->alterColumn('discounts', 'dimension', 'ENUM("percent", "fixed", "set") NOT NULL');
 
         $this->createTable('sets', [
@@ -56,7 +58,8 @@ class m160811_081947_create_sets extends Migration {
         $this->addForeignKey('fk-carts_products-cart_set_id-carts_sets-id', 'carts_products', 'cart_set_id', 'carts_sets', 'id', 'SET NULL');
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropForeignKey('fk-carts_products-cart_set_id-carts_sets-id', 'carts_products');
         $this->dropColumn('carts_products', 'cart_set_id');
 

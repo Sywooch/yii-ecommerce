@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (Yii::$app->user->can(Set::CREATE_SET)) { ?>
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Set'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
-    </div> 
-    <div class="box-body">          
+    </div>
+    <div class="box-body">
         <?php Pjax::begin(); ?>    <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
@@ -31,29 +31,29 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons' => [
                         'view' => function ($url, $model, $key) {
                             return Yii::$app->user->can(Set::VIEW_SET) ?
-                                    Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                        'title' => Yii::t('yii', 'View'),
-                                    ]) : '';
+                                Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                    'title' => Yii::t('yii', 'View'),
+                                ]) : '';
                         },
-                                'update' => function ($url, $model, $key) {
+                        'update' => function ($url, $model, $key) {
                             return Yii::$app->user->can(Set::UPDATE_SET) ?
-                                    Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                        'title' => Yii::t('yii', 'Update'),
-                                    ]) : '';
+                                Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => Yii::t('yii', 'Update'),
+                                ]) : '';
                         },
-                                'delete' => function ($url, $model, $key) {
+                        'delete' => function ($url, $model, $key) {
                             return Yii::$app->user->can(Set::DELETE_SET) ?
-                                    Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                        'title' => Yii::t('yii', 'Delete'),
-                                        'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
-                                        'data-method' => 'post',
-                                    ]) : '';
+                                Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                    'title' => Yii::t('yii', 'Delete'),
+                                    'data-confirm' => Yii::t('yii', 'Are you sure to delete this item?'),
+                                    'data-method' => 'post',
+                                ]) : '';
                         },
-                            ],
-                        ],
                     ],
-                ]);
-                ?>
-                <?php Pjax::end(); ?>
+                ],
+            ],
+        ]);
+        ?>
+        <?php Pjax::end(); ?>
     </div>
 </div>

@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

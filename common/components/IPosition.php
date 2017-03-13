@@ -6,7 +6,8 @@ namespace webdoka\yiiecommerce\common\components;
  * Interface IPosition
  * @package webdoka\yiiecommerce\common\components
  */
-interface IPosition {
+interface IPosition
+{
 
     /**
      * Returns position id

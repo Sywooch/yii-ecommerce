@@ -38,7 +38,7 @@ $this->registerJs('
             <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Language'), ['create'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
     </div>
-    <div class="box-body"> 
+    <div class="box-body">
 
         <?php Pjax::begin(); ?>    <?=
         GridView::widget([
@@ -52,16 +52,16 @@ $this->registerJs('
                 [
                     'header' => 'default',
                     'format' => 'raw',
-                    'value' => function($data) {
+                    'value' => function ($data) {
 
                         return Html::radio("default", $data->default, array("value" => $data->id));
                     }
-                        ],
-                        ['class' => 'yii\grid\ActionColumn'],
-                    ],
-                ]);
-                ?>
-                <?php Pjax::end(); ?>
+                ],
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]);
+        ?>
+        <?php Pjax::end(); ?>
     </div>
 
 </div>

@@ -45,24 +45,24 @@ $this->registerJs('
 
             <?=
             $form->field($model, 'country')->dropDownList(
-                    ArrayHelper::merge(['' => 'Select country'], StorageForm::getCountries())
+                ArrayHelper::merge(['' => 'Select country'], StorageForm::getCountries())
             )
             ?>
 
             <?=
             $form->field($model, 'city')->dropDownList(
-                    ArrayHelper::merge(['' => 'Select city'], StorageForm::getCitiesByCountry($model->country))
+                ArrayHelper::merge(['' => 'Select city'], StorageForm::getCitiesByCountry($model->country))
             )
             ?>
 
             <?=
             $form->field($model, 'storage_id')->dropDownList(
-                    ArrayHelper::merge(['' => 'Select storage'], StorageForm::getStoragesByCountryAndCity($model->country, $model->city))
+                ArrayHelper::merge(['' => 'Select storage'], StorageForm::getStoragesByCountryAndCity($model->country, $model->city))
             )->label(Yii::t('shop', 'Storage'))
             ?>
 
             <?php Pjax::end() ?>
-        </div> 
+        </div>
     </div>
     <div class="box-footer">
         <div class="form-group">

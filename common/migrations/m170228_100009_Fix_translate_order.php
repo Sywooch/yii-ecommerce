@@ -2,9 +2,11 @@
 
 use yii\db\Migration;
 
-class m170228_100009_Fix_translate_order extends Migration {
+class m170228_100009_Fix_translate_order extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
 
         $this->execute("INSERT INTO `translate_source_message` (`id`, `category`, `message`) VALUES
 (234, 'shop_spec', 'Set name'),
@@ -24,7 +26,8 @@ class m170228_100009_Fix_translate_order extends Migration {
 (237, 'ru', 'Пользователь');");
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m170228_100009_Fix_translate_order cannot be reverted.\n";
 
         return false;

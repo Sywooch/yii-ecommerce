@@ -16,7 +16,8 @@ use yii\db\ActiveRecord;
  * @property OrderItem[] $orderItems
  * @property SetProduct[] $setsProducts
  */
-class Set extends ActiveRecord implements ISetPosition {
+class Set extends ActiveRecord implements ISetPosition
+{
 
     const LIST_SET = 'shopListSet';
     const VIEW_SET = 'shopViewSet';
@@ -29,14 +30,16 @@ class Set extends ActiveRecord implements ISetPosition {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'sets';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
@@ -46,7 +49,8 @@ class Set extends ActiveRecord implements ISetPosition {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'name' => Yii::t('shop', 'Name'),
@@ -56,35 +60,40 @@ class Set extends ActiveRecord implements ISetPosition {
     /**
      * @return string
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->getTmpId();
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return int
      */
-    public function getQuantity() {
+    public function getQuantity()
+    {
         return 1;
     }
 
     /**
      * @param $quantity
      */
-    public function setQuantity($quantity) {
-        
+    public function setQuantity($quantity)
+    {
+
     }
 
     /**
      * @return string
      */
-    public function getTmpId() {
+    public function getTmpId()
+    {
         if (!$this->_tmpId)
             $this->_tmpId = Yii::$app->security->generateRandomKey();
 
@@ -95,7 +104,8 @@ class Set extends ActiveRecord implements ISetPosition {
      * Returns summary of included products
      * @return float|int
      */
-    public function getRealPrice() {
+    public function getRealPrice()
+    {
         $summary = 0;
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
         $country = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one();
@@ -103,7 +113,7 @@ class Set extends ActiveRecord implements ISetPosition {
         // Summary
         foreach ($this->setsProducts as $setProduct) {
             // Get min price
-            $price = Price::getMinPrice($roles, $setProduct->product_id) ? : $setProduct->product->price;
+            $price = Price::getMinPrice($roles, $setProduct->product_id) ?: $setProduct->product->price;
 
             // Price + VAT
             if ($country) {
@@ -119,7 +129,8 @@ class Set extends ActiveRecord implements ISetPosition {
     /**
      * @return float|int
      */
-    public function getCostWithDiscounters() {
+    public function getCostWithDiscounters()
+    {
         $amount = $this->getRealPrice();
 
         // Apply discounts
@@ -134,35 +145,40 @@ class Set extends ActiveRecord implements ISetPosition {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderItems() {
+    public function getOrderItems()
+    {
         return $this->hasMany(OrderItem::className(), ['set_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSetsProducts() {
+    public function getSetsProducts()
+    {
         return $this->hasMany(SetProduct::className(), ['set_id' => 'id']);
     }
 
     /**
      * @return $this
      */
-    public function getProducts() {
+    public function getProducts()
+    {
         return $this->hasMany(Product::className(), ['id' => 'product_id'])->via('setsProducts');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSetsDiscounts() {
+    public function getSetsDiscounts()
+    {
         return $this->hasMany(SetDiscount::className(), ['set_id' => 'id']);
     }
 
     /**
      * @return $this
      */
-    public function getDiscounts() {
+    public function getDiscounts()
+    {
         return $this->hasMany(Discount::className(), ['id' => 'discount_id'])->via('setsDiscounts');
     }
 
@@ -170,14 +186,16 @@ class Set extends ActiveRecord implements ISetPosition {
      * @inheritdoc
      * @return SetQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new SetQuery(get_called_class());
     }
 
     /**
      * After save handles
      */
-    public function afterSave($insert, $changedAttributes) {
+    public function afterSave($insert, $changedAttributes)
+    {
         $relatedRecords = $this->getRelatedRecords();
 
         if (array_key_exists('setsProducts', $relatedRecords)) {

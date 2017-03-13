@@ -17,19 +17,22 @@ use webdoka\yiiecommerce\common\queries\CartProductQuery;
  * @property Product $product
  * @property Cart $cart
  */
-class CartProduct extends \yii\db\ActiveRecord {
+class CartProduct extends \yii\db\ActiveRecord
+{
 
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'carts_products';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['cart_id', 'product_id'], 'required'],
             [['cart_id', 'product_id', 'quantity', 'cart_set_id'], 'integer'],
@@ -41,7 +44,8 @@ class CartProduct extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'cart_id' => Yii::t('shop', 'Cart ID'),
@@ -54,21 +58,24 @@ class CartProduct extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct() {
+    public function getProduct()
+    {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCart() {
+    public function getCart()
+    {
         return $this->hasOne(Cart::className(), ['id' => 'cart_id']);
     }
 
     /**
      * @return CartProductQuery
      */
-    public static function find() {
+    public static function find()
+    {
         return new CartProductQuery(get_called_class());
     }
 

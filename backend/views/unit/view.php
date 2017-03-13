@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         <?php } ?>
     </div>
-    <div class="box-body">  
+    <div class="box-body">
 
         <?=
         DetailView::widget([

@@ -21,7 +21,8 @@ use yii\behaviors\TimestampBehavior;
  * @property Order $order
  * @property Account $account
  */
-class Invoice extends \yii\db\ActiveRecord {
+class Invoice extends \yii\db\ActiveRecord
+{
 
     const PENDING_STATUS = 'pending';
     const SUCCESS_STATUS = 'success';
@@ -30,14 +31,16 @@ class Invoice extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'invoices';
     }
 
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             TimestampBehavior::className(),
         ];
@@ -46,7 +49,8 @@ class Invoice extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['amount'], 'number'],
             [['description', 'status'], 'string'],
@@ -61,7 +65,8 @@ class Invoice extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('shop', 'ID'),
             'amount' => Yii::t('shop', 'Amount'),
@@ -77,7 +82,8 @@ class Invoice extends \yii\db\ActiveRecord {
     /**
      * @return array
      */
-    public static function getStatuses() {
+    public static function getStatuses()
+    {
         return [
             self::PENDING_STATUS => ucfirst(self::PENDING_STATUS),
             self::SUCCESS_STATUS => ucfirst(self::SUCCESS_STATUS),
@@ -88,14 +94,16 @@ class Invoice extends \yii\db\ActiveRecord {
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->hasOne(Order::className(), ['id' => 'order_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAccount() {
+    public function getAccount()
+    {
         return $this->hasOne(Account::className(), ['id' => 'account_id']);
     }
 
@@ -103,7 +111,8 @@ class Invoice extends \yii\db\ActiveRecord {
      * @inheritdoc
      * @return InvoiceQuery the active query used by this AR class.
      */
-    public static function find() {
+    public static function find()
+    {
         return new InvoiceQuery(get_called_class());
     }
 

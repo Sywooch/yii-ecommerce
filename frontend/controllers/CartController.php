@@ -33,8 +33,8 @@ class CartController extends \yii\web\Controller
     {
         $optid = Yii::$app->request->get('option');
 
-        if(!isset($optid) || $optid==''){
-           $optid=0; 
+        if (!isset($optid) || $optid == '') {
+            $optid = 0;
         }
 
         $qty = (int)Yii::$app->request->get('qty', 1);
@@ -54,9 +54,8 @@ class CartController extends \yii\web\Controller
     /**
      * @param $id
      */
-    public function actionUpdate($id, $change, $quant, $minus=-1)
+    public function actionUpdate($id, $change, $quant, $minus = -1)
     {
-
 
 
         foreach ($_GET as $key => $value) {
@@ -64,14 +63,14 @@ class CartController extends \yii\web\Controller
             if (stripos($key, 'option') !== false)
 
                 $option[] = (int)urldecode($value);
-            
+
 
         }
 
         $product = Product::findOne($id);
         if ($product != null && !empty($option)) {
 
-            $newid=implode(',', $option);
+            $newid = implode(',', $option);
 
 //var_dump($newid);exit;
 
@@ -81,39 +80,39 @@ class CartController extends \yii\web\Controller
             $newchanges = [];
 
 
-        if($change > 0 && $change != ''){
+            if ($change > 0 && $change != '') {
 
-            foreach (explode(',',$change) as $data) {
+                foreach (explode(',', $change) as $data) {
 
-            $branchchanges = $product->getBranchOption((int)$data);
-            $parentchanges = $branchchanges['option']->parents(1)->one();
+                    $branchchanges = $product->getBranchOption((int)$data);
+                    $parentchanges = $branchchanges['option']->parents(1)->one();
 
-           if($parentchanges->id == $parent->id){
+                    if ($parentchanges->id == $parent->id) {
 
-            $newchanges[]=(int)$newid;
+                        $newchanges[] = (int)$newid;
 
-           }else{
+                    } else {
 
-            $newchanges[]=(int)$data;
+                        $newchanges[] = (int)$data;
 
-           } 
+                    }
+
+
+                }
+
+            } else {
+
+                $change = 0;
+                $newchanges[] = $newid;
 
 
             }
 
-        }else{
 
-            $change = 0;
-            $newchanges[]=$newid;
-       
-            
-        }
+            if (!in_array($newid, $newchanges)) {
 
-
-        if(!in_array($newid,$newchanges)){
-
-            $newchanges = array_merge($option,$newchanges);
-        }
+                $newchanges = array_merge($option, $newchanges);
+            }
 
             asort($newchanges);
 
@@ -121,20 +120,20 @@ class CartController extends \yii\web\Controller
 
             Yii::$app->cart->updateopt($product, implode(',', $newchanges), $change, $quant);
 
-        }elseif($product = Product::findOne($id)){
+        } elseif ($product = Product::findOne($id)) {
 
 
-           if($minus > 0){
+            if ($minus > 0) {
 
                 $newchanges = explode(',', $change);
-               unset($newchanges[array_search($minus,$newchanges)]);
+                unset($newchanges[array_search($minus, $newchanges)]);
 
             }
 
             asort($newchanges);
 
 
-           // var_dump($newchanges);exit;
+            // var_dump($newchanges);exit;
 
             $product->setOptid(implode(',', $newchanges));
 
