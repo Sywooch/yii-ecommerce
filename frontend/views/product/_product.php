@@ -241,7 +241,6 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
                                     $branch .= Html::encode($parents['option']->name);
                                 }
                                 $pa = $parents['option']->parents(1)->one();
-
                                 echo '<p>' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b><a href="#" class="btn btn-box-tool remover" onclick="return false;" data-id="option' . $rootid . '-' . $pa->id . '=' . $value . '"><i class="zmdi zmdi-close-circle-o"></i></a></p>';
                             }
 

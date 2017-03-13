@@ -143,7 +143,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
 
             } else {
 
-                $pricemin[$value->product_options_id][] = $pricearray[$value->product_options_id];
+                $pricemin[$value->product_options_id] = $pricearray[$value->product_options_id];
             }
 
         }

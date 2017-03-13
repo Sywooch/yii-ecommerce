@@ -119,11 +119,14 @@ foreach ($child as $value) {
         }
 
         if ($optionItem->id == $curentoption || (in_array($optionItem->id, $oldoption))) {
-            $cssclass = 'class="lastdivboxselect"';
+            $cssclass = 'class="optionsbox lastdivboxselect"';
         } else {
-            $cssclass = 'class="lastdivbox"';
+            $cssclass = 'class="optionsbox lastdivbox"';
         }
-        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<br>' . $img . '</div>', $urlparam, ['class' => 'selectoption optionclick' . $rootid, 'onclick' => $onclick, 'data-id' => $optionItem->id, 'data-parent' => $parent->id]);
+
+        $detailprice = $model->getOptionPrice($optionItem->id);
+
+        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<span>' .Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$optionItem->id]) .'</span>'. $img . '</div>', $urlparam, ['class' => 'selectoption optionclick' . $rootid, 'onclick' => $onclick, 'data-id' => $optionItem->id, 'data-parent' => $parent->id]);
     }
 }
 ?>
