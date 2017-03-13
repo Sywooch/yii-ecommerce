@@ -62,7 +62,7 @@ $positions = Yii::$app->cart->getPositions();
                     ?></p>
                 <?=
                 Html::a('<i class="zmdi zmdi-close"></i>', [
-                    'cart/remove', 'id' => $data->id, 'option' => (isset($data->Option_id) && $data->Option_id != 0) ? ($data->Option_id) : (0)
+                    'cart/remove', 'id' => $data->id, 'option' => (isset($data->Optid) && $data->Optid != 0) ? ($data->Optid) : (0)
                 ], [
                     'class' => 'remove',
                     'title' => Yii::t('shop', 'Remove')
