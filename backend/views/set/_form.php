@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use webdoka\yiiecommerce\common\models\Discount;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\forms\SetForm */
@@ -39,7 +40,18 @@ $this->registerJs('
 
         <h2><?= Yii::t('shop', 'Discounts') ?></h2>
 
-        <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->set()->all(), 'id', 'name'), ['multiple' => true]) ?>
+
+        <?= 
+$form->field($model, 'relDiscounts')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Discount::find()->set()->all(), 'id', 'name'),
+    'options' => [
+        //'placeholder' => 'Select provinces ...',
+        'multiple' => true
+    ],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
 
         <h2><?= Yii::t('shop', 'Products') ?> <span
                     class="add-product btn btn-success pull-right"><?= Yii::t('shop', 'Add Product') ?></span></h2>

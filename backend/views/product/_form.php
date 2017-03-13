@@ -14,6 +14,7 @@ use kartik\tree\Module;
 use webdoka\yiiecommerce\common\models\ProductsOptions;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\ProductsOptionsPrices;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Product */
@@ -216,7 +217,21 @@ $this->registerJs('
                     ?>
                 </div>
 
-                <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]) ?>
+
+                <?php 
+                //echo $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]); 
+                ?>
+<?= 
+$form->field($model, 'relDiscounts')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Discount::find()->all(), 'id', 'name'),
+    'options' => [
+        //'placeholder' => 'Select provinces ...',
+        'multiple' => true
+    ],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
 
 
                 <div class="form-group">

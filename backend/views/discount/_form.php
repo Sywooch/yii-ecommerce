@@ -6,6 +6,7 @@ use yii\jui\DatePicker;
 use yii\helpers\ArrayHelper;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\Discount;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Discount */
@@ -46,6 +47,19 @@ use webdoka\yiiecommerce\common\models\Discount;
                 ArrayHelper::map(Product::find()->all(), 'id', 'name', 'category.name'), ['multiple' => true, 'size' => 10]
             )->label(false)
             ?>
+<?= 
+$form->field($model, 'relProducts')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Product::find()->all(), 'id', 'name', 'category.name'),
+    'options' => [
+        //'placeholder' => 'Select provinces ...',
+        'multiple' => true
+    ],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
+
+
         </div>
     </div>
     <div class="box-footer">

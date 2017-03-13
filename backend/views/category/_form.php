@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Feature;
 use webdoka\yiiecommerce\common\models\Category;
 use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Category */
@@ -37,13 +38,19 @@ use yii\helpers\ArrayHelper;
 
             <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
-            <?=
-            $form->field($model, 'relFeatures')->dropDownList(
-                ArrayHelper::map(Feature::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'), [
-                'class' => 'form-control',
-                'multiple' => true,
-            ])
-            ?>
+
+<?= 
+$form->field($model, 'relFeatures')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Feature::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'),
+    'options' => [
+        //'placeholder' => 'Select provinces ...',
+        'multiple' => true
+    ],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
+
         </div>
     </div>
     <div class="box-footer">
