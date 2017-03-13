@@ -134,7 +134,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
 
         foreach ($getoptprice as $key => $value) {
 
-            $pricearray[$value->product_options_id][] = $value->value;
+            $pricearray[$value->product_options_id] = $value->value;
 
 
             if (count($pricearray[$value->product_options_id]) >= 2) {
