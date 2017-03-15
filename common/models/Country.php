@@ -59,6 +59,14 @@ class Country extends \yii\db\ActiveRecord
         ];
     }
 
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this->hasOne(Cities::className(), ['country_id' => 'id']);
+    }
+
     /**
      * @inheritdoc
      * @return CountryQuery the active query used by this AR class.

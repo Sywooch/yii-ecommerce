@@ -68,6 +68,7 @@ class LocationController extends Controller
      */
     public function actionIndex()
     {
+    
         $dataProvider = new ActiveDataProvider([
             'query' => Location::find(),
         ]);

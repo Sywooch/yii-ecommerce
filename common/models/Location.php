@@ -23,7 +23,8 @@ class Location extends UidModel
     const CREATE_LOCATION = 'shopCreateLocation';
     const UPDATE_LOCATION = 'shopUpdateLocation';
     const DELETE_LOCATION = 'shopDeleteLocation';
-
+    public $region;
+    public $state;
     /**
      * @inheritdoc
      */
@@ -57,6 +58,8 @@ class Location extends UidModel
             'address' => Yii::t('shop', 'Address'),
             'full' => Yii::t('shop', 'Full address'),
             'index' => Yii::t('shop', 'Index'),
+            'region' => Yii::t('shop', 'Region'),
+            'state' => Yii::t('shop', 'State'),
         ];
     }
 
