@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box box-primary">
     <div class="box-body">
         <div class="country-index">
-
+        
             <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,
