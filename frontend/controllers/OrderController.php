@@ -136,6 +136,12 @@ class OrderController extends Controller
                 Yii::$app->cart->removeAll();
                 Yii::$app->session->setFlash('order_success', Yii::t('shop', 'Order is created successful.'));
 
+              /*  if($orderModel->paymentType->name == 'PayPal'){
+
+                return $this->redirect(['paypal/orderpay','id'=>$orderModel->id]);
+
+                }*/
+
                 // Create invoice to pay
                 if ($account = Account::find()->where(['id' => $orderModel->profile->default_account_id])->one()) {
                     if ($invoiceId = Yii::$app->billing->createInvoice($orderModel->total, $account->id, 'Order #' . $orderModel->id, $orderModel->id)) {
