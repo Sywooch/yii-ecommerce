@@ -37,76 +37,77 @@ class PaypalController extends Controller
     }
 
 
-
     /**
      * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
 
-    
 
-        public function actionOrderpay($id)
-        {
+    public function actionOrderpay($id)
+    {
 
-            $model = new PayPalForm();
+        $model = new PayPalForm();
 
-            $order=Order::findOne((int)$id);
+        $order = Order::findOne((int)$id);
 
-            if($order !== null){
+        if ($order !== null) {
 
             $orderitem = OrderItem::find()->where(['order_id' => $order->id])->all();
             $orderset = OrderSet::find()->where(['order_id' => $order->id])->all();
-            }
-
-            $descript = '';
-
-            $count = count($orderitem);
-
-            $i = 1;
-            foreach ($orderitem as $data) {
-
-                $product = Product::findOne((int)$data->product_id);
-                $descript .= $product->name;
-                if($i != $count){
-                  $descript .= ', ';  
-                }
-                $i++;
-
-            }
-
-
-            $seting['PayPalForm']=[
-                'name' => 'Order '. $order->id,
-                'summ' => $order->total,
-                'currency' => 'USD',
-                'description' => $descript,
-                'order_id' => $order->id,
-                ];
-
-
-            if ($model->load($seting)) {
-
-
-                $response = Yii::$app->paypal->request('SetExpressCheckout', $model->Request);
-
-
-                if (is_array($response) && $response['ACK'] == PayPalForm::STATUS_SUCCESS) {
-
-                    $token = $response['TOKEN'];
-
-                    Yii::$app->paypal->redirect($token);
-
-
-                }
-
-            }else{
-                
-            }
-
 
         }
-    
+
+        $descript = '';
+
+        $count = count($orderitem);
+
+        $i = 1;
+
+        foreach ($orderitem as $data) {
+
+            $product = Product::findOne((int)$data->product_id);
+            $descript .= $product->name;
+            if ($i != $count) {
+
+                $descript .= ', ';
+
+            }
+
+            $i++;
+
+        }
+
+
+        $seting['PayPalForm'] = [
+            'name' => 'Order ' . $order->id,
+            'summ' => $order->total,
+            'currency' => 'USD',
+            'description' => $descript,
+            'order_id' => $order->id,
+        ];
+
+
+        if ($model->load($seting)) {
+
+
+            $response = Yii::$app->paypal->request('SetExpressCheckout', $model->Request);
+
+
+            if (is_array($response) && $response['ACK'] == PayPalForm::STATUS_SUCCESS) {
+
+                $token = $response['TOKEN'];
+
+                Yii::$app->paypal->redirect($token);
+
+
+            }
+
+        }
+
+
+    }
+
 
     /**
      * Creates a new Order model.
@@ -170,18 +171,17 @@ class PaypalController extends Controller
         $payer = Yii::$app->paypal->request('GetExpressCheckoutDetails', $get);
 
 
-        if (is_array($payer) && $payer['ACK'] == PayPalForm::STATUS_SUCCESS && $payer["CHECKOUTSTATUS"] != PayPalForm::CHECKOUTSTATUS_COMPLETE) {
+        if (is_array($payer) && $payer['ACK'] == PayPalForm::STATUS_SUCCESS
+            && $payer["CHECKOUTSTATUS"] != PayPalForm::CHECKOUTSTATUS_COMPLETE) {
 
-            $response = Yii::$app->paypal->request('DoExpressCheckoutPayment',
-                $payer + $get
-            );
+            $response = Yii::$app->paypal->request('DoExpressCheckoutPayment', ArrayHelper::merge($payer, $get));
 
             if (is_array($response) && $response['ACK'] == 'Success') {
 
-                if($order_id > 0){
+                if ($order_id > 0) {
 
-                $model->addPaySuccess($uid,  $order_id, $payer);
-                
+                    $model->addPaySuccess($uid, $order_id, $payer);
+
                 }
 
                 Yii::$app->session->setFlash('paypal_success', Yii::t('shop', 'Pay successful.'));
@@ -189,16 +189,19 @@ class PaypalController extends Controller
 
             } else {
 
-                Yii::$app->session->setFlash('paypal_failure', Yii::t('shop', 'No finished pay.').': '. $response["L_LONGMESSAGE0"]);
+                Yii::$app->session->setFlash(
+                    'paypal_failure',
+                    Yii::t('shop', 'No finished pay.').': '.$response["L_LONGMESSAGE0"]
+                    );
             }
 
         } else {
 
             if ((is_array($payer) && $payer["CHECKOUTSTATUS"] == PayPalForm::CHECKOUTSTATUS_COMPLETE)) {
 
-                if($order_id > 0){
+                if ($order_id > 0) {
 
-                $model->addPaySuccess($uid,  $order_id, $payer);
+                    $model->addPaySuccess($uid, $order_id, $payer);
 
                 }
 
@@ -245,6 +248,4 @@ class PaypalController extends Controller
         return $this->render('cancell', compact('payer', 'user'));
 
     }
-
-
 }
