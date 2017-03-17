@@ -12,43 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
 
-    <?php if (Yii::$app->session->hasFlash('paypal_success')) { ?>
-        <?php if (is_array(Yii::$app->session->getFlash('paypal_success'))) { ?>
-            <?php foreach (Yii::$app->session->getFlash('paypal_success') as $message) { ?>
-                <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span></button>
-                    <strong><?= Html::encode($message) ?></strong>
-                </div>
-            <?php } ?>
-        <?php } else { ?>
-            <div class="alert alert-success alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
-                <strong><?= Html::encode(Yii::$app->session->getFlash('paypal_success')) ?></strong>
-            </div>
-        <?php } ?>
-    <?php } ?>
-
-    <?php if (Yii::$app->session->hasFlash('paypal_failure')) { ?>
-        <?php if (is_array(Yii::$app->session->getFlash('paypal_failure'))) { ?>
-            <?php foreach (Yii::$app->session->getFlash('paypal_failure') as $message) { ?>
-                <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span></button>
-                    <strong><?= Html::encode($message) ?></strong>
-                </div>
-            <?php } ?>
-        <?php } else { ?>
-            <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span></button>
-                <strong><?= Html::encode(Yii::$app->session->getFlash('paypal_failure')) ?></strong>
-            </div>
-        <?php } ?>
-    <?php } ?>
-
-
     <div class="paypal-form-wrapper fix col-xs-6">
         <div class="paypal-form">
             <?php $form = ActiveForm::begin(['action' => ['/shop/paypal/pay'], 'method' => 'post']); ?>
