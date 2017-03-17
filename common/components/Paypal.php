@@ -86,7 +86,6 @@ class Paypal extends Component
 
         $query = ArrayHelper::merge($requestParams, $credentials, $requestUrl, $params);
 
-
         $request = http_build_query($query);
 
         $curlOptions = array(

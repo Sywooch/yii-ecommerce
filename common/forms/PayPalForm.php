@@ -2,13 +2,19 @@
 
 namespace webdoka\yiiecommerce\common\forms;
 
-
+use webdoka\yiiecommerce\common\models\Order;
+use webdoka\yiiecommerce\common\models\OrderTransaction;
+use webdoka\yiiecommerce\common\models\OrderHistory;
+use app\models\User;
 use yii\helpers\ArrayHelper;
 use yii\base\Model;
 use Yii;
 
 class PayPalForm extends Model
 {
+
+    const STATUS_SUCCESS = 'Success';
+    const CHECKOUTSTATUS_COMPLETE = 'PaymentActionCompleted';
 
     public $name;
     public $summ;
@@ -42,6 +48,38 @@ class PayPalForm extends Model
         ];
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function addPaySuccess($uid, $orderid, $payinfo)
+    {
+        if(Yii::$app->user->id == $uid && $payinfo["ACK"]==self::STATUS_SUCCESS){
+
+            $order=Order::findOne((int)$orderid);
+
+            if($order != null && $order->total == $payinfo["AMT"]){
+
+
+                if($order->status != Order::STATUS_PAID){
+
+                    $order->status = Order::STATUS_PAID;
+                    $order->save();
+
+                    return true;
+
+                }else{
+                    return true;
+                }
+
+            }
+
+
+        }
+                    return false;
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -58,7 +96,7 @@ class PayPalForm extends Model
             'L_PAYMENTREQUEST_0_NAME0' => $this->name,
             'L_PAYMENTREQUEST_0_DESC0' => $this->description,
             'L_PAYMENTREQUEST_0_AMT0' => $this->summ,
-            'L_PAYMENTREQUEST_0_QTY0' => isset($this->quantity) ? $this->quantity : '1',
+            'L_PAYMENTREQUEST_0_QTY0' => '1',
             'order_id' => $this->order_id
         ];
 

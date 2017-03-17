@@ -6,7 +6,41 @@ use yii\helpers\Url;
 ?>
 
 <div class="row">
+                <?php if (Yii::$app->session->hasFlash('order_success')) { ?>
+                    <?php if (is_array(Yii::$app->session->getFlash('order_success'))) { ?>
+                        <?php foreach (Yii::$app->session->getFlash('order_success') as $message) { ?>
+                            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <strong><?= Html::encode($message) ?></strong>
+                            </div>
+                        <?php } ?>
+                    <?php } else { ?>
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <strong><?= Html::encode(Yii::$app->session->getFlash('order_success')) ?></strong>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
 
+                <?php if (Yii::$app->session->hasFlash('order_failure')) { ?>
+                    <?php if (is_array(Yii::$app->session->getFlash('order_failure'))) { ?>
+                        <?php foreach (Yii::$app->session->getFlash('order_failure') as $message) { ?>
+                            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <strong><?= Html::encode($message) ?></strong>
+                            </div>
+                        <?php } ?>
+                    <?php } else { ?>
+                        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span></button>
+                            <strong><?= Html::encode(Yii::$app->session->getFlash('order_failure')) ?></strong>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
 
     <p><?= Yii::t('shop', 'Paid Name') . '-' . $payer["L_NAME0"] ?></p>
     <p><?= Yii::t('shop', 'Paid Description') . '-' . $payer["L_DESC0"] ?></p>

@@ -2,7 +2,7 @@
 
 namespace webdoka\yiiecommerce\frontend\controllers;
 
-use webdoka\yiiecommerce\common\models\Category;
+use webdoka\yiiecommerce\common\models\Set;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\OrderHistory;
 use webdoka\yiiecommerce\common\models\OrderItem;
@@ -44,12 +44,10 @@ class PaypalController extends Controller
      * @return mixed
      */
 
-    /*
+    
 
         public function actionOrderpay($id)
         {
-
-           //var_dump($id); exit;
 
             $model = new PayPalForm();
 
@@ -58,59 +56,57 @@ class PaypalController extends Controller
             if($order !== null){
 
             $orderitem = OrderItem::find()->where(['order_id' => $order->id])->all();
-            $orderset = OrderSet::find()->where(['order_id' => $order->id]);
+            $orderset = OrderSet::find()->where(['order_id' => $order->id])->all();
             }
 
             $descript = '';
 
-            $quantity = 0;
+            $count = count($orderitem);
 
+            $i = 1;
             foreach ($orderitem as $data) {
 
-                $product=Product::findOne((int)$data->product_id);
+                $product = Product::findOne((int)$data->product_id);
                 $descript .= $product->name;
-                $quantity = $quantity + $data->quantity;
+                if($i != $count){
+                  $descript .= ', ';  
+                }
+                $i++;
 
             }
 
-            if($quantity == 0){
-                $quantity = 1;
-            }
 
-            $set['PayPalForm']=[
-                'name' => 'Order#:'. $order->id,
+            $seting['PayPalForm']=[
+                'name' => 'Order '. $order->id,
                 'summ' => $order->total,
                 'currency' => 'USD',
                 'description' => $descript,
-                'quantity' => $quantity,
                 'order_id' => $order->id,
                 ];
 
 
-            if ($model->load($set)) {
+            if ($model->load($seting)) {
 
 
                 $response = Yii::$app->paypal->request('SetExpressCheckout', $model->Request);
 
 
-                if (is_array($response) && $response['ACK'] == 'Success') {
+                if (is_array($response) && $response['ACK'] == PayPalForm::STATUS_SUCCESS) {
 
                     $token = $response['TOKEN'];
 
                     Yii::$app->paypal->redirect($token);
 
 
-                }else{
-                  var_dump($response);
                 }
 
             }else{
-                echo 1;
+                
             }
 
 
         }
-    */
+    
 
     /**
      * Creates a new Order model.
@@ -129,7 +125,7 @@ class PaypalController extends Controller
             $response = Yii::$app->paypal->request('SetExpressCheckout', $model->Request);
 
 
-            if (is_array($response) && $response['ACK'] == 'Success') {
+            if (is_array($response) && $response['ACK'] == PayPalForm::STATUS_SUCCESS) {
 
                 $token = $response['TOKEN'];
 
@@ -151,8 +147,10 @@ class PaypalController extends Controller
     public function actionSuccess()
     {
 
+        $model = new PayPalForm();
 
         $uid = Yii::$app->request->get('uid', -1);
+        $order_id = Yii::$app->request->get('order_id', -1);
 
         if ($uid > 0) {
 
@@ -172,7 +170,7 @@ class PaypalController extends Controller
         $payer = Yii::$app->paypal->request('GetExpressCheckoutDetails', $get);
 
 
-        if (is_array($payer) && $payer['ACK'] == 'Success' && $payer["CHECKOUTSTATUS"] != 'PaymentActionCompleted') {
+        if (is_array($payer) && $payer['ACK'] == PayPalForm::STATUS_SUCCESS && $payer["CHECKOUTSTATUS"] != PayPalForm::CHECKOUTSTATUS_COMPLETE) {
 
             $response = Yii::$app->paypal->request('DoExpressCheckoutPayment',
                 $payer + $get
@@ -180,17 +178,29 @@ class PaypalController extends Controller
 
             if (is_array($response) && $response['ACK'] == 'Success') {
 
+                if($order_id > 0){
+
+                $model->addPaySuccess($uid,  $order_id, $payer);
+                
+                }
+
                 Yii::$app->session->setFlash('paypal_success', Yii::t('shop', 'Pay successful.'));
 
 
             } else {
 
-                Yii::$app->session->setFlash('paypal_failure', Yii::t('shop', 'No finished pay.'));
+                Yii::$app->session->setFlash('paypal_failure', Yii::t('shop', 'No finished pay.').': '. $response["L_LONGMESSAGE0"]);
             }
 
         } else {
 
-            if ((is_array($payer) && $payer["CHECKOUTSTATUS"] == 'PaymentActionCompleted')) {
+            if ((is_array($payer) && $payer["CHECKOUTSTATUS"] == PayPalForm::CHECKOUTSTATUS_COMPLETE)) {
+
+                if($order_id > 0){
+
+                $model->addPaySuccess($uid,  $order_id, $payer);
+
+                }
 
                 Yii::$app->session->setFlash('paypal_success', Yii::t('shop', 'Already paid.'));
 
