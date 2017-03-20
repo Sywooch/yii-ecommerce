@@ -11,6 +11,7 @@ use Yii;
 
 class SetForm extends Set
 {
+
     public $_relSetsProducts = [];
     public $_relDiscounts = [];
 
@@ -21,23 +22,23 @@ class SetForm extends Set
     {
         return ArrayHelper::merge([
             ['relSetsProducts', 'validateSetsProducts'],
-            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => 'Specify Discounts'],
+            ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Discounts')],
         ], parent::rules());
     }
 
     public function validateSetsProducts()
     {
         if (empty($this->_relSetsProducts)) {
-            $this->addError('name', 'Specify just one product.');
+            $this->addError('name', Yii::t('shop', 'Specify just one product.'));
         } else {
             foreach ($this->_relSetsProducts as $relSetProduct) {
                 if (!$product = Product::findOne($relSetProduct['product_id'])) {
-                    Yii::$app->session->setFlash('set-error', 'Invalid product.');
+                    Yii::$app->session->setFlash('set-error', Yii::t('shop', 'Invalid product.'));
                     $this->addError('relSetsProducts', '');
                 }
 
                 if (!$relSetProduct['quantity']) {
-                    Yii::$app->session->setFlash('set-error', 'Quantity must be more than 1.');
+                    Yii::$app->session->setFlash('set-error', Yii::t('shop', 'Quantity must be more than 1.'));
                     $this->addError('relSetsProducts', '');
                 }
             }
@@ -50,8 +51,8 @@ class SetForm extends Set
     public function attributeLabels()
     {
         return ArrayHelper::merge([
-            'relSetsProducts' => 'Products',
-            'relDiscounts' => 'Discounts',
+            'relSetsProducts' => Yii::t('shop', 'Products'),
+            'relDiscounts' => Yii::t('shop', 'Discounts'),
         ], parent::attributeLabels());
     }
 
@@ -114,7 +115,7 @@ class SetForm extends Set
     {
         $setsProducts = [];
 
-        foreach ($this->_relSetsProducts as $productId =>$relSetsProduct) {
+        foreach ($this->_relSetsProducts as $productId => $relSetsProduct) {
             $setProduct = new SetProduct();
             $setProduct->product_id = $relSetsProduct['product_id'];
             $setProduct->quantity = $relSetsProduct['quantity'];
@@ -140,4 +141,5 @@ class SetForm extends Set
 
         $this->populateRelation('discounts', $discounts);
     }
+
 }

@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160610_082029_create_cart_table extends Migration
 {
+
     public function safeUp()
     {
         $this->createTable('carts', [
@@ -30,4 +31,5 @@ class m160610_082029_create_cart_table extends Migration
         $this->dropTable('carts_products');
         $this->dropTable('carts');
     }
+
 }

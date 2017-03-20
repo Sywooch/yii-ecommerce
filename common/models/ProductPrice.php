@@ -18,6 +18,7 @@ use webdoka\yiiecommerce\common\queries\ProductPriceQuery;
  */
 class ProductPrice extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -46,10 +47,10 @@ class ProductPrice extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'product_id' => 'Product ID',
-            'price_id' => 'Price ID',
-            'value' => 'Value',
+            'id' => Yii::t('shop', 'ID'),
+            'product_id' => Yii::t('shop', 'Product ID'),
+            'price_id' => Yii::t('shop', 'Price ID'),
+            'value' => Yii::t('shop', 'Value'),
         ];
     }
 
@@ -77,4 +78,5 @@ class ProductPrice extends \yii\db\ActiveRecord
     {
         return new ProductPriceQuery(get_called_class());
     }
+
 }

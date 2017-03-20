@@ -19,6 +19,7 @@ use webdoka\yiiecommerce\common\queries\CartProductQuery;
  */
 class CartProduct extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -46,11 +47,11 @@ class CartProduct extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'cart_id' => 'Cart ID',
-            'product_id' => 'Product ID',
-            'quantity' => 'Quantity',
-            'cart_set_id' => 'Set',
+            'id' => Yii::t('shop', 'ID'),
+            'cart_id' => Yii::t('shop', 'Cart ID'),
+            'product_id' => Yii::t('shop', 'Product ID'),
+            'quantity' => Yii::t('shop', 'Quantity'),
+            'cart_set_id' => Yii::t('shop', 'Set'),
         ];
     }
 
@@ -77,4 +78,5 @@ class CartProduct extends \yii\db\ActiveRecord
     {
         return new CartProductQuery(get_called_class());
     }
+
 }

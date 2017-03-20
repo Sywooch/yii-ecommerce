@@ -16,12 +16,13 @@ use Yii;
  */
 class Currency extends \yii\db\ActiveRecord
 {
+
     const LIST_CURRENCY = 'shopListCurrency';
     const VIEW_CURRENCY = 'shopViewCurrency';
     const CREATE_CURRENCY = 'shopCreateCurrency';
     const UPDATE_CURRENCY = 'shopUpdateCurrency';
     const DELETE_CURRENCY = 'shopDeleteCurrency';
-    
+
     /**
      * @inheritdoc
      */
@@ -47,10 +48,10 @@ class Currency extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'symbol' => 'Symbol',
-            'abbr' => 'Abbr',
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'symbol' => Yii::t('shop', 'Symbol'),
+            'abbr' => Yii::t('shop', 'Abbr'),
         ];
     }
 
@@ -61,4 +62,5 @@ class Currency extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Account::className(), ['currency_id' => 'id']);
     }
+
 }

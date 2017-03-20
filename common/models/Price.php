@@ -17,12 +17,13 @@ use webdoka\yiiecommerce\common\queries\PriceQuery;
  */
 class Price extends \yii\db\ActiveRecord
 {
+
     const LIST_PRICE = 'shopListPrice';
     const VIEW_PRICE = 'shopViewPrice';
     const CREATE_PRICE = 'shopCreatePrice';
     const UPDATE_PRICE = 'shopUpdatePrice';
     const DELETE_PRICE = 'shopDeletePrice';
-    
+
     /**
      * @inheritdoc
      */
@@ -49,10 +50,10 @@ class Price extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'label' => 'Label',
-            'name' => 'Name',
-            'auth_item_name' => 'Auth Item Name',
+            'id' => Yii::t('shop', 'ID'),
+            'label' => Yii::t('shop', 'Label'),
+            'name' => Yii::t('shop', 'Name'),
+            'auth_item_name' => Yii::t('shop', 'Auth Item Name'),
         ];
     }
 
@@ -62,6 +63,14 @@ class Price extends \yii\db\ActiveRecord
     public function getProductsPrices()
     {
         return $this->hasMany(ProductPrice::className(), ['price_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductsOptionsPrices()
+    {
+        return $this->hasMany(ProductsOptionsPrices::className(), ['price_id' => 'id']);
     }
 
     /**
@@ -87,4 +96,24 @@ class Price extends \yii\db\ActiveRecord
             ->innerJoinWith('productsPrices pp')
             ->min('pp.value');
     }
+
+    /**
+     * Returns min price
+     * @param $roles
+     * @param $productId
+     * @return mixed
+     */
+    public static function getOptPrice($roles, $productId, $optid)
+    {
+
+
+        $role = self::find()->where(['in', 'auth_item_name', $roles])->all();
+        $arrroles = [];
+
+        foreach ($role as $rules) {
+            $arrroles[] = $rules->id;
+        }
+        return ProductsOptionsPrices::find()->andWhere(['product_id' => $productId])->andWhere(['in', 'product_options_id', $optid])->andWhere(['in', 'price_id', $arrroles])->all();
+    }
+
 }

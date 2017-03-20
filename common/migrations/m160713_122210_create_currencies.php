@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160713_122210_create_currencies extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -26,4 +27,5 @@ class m160713_122210_create_currencies extends Migration
     {
         $this->dropTable('currencies');
     }
+
 }

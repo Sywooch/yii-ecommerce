@@ -14,6 +14,7 @@ use yii\web\NotFoundHttpException;
  */
 class PaymentController extends Controller
 {
+
     public $enableCsrfValidation = false;
 
     /**
@@ -31,7 +32,7 @@ class PaymentController extends Controller
     public function actionResult($system)
     {
         if (!$paymentSystem = PaymentType::find()->where(['name' => $system])->one()) {
-            throw new InvalidParamException('Invalid $system.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' ' . $system);
         }
 
         Yii::$app->billing->load($system)->handleResult();
@@ -45,7 +46,7 @@ class PaymentController extends Controller
     public function actionSuccess($system)
     {
         if (!$paymentSystem = PaymentType::find()->where(['name' => $system])->one()) {
-            throw new InvalidParamException('Invalid $system.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' ' . $system);
         }
 
         Yii::$app->billing->load($system)->handleSuccess();
@@ -61,11 +62,12 @@ class PaymentController extends Controller
     public function actionFail($system)
     {
         if (!$paymentSystem = PaymentType::find()->where(['name' => $system])->one()) {
-            throw new InvalidParamException('Invalid $system.');
+            throw new InvalidParamException(Yii::t('shop', 'Invalid') . ' ' . $system);
         }
 
         Yii::$app->billing->load($system)->handleFail();
 
         return $this->redirect(['catalog/index']);
     }
+
 }

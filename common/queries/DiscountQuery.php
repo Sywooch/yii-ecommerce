@@ -11,10 +11,10 @@ use webdoka\yiiecommerce\common\models\Discount;
  */
 class DiscountQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
@@ -33,7 +33,6 @@ class DiscountQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
-
 
     /**
      * Scope for date range
@@ -69,4 +68,5 @@ class DiscountQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere(['dimension' => Discount::FIXED_DIMENSION]);
     }
+
 }

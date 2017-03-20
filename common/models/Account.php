@@ -20,12 +20,13 @@ use webdoka\yiiecommerce\common\queries\AccountQuery;
  */
 class Account extends \yii\db\ActiveRecord
 {
+
     const LIST_ACCOUNT = 'shopListAccount';
     const VIEW_ACCOUNT = 'shopViewAccount';
     const CREATE_ACCOUNT = 'shopCreateAccount';
     const UPDATE_ACCOUNT = 'shopUpdateAccount';
     const DELETE_ACCOUNT = 'shopDeleteAccount';
-    
+
     /**
      * @inheritdoc
      */
@@ -55,11 +56,12 @@ class Account extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'balance' => 'Balance',
-            'currency_id' => 'Currency ID',
-            'profile_id' => 'Profile ID',
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'balance' => Yii::t('shop', 'Balance'),
+            'currency_id' => Yii::t('shop', 'Currency ID'),
+            'profile_id' => Yii::t('shop', 'Profile ID'),
+            'default' => Yii::t('shop', 'Default'),
         ];
     }
 
@@ -105,4 +107,5 @@ class Account extends \yii\db\ActiveRecord
     {
         return new AccountQuery(get_called_class());
     }
+
 }

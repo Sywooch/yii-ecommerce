@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160716_121236_create_properties extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -42,4 +43,5 @@ class m160716_121236_create_properties extends Migration
         $this->dropTable('orders_properties');
         $this->dropTable('properties');
     }
+
 }

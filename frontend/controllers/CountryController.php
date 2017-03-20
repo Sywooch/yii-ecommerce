@@ -7,9 +7,9 @@ use Yii;
 use yii\data\ArrayDataProvider;
 use yii\filters\VerbFilter;
 
-
 class CountryController extends \yii\web\Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -34,4 +34,5 @@ class CountryController extends \yii\web\Controller
             Yii::$app->session->set('country', $country->id);
         }
     }
+
 }

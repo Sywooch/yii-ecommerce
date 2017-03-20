@@ -16,12 +16,13 @@ use webdoka\yiiecommerce\common\queries\CountryQuery;
  */
 class Country extends \yii\db\ActiveRecord
 {
+
     const LIST_COUNTRY = 'shopListCountry';
     const VIEW_COUNTRY = 'shopViewCountry';
     const CREATE_COUNTRY = 'shopCreateCountry';
     const UPDATE_COUNTRY = 'shopUpdateCountry';
     const DELETE_COUNTRY = 'shopDeleteCountry';
-    
+
     /**
      * @inheritdoc
      */
@@ -50,11 +51,11 @@ class Country extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'abbr' => Yii::t('app', 'Abbreviation'),
-            'exists_tax' => Yii::t('app', 'Exists Tax'),
-            'tax' => Yii::t('app', 'Tax'),
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
+            'abbr' => Yii::t('shop', 'Abbreviation'),
+            'exists_tax' => Yii::t('shop', 'Exists Tax'),
+            'tax' => Yii::t('shop', 'Tax'),
         ];
     }
 
@@ -66,4 +67,5 @@ class Country extends \yii\db\ActiveRecord
     {
         return new CountryQuery(get_called_class());
     }
+
 }

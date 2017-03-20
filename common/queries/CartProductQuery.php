@@ -11,6 +11,7 @@ use webdoka\yiiecommerce\common\models\CartProduct;
  */
 class CartProductQuery extends \yii\db\ActiveQuery
 {
+
     /**
      * @return $this
      */
@@ -36,4 +37,5 @@ class CartProductQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
 }

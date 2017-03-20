@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160605_162706_create extends Migration
 {
+
     public function safeUp()
     {
         $this->createTable('features', [
@@ -38,4 +39,5 @@ class m160605_162706_create extends Migration
         $this->dropTable('features_categories');
         $this->dropTable('features');
     }
+
 }

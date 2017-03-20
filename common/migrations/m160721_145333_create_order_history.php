@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160721_145333_create_order_history extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -31,4 +32,5 @@ class m160721_145333_create_order_history extends Migration
         $this->dropForeignKey('fk-order_history-order_id-orders-id', 'order_history');
         $this->dropTable('order_history');
     }
+
 }

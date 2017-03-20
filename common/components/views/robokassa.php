@@ -16,27 +16,27 @@ use yii\helpers\Html;
 ?>
 
 <script>
-    window.onload = function() {
+    window.onload = function () {
         document.form.submit();
     };
 </script>
 
 <?= Html::beginForm($action, 'POST', ['name' => 'form']); ?>
 
-    <?= Html::hiddenInput('MrchLogin', $merchant); ?>
+<?= Html::hiddenInput('MrchLogin', $merchant); ?>
 
-    <?= Html::hiddenInput('OutSum', $amount); ?>
+<?= Html::hiddenInput('OutSum', $amount); ?>
 
-    <?= Html::hiddenInput('OutSumCurrency', $currency); ?>
+<?= Html::hiddenInput('OutSumCurrency', $currency); ?>
 
-    <?= Html::hiddenInput('InvId', $invoiceId); ?>
+<?= Html::hiddenInput('InvId', $invoiceId); ?>
 
-    <?= Html::hiddenInput('Desc', $description); ?>
+<?= Html::hiddenInput('Desc', $description); ?>
 
-    <?= Html::hiddenInput('SignatureValue', $crc); ?>
+<?= Html::hiddenInput('SignatureValue', $crc); ?>
 
-    <?= Html::hiddenInput('Shp_item', $shopItem); ?>
+<?= Html::hiddenInput('Shp_item', $shopItem); ?>
 
-    <?= Html::hiddenInput('IsTest', $isTest); ?>
+<?= Html::hiddenInput('IsTest', $isTest); ?>
 
 <?= Html::endForm(); ?>

@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160726_024931_create_discounts extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -44,4 +45,5 @@ class m160726_024931_create_discounts extends Migration
 
         $this->dropTable('discounts');
     }
+
 }

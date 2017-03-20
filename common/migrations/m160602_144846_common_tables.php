@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160602_144846_common_tables extends Migration
 {
+
     public function safeUp()
     {
         $this->createTable('categories', [
@@ -64,4 +65,5 @@ class m160602_144846_common_tables extends Migration
 
         $this->dropTable('categories');
     }
+
 }

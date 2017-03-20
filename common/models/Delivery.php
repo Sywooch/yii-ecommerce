@@ -18,12 +18,13 @@ use Yii;
  */
 class Delivery extends UidModel
 {
+
     const LIST_DELIVERY = 'shopListDelivery';
     const VIEW_DELIVERY = 'shopViewDelivery';
     const CREATE_DELIVERY = 'shopCreateDelivery';
     const UPDATE_DELIVERY = 'shopUpdateDelivery';
     const DELETE_DELIVERY = 'shopDeleteDelivery';
-    
+
     /**
      * @inheritdoc
      */
@@ -52,11 +53,11 @@ class Delivery extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'name' => 'Name',
-            'cost' => 'Cost',
-            'storage_id' => 'Storage ID',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'name' => Yii::t('shop', 'Name'),
+            'cost' => Yii::t('shop', 'Cost'),
+            'storage_id' => Yii::t('shop', 'Storage ID'),
         ];
     }
 
@@ -76,4 +77,5 @@ class Delivery extends UidModel
     {
         return new DeliveryQuery(get_called_class());
     }
+
 }

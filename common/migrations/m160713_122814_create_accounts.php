@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160713_122814_create_accounts extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -33,4 +34,5 @@ class m160713_122814_create_accounts extends Migration
 
         $this->dropTable('accounts');
     }
+
 }

@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
  */
 class CategoryController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -154,7 +155,8 @@ class CategoryController extends Controller
         if (($model = Category::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
+
 }

@@ -15,18 +15,33 @@ use Yii;
  */
 class Unit extends UidModel
 {
+
     const LIST_UNIT = 'shopListUnit';
     const VIEW_UNIT = 'shopViewUnit';
     const CREATE_UNIT = 'shopCreateUnit';
     const UPDATE_UNIT = 'shopUpdateUnit';
     const DELETE_UNIT = 'shopDeleteUnit';
-    
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'units';
+    }
+
+    public function behaviors()
+    {
+
+        return [
+            'translate' => [
+                'class' => 'webdoka\yiiecommerce\common\behaviors\Translate',
+                'in_name' => 'name',
+                'in_description' => false,
+                'in_shortdescription' => false,
+                'modelID' => get_class($this),
+            ]
+        ];
     }
 
     /**
@@ -46,9 +61,9 @@ class Unit extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'name' => 'Name',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'name' => Yii::t('shop', 'Name'),
         ];
     }
 
@@ -59,4 +74,5 @@ class Unit extends UidModel
     {
         return $this->hasMany(Product::className(), ['unit_id' => 'id']);
     }
+
 }

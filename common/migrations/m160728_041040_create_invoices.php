@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160728_041040_create_invoices extends Migration
 {
+
     public function up()
     {
         $this->createTable('invoices', [
@@ -25,4 +26,5 @@ class m160728_041040_create_invoices extends Migration
     {
         $this->dropTable('invoices');
     }
+
 }

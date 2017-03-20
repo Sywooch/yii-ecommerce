@@ -7,6 +7,8 @@ use webdoka\yiiecommerce\common\components\IPosition;
 use webdoka\yiiecommerce\common\queries\ProductQuery;
 use yii\db\mysql\QueryBuilder;
 use yii\helpers\ArrayHelper;
+use yii\di\Instance;
+use yii\web\Session;
 
 /**
  * This is the model class for table "products".
@@ -22,13 +24,16 @@ use yii\helpers\ArrayHelper;
  */
 class Product extends \yii\db\ActiveRecord implements IPosition
 {
+
     const LIST_PRODUCT = 'shopListProduct';
     const VIEW_PRODUCT = 'shopViewProduct';
     const CREATE_PRODUCT = 'shopCreateProduct';
     const UPDATE_PRODUCT = 'shopUpdateProduct';
     const DELETE_PRODUCT = 'shopDeleteProduct';
-    
+
     private $_quantity;
+    private $_optionid;
+    private $_option_id;
 
     /**
      * @inheritdoc
@@ -58,11 +63,13 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'category_id' => 'Category ID',
-            'unit_id' => 'Unit',
-            'name' => 'Name',
-            'price' => 'Default Price',
+            'id' => Yii::t('shop', 'ID'),
+            'category_id' => Yii::t('shop', 'Category ID'),
+            'unit_id' => Yii::t('shop', 'Unit'),
+            'unit' => Yii::t('shop', 'Unit'),
+            'name' => Yii::t('shop', 'Name'),
+            'price' => Yii::t('shop', 'Default Price'),
+            'prices' => Yii::t('shop', 'Default Price'),
         ];
     }
 
@@ -111,13 +118,77 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getOptionPrice($optid)
+    {
+        // Default price
+        $price = $this->price;
+        $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
+
+        // Get min price
+        $getoptprice = Price::getOptPrice($roles, $this->id, $optid);
+
+        $pricearray = [];
+        $pricemin = [];
+
+        foreach ($getoptprice as $key => $value) {
+
+            $pricearray[$value->product_options_id] = $value->value;
+
+
+            if (count($pricearray[$value->product_options_id]) >= 2) {
+
+                $pricemin[$value->product_options_id] = min($pricearray[$value->product_options_id]);
+
+            } else {
+
+                $pricemin[$value->product_options_id] = $pricearray[$value->product_options_id];
+            }
+
+        }
+
+        $baseprice = Price::getMinPrice($roles, $this->id) ?: $price;
+
+        $price = $baseprice + array_sum($pricemin);
+
+        // Price + VAT
+        if ($country = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one()) {
+            $price += $price * $country->tax / 100;
+        }
+
+        $detailprice = ['price' => $price, 'baseprice' => $baseprice, 'optionsprice' => array_sum($pricemin), 'detailoptionsprice' => $pricemin];
+
+        return $detailprice;
+    }
+
+    public function getBranchOption($option_id)
+    {
+
+        $return = [];
+        $return['option'] = ProductsOptions::findOne(['id' => $option_id]);
+        $return['branch'] = $return['option']->parents()->all();
+        return $return;
+    }
+
+    /**
      * Returns calculated cost after discounts applied
      * @param $quantity
      * @return float|int|mixed
      */
-    public function getCostWithDiscounters($quantity)
+    public function getCostWithDiscounters($quantity = 1, $optionid = 0)
     {
-        $price = $this->realPrice;
+
+
+        if ($optionid == 0 || $optionid == null) {
+
+            $price = $this->realPrice;
+        } else {
+
+            $price = $this->getOptionPrice(explode(',', $optionid))["price"];
+            //var_dump( $price );exit;
+        }
+
         $discounts = $this->availableDiscounts;
 
         foreach ($discounts as $discount) {
@@ -135,6 +206,38 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         }
 
         return $price * $quantity;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getOptid()
+    {
+        return $this->_optionid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setOptid($optid)
+    {
+        $this->_optionid = $optid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getOption_id()
+    {
+        return $this->_option_id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setOption_id($optid)
+    {
+        $this->_option_id = $optid;
     }
 
     /**
@@ -176,6 +279,14 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function getProductPrices()
     {
         return $this->hasMany(ProductPrice::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductOtionsPrices()
+    {
+        return $this->hasMany(ProductsOptionsPrices::className(), ['product_id' => 'id']);
     }
 
     /**
@@ -261,7 +372,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function getDiscounts()
     {
         return $this->hasMany(Discount::className(), ['id' => 'discount_id'])
-            ->andWhere(['dimension' => Discount::SET_DIMENSION])
+            //->andWhere(['dimension' => Discount::SET_DIMENSION])
             ->via('productDiscounts');
     }
 
@@ -359,4 +470,5 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             }
         }
     }
+
 }

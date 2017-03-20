@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 
 class Robokassa extends Component implements IPaymentSystem
 {
+
     const URL = 'https://merchant.roboxchange.com/Index.aspx';
 
     public
@@ -28,7 +29,7 @@ class Robokassa extends Component implements IPaymentSystem
         }
 
         if ($invoice->status != Invoice::PENDING_STATUS) {
-            throw new BadRequestHttpException('The account has already been processed previously.');
+            throw new BadRequestHttpException(Yii::t('shop', 'The account has already been processed previously.'));
         }
 
         $merchant = $this->shopId;
@@ -38,7 +39,7 @@ class Robokassa extends Component implements IPaymentSystem
         $password = $this->isTest ? $this->testPassword1 : $this->password1;
         $shopItem = 1;
 
-        $crc  = md5(implode(':', [$merchant, $amount, $invoice->id, $currency, $password, 'Shp_item=' . $shopItem]));
+        $crc = md5(implode(':', [$merchant, $amount, $invoice->id, $currency, $password, 'Shp_item=' . $shopItem]));
         $crc = strtoupper($crc);
 
         return Yii::$app->view->render('@webdoka/common/components/views/robokassa.php', [
@@ -106,4 +107,5 @@ class Robokassa extends Component implements IPaymentSystem
             Yii::$app->session->addFlash('order_failure', 'Invoice #' . $invoiceId . ' not found. Please contact our technical support.');
         }
     }
+
 }

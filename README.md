@@ -123,3 +123,19 @@ public function init()
 ```
 And now, it's access in `/admin/shop/`, `/admin/shop/feature/`, `/admin/shop/feature/create` and so on.
 
+MULTILANGUAGE
+-------------
+
+При массовом добавлении фраз (Yii::t('shop','Add to cart')) в бд, которые должны переводится из файлов, удобнее воспользоватся встроенным механизмом.
+В конфиге
+ 
+~~~
+config/messages.php
+~~~
+
+Изменяем sourcePath на нужный и запускаем
+
+~~~
+yii message/extract config/messages.php
+~~~
+

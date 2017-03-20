@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
  */
 class CountryController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -97,7 +98,7 @@ class CountryController extends Controller
             ]);
         }
     }
-    
+
     /**
      * Finds the Country model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -110,7 +111,8 @@ class CountryController extends Controller
         if (($model = Country::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
+
 }

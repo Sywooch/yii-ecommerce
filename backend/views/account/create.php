@@ -2,20 +2,18 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Account */
 
-$this->title = 'Create Account';
-$this->params['breadcrumbs'][] = ['label' => 'Accounts', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Account');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Accounts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="account-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?=
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+$this->render('_form', [
+    'model' => $model,
+])
+?>
 
-</div>

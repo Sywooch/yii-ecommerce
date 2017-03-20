@@ -17,6 +17,7 @@ use webdoka\yiiecommerce\common\queries\ProductDiscountQuery;
  */
 class ProductDiscount extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -44,9 +45,9 @@ class ProductDiscount extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'product_id' => Yii::t('app', 'Product ID'),
-            'discount_id' => Yii::t('app', 'Discount ID'),
+            'id' => Yii::t('shop', 'ID'),
+            'product_id' => Yii::t('shop', 'Product ID'),
+            'discount_id' => Yii::t('shop', 'Discount ID'),
         ];
     }
 
@@ -74,4 +75,5 @@ class ProductDiscount extends \yii\db\ActiveRecord
     {
         return new ProductDiscountQuery(get_called_class());
     }
+
 }

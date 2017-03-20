@@ -10,57 +10,63 @@ use yii\grid\GridView;
 /* @var $dataProvider \yii\data\ActiveDataProvider */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Accounts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Accounts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="account-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="box box-primary">
+    <div class="box-header with-border">
         <?php if (Yii::$app->user->can(Account::UPDATE_ACCOUNT)) { ?>
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('yii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php } ?>
         <?php if (Yii::$app->user->can(Account::DELETE_ACCOUNT)) { ?>
-            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            <?=
+            Html::a(Yii::t('yii', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
-            ]) ?>
+            ])
+            ?>
         <?php } ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'balance',
-            'currency.symbol',
-            'profile.user.username',
-            'default',
-        ],
-    ]) ?>
-
-    <div class="well">
-        <h2>Transactions</h2>
-
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'summaryOptions' => ['class' => 'well'],
-            'columns' => [
+    </div>
+    <div class="box-body">
+        <?=
+        DetailView::widget([
+            'model' => $model,
+            'attributes' => [
                 'id',
-                'type',
-                'amount',
-                'description',
-                'created_at:datetime',
-                'updated_at:datetime',
-                'account.name',
-                'transaction.id:text:Rollback transaction',
-            ]
-        ]) ?>
+                'name',
+                'balance',
+                'currency.symbol',
+                'profile.user.username',
+                'default',
+            ],
+        ])
+        ?>
+
+        <div class="well">
+            <h2><?= Yii::t('shop', 'Transactions') ?></h2>
+
+            <?=
+            GridView::widget([
+                'dataProvider' => $dataProvider,
+                'summaryOptions' => ['class' => 'well'],
+                'columns' => [
+                    'id',
+                    'type',
+                    'amount',
+                    'description',
+                    'created_at:datetime',
+                    'updated_at:datetime',
+                    'account.name',
+                    'transaction.id:text:Rollback transaction',
+                ]
+            ])
+            ?>
+        </div>
+
     </div>
 
 </div>
+

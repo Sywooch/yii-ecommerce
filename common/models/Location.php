@@ -17,12 +17,13 @@ use Yii;
  */
 class Location extends UidModel
 {
+
     const LIST_LOCATION = 'shopListLocation';
     const VIEW_LOCATION = 'shopViewLocation';
     const CREATE_LOCATION = 'shopCreateLocation';
     const UPDATE_LOCATION = 'shopUpdateLocation';
     const DELETE_LOCATION = 'shopDeleteLocation';
-    
+
     /**
      * @inheritdoc
      */
@@ -49,13 +50,13 @@ class Location extends UidModel
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'uid' => 'Uid',
-            'country' => 'Country',
-            'city' => 'City',
-            'address' => 'Address',
-            'full' => 'Full address',
-            'index' => 'Index',
+            'id' => Yii::t('shop', 'ID'),
+            'uid' => Yii::t('shop', 'Uid'),
+            'country' => Yii::t('shop', 'Country'),
+            'city' => Yii::t('shop', 'City'),
+            'address' => Yii::t('shop', 'Address'),
+            'full' => Yii::t('shop', 'Full address'),
+            'index' => Yii::t('shop', 'Index'),
         ];
     }
 
@@ -76,4 +77,5 @@ class Location extends UidModel
     {
         return sprintf('%s, %s, %s', $this->country, $this->city, $this->address);
     }
+
 }

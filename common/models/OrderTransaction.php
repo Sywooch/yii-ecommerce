@@ -17,6 +17,7 @@ use webdoka\yiiecommerce\common\queries\OrderTransactionQuery;
  */
 class OrderTransaction extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -44,9 +45,9 @@ class OrderTransaction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'order_id' => 'Order ID',
-            'transaction_id' => 'Transaction ID',
+            'id' => Yii::t('shop', 'ID'),
+            'order_id' => Yii::t('shop', 'Order ID'),
+            'transaction_id' => Yii::t('shop', 'Transaction ID'),
         ];
     }
 
@@ -74,4 +75,5 @@ class OrderTransaction extends \yii\db\ActiveRecord
     {
         return new OrderTransactionQuery(get_called_class());
     }
+
 }

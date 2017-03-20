@@ -18,6 +18,7 @@ use webdoka\yiiecommerce\common\queries\SetProductQuery;
  */
 class SetProduct extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -45,10 +46,10 @@ class SetProduct extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'set_id' => Yii::t('app', 'Set ID'),
-            'product_id' => Yii::t('app', 'Product ID'),
-            'quantity' => Yii::t('app', 'Quantity'),
+            'id' => Yii::t('shop', 'ID'),
+            'set_id' => Yii::t('shop', 'Set ID'),
+            'product_id' => Yii::t('shop', 'Product ID'),
+            'quantity' => Yii::t('shop', 'Quantity'),
         ];
     }
 
@@ -76,4 +77,5 @@ class SetProduct extends \yii\db\ActiveRecord
     {
         return new SetProductQuery(get_called_class());
     }
+
 }

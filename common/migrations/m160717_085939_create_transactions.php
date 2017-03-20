@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160717_085939_create_transactions extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -42,4 +43,5 @@ class m160717_085939_create_transactions extends Migration
         $this->dropTable('orders_transactions');
         $this->dropTable('transactions');
     }
+
 }

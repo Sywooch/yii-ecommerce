@@ -7,6 +7,7 @@ use webdoka\yiiecommerce\common\models\Order;
 
 class m160811_045341_relink_to_profile extends Migration
 {
+
     public function up()
     {
         $this->dropForeignKey('fk-accounts-user_id-users-id', 'accounts');
@@ -54,13 +55,13 @@ class m160811_045341_relink_to_profile extends Migration
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }

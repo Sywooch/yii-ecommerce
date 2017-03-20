@@ -25,19 +25,19 @@ use yii\behaviors\TimestampBehavior;
  */
 class Order extends \yii\db\ActiveRecord
 {
+
     const STATUS_AWAITING_PAYMENT = 'Awaiting payment';
     const STATUS_PAID = 'Paid';
     const STATUS_DELIVERY = 'Delivery';
     const STATUS_DONE = 'Done';
     const STATUS_CANCEL = 'Cancel';
     const STATUS_EXPIRED = 'Expired';
-
     const LIST_ORDER = 'shopListOrder';
     const VIEW_ORDER = 'shopViewOrder';
     const CREATE_ORDER = 'shopCreateOrder';
     const UPDATE_ORDER = 'shopUpdateOrder';
     const DELETE_ORDER = 'shopDeleteOrder';
-    
+
     /**
      * @inheritdoc
      */
@@ -77,13 +77,16 @@ class Order extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'status' => 'Status',
-            'profile_id' => 'Profile',
-            'payment_type_id' => 'Payment Type',
-            'total' => 'Total',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'id' => Yii::t('shop', 'ID'),
+            'status' => Yii::t('shop', 'Status'),
+            'profile_id' => Yii::t('shop', 'Profile'),
+            'payment_type_id' => Yii::t('shop', 'Payment Type'),
+            'total' => Yii::t('shop', 'Total'),
+            'created_at' => Yii::t('shop', 'Created At'),
+            'updated_at' => Yii::t('shop', 'Updated At'),
+            'paymentType' => Yii::t('shop', 'Payment Type'),
+            'country' => Yii::t('shop', 'Country'),
+            'tax' => Yii::t('shop', 'Tax'),
         ];
     }
 
@@ -219,4 +222,5 @@ class Order extends \yii\db\ActiveRecord
             self::STATUS_EXPIRED => self::STATUS_EXPIRED,
         ];
     }
+
 }

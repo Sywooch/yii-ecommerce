@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160717_113630_add_user_id_to_orders extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -34,4 +35,5 @@ class m160717_113630_add_user_id_to_orders extends Migration
         $this->dropForeignKey('fk-orders-user_id-users-id', 'orders');
         $this->dropColumn('orders', 'user_id');
     }
+
 }

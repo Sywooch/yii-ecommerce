@@ -5,9 +5,11 @@ namespace webdoka\yiiecommerce\common\forms;
 use webdoka\yiiecommerce\common\models\Category;
 use webdoka\yiiecommerce\common\models\Feature;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class CategoryForm extends Category
 {
+
     public $_relFeatures = [];
 
     /**
@@ -16,7 +18,7 @@ class CategoryForm extends Category
     public function rules()
     {
         return ArrayHelper::merge([
-            ['relFeatures', 'each', 'rule' => ['integer'], 'skipOnEmpty' => false, 'message' => 'Specify Feature']
+            ['relFeatures', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => 'Specify Feature']
         ], parent::rules());
     }
 
@@ -55,6 +57,7 @@ class CategoryForm extends Category
      */
     public function beforeSave($insert)
     {
+
         if (parent::beforeSave($insert)) {
             $this->saveFeaturesToRelation();
             return true;
@@ -70,12 +73,16 @@ class CategoryForm extends Category
     {
         $features = [];
 
-        foreach ($this->_relFeatures as $relFeature) {
-            if ($feature = Feature::findOne($relFeature)) {
-                $features[] = $feature;
-            }
-        }
+        if (!empty($this->_relFeatures)) {
 
-        $this->populateRelation('features', $features);
+            foreach ($this->_relFeatures as $relFeature) {
+                if ($feature = Feature::findOne($relFeature)) {
+                    $features[] = $feature;
+                }
+            }
+
+            $this->populateRelation('features', $features);
+        }
     }
+
 }

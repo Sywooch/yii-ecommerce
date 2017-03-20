@@ -23,10 +23,10 @@ use yii\db\Expression;
  */
 class Transaction extends \yii\db\ActiveRecord
 {
+
     const CHARGE_TYPE = 'charge';
     const WITHDRAW_TYPE = 'withdraw';
     const ROLLBACK_TYPE = 'rollback';
-
     const LIST_TRANSACTION = 'shopListTransaction';
     const VIEW_TRANSACTION = 'shopViewTransaction';
     const CREATE_TRANSACTION = 'shopCreateTransaction';
@@ -59,7 +59,7 @@ class Transaction extends \yii\db\ActiveRecord
         return [
             [['account_id', 'type'], 'required'],
             ['amount', 'required', 'when' => function ($model) {
-                 return $model->type != self::ROLLBACK_TYPE;
+                return $model->type != self::ROLLBACK_TYPE;
             }],
             [['amount'], 'number'],
             [['account_id'], 'integer'],
@@ -76,13 +76,13 @@ class Transaction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'amount' => 'Amount',
-            'account_id' => 'Account ID',
-            'type' => 'Type',
-            'description' => 'Description',
-            'created_at' => 'Created At',
-            'transaction_id' => 'Transaction',
+            'id' => Yii::t('shop', 'ID'),
+            'amount' => Yii::t('shop', 'Amount'),
+            'account_id' => Yii::t('shop', 'Account ID'),
+            'type' => Yii::t('shop', 'Type'),
+            'description' => Yii::t('shop', 'Description'),
+            'created_at' => Yii::t('shop', 'Created At'),
+            'transaction_id' => Yii::t('shop', 'Transaction'),
         ];
     }
 
@@ -181,4 +181,5 @@ class Transaction extends \yii\db\ActiveRecord
 
         return parent::beforeDelete();
     }
+
 }

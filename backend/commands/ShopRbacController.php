@@ -6,6 +6,7 @@ use yii\console\Controller;
 
 class ShopRbacController extends Controller
 {
+
     public function actionInit()
     {
         $auth = \Yii::$app->authManager;
@@ -28,7 +29,7 @@ class ShopRbacController extends Controller
         $actions[] = $createSet;
         $actions[] = $updateSet;
         $actions[] = $deleteSet;
-        
+
         $listCountry = $auth->createPermission('shopListCountry');
         $listCountry->description = 'List shop country';
         $viewCountry = $auth->createPermission('shopViewCountry');
@@ -45,7 +46,7 @@ class ShopRbacController extends Controller
         $actions[] = $createCountry;
         $actions[] = $updateCountry;
         $actions[] = $deleteCountry;
-        
+
         $listDiscount = $auth->createPermission('shopListDiscount');
         $listDiscount->description = 'List shop discount';
         $viewDiscount = $auth->createPermission('shopViewDiscount');
@@ -62,7 +63,7 @@ class ShopRbacController extends Controller
         $actions[] = $createDiscount;
         $actions[] = $updateDiscount;
         $actions[] = $deleteDiscount;
-        
+
         $listPaymentType = $auth->createPermission('shopListPaymentType');
         $listPaymentType->description = 'List shop payment type';
         $viewPaymentType = $auth->createPermission('shopViewPaymentType');
@@ -79,7 +80,7 @@ class ShopRbacController extends Controller
         $actions[] = $createPaymentType;
         $actions[] = $updatePaymentType;
         $actions[] = $deletePaymentType;
-        
+
         $listOrder = $auth->createPermission('shopListOrder');
         $listOrder->description = 'List shop order';
         $viewOrder = $auth->createPermission('shopViewOrder');
@@ -96,7 +97,7 @@ class ShopRbacController extends Controller
         $actions[] = $createOrder;
         $actions[] = $updateOrder;
         $actions[] = $deleteOrder;
-        
+
         $listPrice = $auth->createPermission('shopListPrice');
         $listPrice->description = 'List shop price';
         $viewPrice = $auth->createPermission('shopViewPrice');
@@ -113,7 +114,7 @@ class ShopRbacController extends Controller
         $actions[] = $createPrice;
         $actions[] = $updatePrice;
         $actions[] = $deletePrice;
-        
+
         $listTransaction = $auth->createPermission('shopListTransaction');
         $listTransaction->description = 'List shop transaction';
         $viewTransaction = $auth->createPermission('shopViewTransaction');
@@ -130,7 +131,7 @@ class ShopRbacController extends Controller
         $actions[] = $createTransaction;
         $actions[] = $updateTransaction;
         $actions[] = $deleteTransaction;
-        
+
         $listProperty = $auth->createPermission('shopListProperty');
         $listProperty->description = 'List shop property';
         $viewProperty = $auth->createPermission('shopViewProperty');
@@ -147,7 +148,7 @@ class ShopRbacController extends Controller
         $actions[] = $createProperty;
         $actions[] = $updateProperty;
         $actions[] = $deleteProperty;
-        
+
         $listUnit = $auth->createPermission('shopListUnit');
         $listUnit->description = 'List shop unit';
         $viewUnit = $auth->createPermission('shopViewUnit');
@@ -164,7 +165,7 @@ class ShopRbacController extends Controller
         $actions[] = $createUnit;
         $actions[] = $updateUnit;
         $actions[] = $deleteUnit;
-        
+
         $listAccount = $auth->createPermission('shopListAccount');
         $listAccount->description = 'List shop account';
         $viewAccount = $auth->createPermission('shopViewAccount');
@@ -181,7 +182,7 @@ class ShopRbacController extends Controller
         $actions[] = $createAccount;
         $actions[] = $updateAccount;
         $actions[] = $deleteAccount;
-        
+
         $listCurrency = $auth->createPermission('shopListCurrency');
         $listCurrency->description = 'List shop currency';
         $viewCurrency = $auth->createPermission('shopViewCurrency');
@@ -198,7 +199,7 @@ class ShopRbacController extends Controller
         $actions[] = $createCurrency;
         $actions[] = $updateCurrency;
         $actions[] = $deleteCurrency;
-        
+
         $listDelivery = $auth->createPermission('shopListDelivery');
         $listDelivery->description = 'List shop delivery';
         $viewDelivery = $auth->createPermission('shopViewDelivery');
@@ -215,7 +216,7 @@ class ShopRbacController extends Controller
         $actions[] = $createDelivery;
         $actions[] = $updateDelivery;
         $actions[] = $deleteDelivery;
-        
+
         $listStorage = $auth->createPermission('shopListStorage');
         $listStorage->description = 'List shop storage';
         $viewStorage = $auth->createPermission('shopViewStorage');
@@ -232,7 +233,7 @@ class ShopRbacController extends Controller
         $actions[] = $createStorage;
         $actions[] = $updateStorage;
         $actions[] = $deleteStorage;
-        
+
         $listLocation = $auth->createPermission('shopListLocation');
         $listLocation->description = 'List shop locations';
         $viewLocation = $auth->createPermission('shopViewLocation');
@@ -249,7 +250,25 @@ class ShopRbacController extends Controller
         $actions[] = $createLocation;
         $actions[] = $updateLocation;
         $actions[] = $deleteLocation;
-        
+
+
+        $listLang = $auth->createPermission('shopListLang');
+        $listLang->description = 'List shop language';
+        $viewLang = $auth->createPermission('shopViewLang');
+        $viewLang->description = 'View shop language';
+        $createLang = $auth->createPermission('shopCreateLang');
+        $createLang->description = 'Create shop language';
+        $updateLang = $auth->createPermission('shopUpdateLang');
+        $updateLang->description = 'Update shop language';
+        $deleteLang = $auth->createPermission('shopDeleteLang');
+        $deleteLang->description = 'Delete shop language';
+
+        $actions[] = $listLang;
+        $actions[] = $viewLang;
+        $actions[] = $createLang;
+        $actions[] = $updateLang;
+        $actions[] = $deleteLang;
+
         $listFeature = $auth->createPermission('shopListFeature');
         $listFeature->description = 'List shop features';
         $viewFeature = $auth->createPermission('shopViewFeature');
@@ -301,8 +320,26 @@ class ShopRbacController extends Controller
         $actions[] = $updateProduct;
         $actions[] = $deleteProduct;
 
+        $listOptProduct = $auth->createPermission('shopListOptionsProducts');
+        $listOptProduct->description = 'List shop options from products';
+        $viewOptProduct = $auth->createPermission('shopViewOptionsProducts');
+        $viewOptProduct->description = 'View shop options from product';
+        $createOptProduct = $auth->createPermission('shopCreateOptionsProducts');
+        $createOptProduct->description = 'Create shop options from product';
+        $updateOptProduct = $auth->createPermission('shopUpdateOptionsProducts');
+        $updateOptProduct->description = 'Update shop options from product';
+        $deleteOptProduct = $auth->createPermission('shopDeleteOptionsProducts');
+        $deleteOptProduct->description = 'Delete shop options from product';
+
+        $actions[] = $listOptProduct;
+        $actions[] = $viewOptProduct;
+        $actions[] = $createOptProduct;
+        $actions[] = $updateOptProduct;
+        $actions[] = $deleteOptProduct;
+
         foreach ($actions as $action) {
             $auth->add($action);
         }
     }
+
 }

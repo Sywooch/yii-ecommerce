@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160718_140542_add_transaction_id_column_to_transactions extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -24,4 +25,5 @@ class m160718_140542_add_transaction_id_column_to_transactions extends Migration
         $this->dropForeignKey('fk-transactions-transaction_id-transactions-id', 'transactions');
         $this->dropColumn('transactions', 'transaction_id');
     }
+
 }

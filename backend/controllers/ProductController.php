@@ -11,12 +11,15 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\tree\models\Tree;
+use kartik\tree\TreeView;
 
 /**
  * ProductController implements the CRUD actions for Product model.
  */
 class ProductController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -183,7 +186,8 @@ class ProductController extends Controller
         if (($model = Product::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
+
 }

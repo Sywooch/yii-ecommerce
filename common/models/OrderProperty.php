@@ -18,6 +18,7 @@ use webdoka\yiiecommerce\common\queries\OrderPropertyQuery;
  */
 class OrderProperty extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -46,10 +47,10 @@ class OrderProperty extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'order_id' => 'Order ID',
-            'property_id' => 'Property ID',
-            'value' => 'Value',
+            'id' => Yii::t('shop', 'ID'),
+            'order_id' => Yii::t('shop', 'Order ID'),
+            'property_id' => Yii::t('shop', 'Property ID'),
+            'value' => Yii::t('shop', 'Value'),
         ];
     }
 
@@ -77,4 +78,5 @@ class OrderProperty extends \yii\db\ActiveRecord
     {
         return new OrderPropertyQuery(get_called_class());
     }
+
 }

@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160620_025825_create_location_table extends Migration
 {
+
     public function safeUp()
     {
         $this->createTable('locations', [
@@ -26,4 +27,5 @@ class m160620_025825_create_location_table extends Migration
     {
         $this->dropTable('locations');
     }
+
 }

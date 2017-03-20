@@ -11,10 +11,10 @@ use webdoka\yiiecommerce\common\models\Invoice;
  */
 class InvoiceQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
@@ -57,4 +57,5 @@ class InvoiceQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere(['status' => Invoice::FAIL_STATUS]);
     }
+
 }

@@ -11,10 +11,10 @@ use webdoka\yiiecommerce\common\models\Transaction;
  */
 class TransactionQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
@@ -33,4 +33,5 @@ class TransactionQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
 }

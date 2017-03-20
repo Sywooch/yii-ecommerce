@@ -8,6 +8,7 @@ namespace webdoka\yiiecommerce\common\components;
  */
 interface IPaymentSystem
 {
+
     /**
      * Redirects to payment way
      * @param $invoiceId

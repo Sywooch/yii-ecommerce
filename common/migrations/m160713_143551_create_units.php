@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160713_143551_create_units extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -31,4 +32,5 @@ class m160713_143551_create_units extends Migration
         $this->dropForeignKey('fk-products-unit_id-units-id', 'products');
         $this->dropTable('units');
     }
+
 }

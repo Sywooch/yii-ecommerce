@@ -18,6 +18,7 @@ use yii\db\ActiveRecord;
  */
 class Set extends ActiveRecord implements ISetPosition
 {
+
     const LIST_SET = 'shopListSet';
     const VIEW_SET = 'shopViewSet';
     const CREATE_SET = 'shopCreateSet';
@@ -51,8 +52,8 @@ class Set extends ActiveRecord implements ISetPosition
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'id' => Yii::t('shop', 'ID'),
+            'name' => Yii::t('shop', 'Name'),
         ];
     }
 
@@ -165,7 +166,6 @@ class Set extends ActiveRecord implements ISetPosition
         return $this->hasMany(Product::className(), ['id' => 'product_id'])->via('setsProducts');
     }
 
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -194,7 +194,7 @@ class Set extends ActiveRecord implements ISetPosition
     /**
      * After save handles
      */
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         $relatedRecords = $this->getRelatedRecords();
 
@@ -212,4 +212,5 @@ class Set extends ActiveRecord implements ISetPosition
             }
         }
     }
+
 }

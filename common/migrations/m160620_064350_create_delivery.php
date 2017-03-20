@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160620_064350_create_delivery extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -30,4 +31,5 @@ class m160620_064350_create_delivery extends Migration
     {
         $this->dropTable('deliveries');
     }
+
 }

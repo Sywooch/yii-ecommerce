@@ -16,6 +16,7 @@ use yii\db\ActiveQuery;
  */
 class Cart extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -41,8 +42,8 @@ class Cart extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'profile_id' => 'Profile',
+            'id' => Yii::t('shop', 'ID'),
+            'profile_id' => Yii::t('shop', 'Profile'),
         ];
     }
 
@@ -103,4 +104,5 @@ class Cart extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
+
 }

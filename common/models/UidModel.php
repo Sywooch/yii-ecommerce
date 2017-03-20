@@ -10,6 +10,7 @@ use Yii;
  */
 abstract class UidModel extends \yii\db\ActiveRecord
 {
+
     public function beforeSave($insert)
     {
         if ($insert) {
@@ -18,4 +19,5 @@ abstract class UidModel extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
+
 }

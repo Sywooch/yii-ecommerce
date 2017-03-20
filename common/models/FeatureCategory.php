@@ -16,6 +16,7 @@ use Yii;
  */
 class FeatureCategory extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -43,9 +44,9 @@ class FeatureCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'feature_id' => 'Feature ID',
-            'category_id' => 'Category ID',
+            'id' => Yii::t('shop', 'ID'),
+            'feature_id' => Yii::t('shop', 'Feature ID'),
+            'category_id' => Yii::t('shop', 'Category ID'),
         ];
     }
 
@@ -64,4 +65,5 @@ class FeatureCategory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Feature::className(), ['id' => 'feature_id']);
     }
+
 }

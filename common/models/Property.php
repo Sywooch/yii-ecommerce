@@ -23,16 +23,16 @@ use yii\widgets\ActiveForm;
  */
 class Property extends \yii\db\ActiveRecord
 {
+
     const INPUT_TYPE = 'input';
     const CHECKBOX_TYPE = 'checkbox';
     const TEXTAREA_TYPE = 'textarea';
-
     const LIST_PROPERTY = 'shopListProperty';
     const VIEW_PROPERTY = 'shopViewProperty';
     const CREATE_PROPERTY = 'shopCreateProperty';
     const UPDATE_PROPERTY = 'shopUpdateProperty';
     const DELETE_PROPERTY = 'shopDeleteProperty';
-    
+
     /**
      * @inheritdoc
      */
@@ -61,12 +61,12 @@ class Property extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'label' => 'Label',
-            'name' => 'Name',
-            'type' => 'Type',
-            'profile_type' => 'Profile type',
-            'required' => 'Required',
+            'id' => Yii::t('shop', 'ID'),
+            'label' => Yii::t('shop', 'Label'),
+            'name' => Yii::t('shop', 'Name'),
+            'type' => Yii::t('shop', 'Type'),
+            'profile_type' => Yii::t('shop', 'Profile type'),
+            'required' => Yii::t('shop', 'Required'),
         ];
     }
 
@@ -106,4 +106,5 @@ class Property extends \yii\db\ActiveRecord
     {
         return Profile::getTypes();
     }
+
 }

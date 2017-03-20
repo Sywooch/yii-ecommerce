@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use webdoka\yiiecommerce\common\models\Discount;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\forms\SetForm */
@@ -28,77 +29,99 @@ $this->registerJs('
         $(this).closest(".set-product").remove();
     });
 ');
-
 ?>
 
-<div class="set-form">
+<div class="box box-primary set-form">
+    <div class="box-body">
+        <?php $form = ActiveForm::begin(['id' => 'setForm']); ?>
 
-    <?php $form = ActiveForm::begin(['id' => 'setForm']); ?>
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+        <h2><?= Yii::t('shop', 'Discounts') ?></h2>
 
-    <h2>Discounts</h2>
 
-    <?= $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->set()->all(), 'id', 'name'), ['multiple' => true]) ?>
+        <?= 
+$form->field($model, 'relDiscounts')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(Discount::find()->set()->all(), 'id', 'name'),
+    'options' => [
+        //'placeholder' => 'Select provinces ...',
+        'multiple' => true
+    ],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
 
-    <h2>Products <span class="add-product btn btn-success pull-right">Add Product</span></h2>
+        <h2><?= Yii::t('shop', 'Products') ?> <span
+                    class="add-product btn btn-success pull-right"><?= Yii::t('shop', 'Add Product') ?></span></h2>
 
-    <?php if (Yii::$app->session->hasFlash('set-error')) { ?>
-        <div class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('set-error')) ?></div>
-    <?php } ?>
+        <?php if (Yii::$app->session->hasFlash('set-error')) { ?>
+            <div class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('set-error')) ?></div>
+        <?php } ?>
 
-    <div class="well set-products">
-        <?php foreach ($model->relSetsProducts as $index => $setProduct) { ?>
+        <div class="well set-products">
+            <?php foreach ($model->relSetsProducts as $index => $setProduct) { ?>
+
+                <div class="row set-product">
+
+                    <div class="col-md-8">
+                        <?=
+                        $form->field($model, 'relSetsProducts[' . $index . '][product_id]')
+                            ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
+                            ->label(false);
+                        ?>
+                    </div>
+
+                    <div class="col-md-2">
+                        <?=
+                        $form->field($model, 'relSetsProducts[' . $index . '][quantity]')
+                            ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false)
+                        ?>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="delete-product btn btn-danger btn-block"><?= Yii::t('yii', 'Delete') ?></div>
+                    </div>
+
+                </div>
+
+            <?php } ?>
+
+
+        </div>
+
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+
+        <div class="product-template hide">
 
             <div class="row set-product">
 
                 <div class="col-md-8">
-                    <?= $form->field($model, 'relSetsProducts[' . $index . '][product_id]')
+                    <?=
+                    $form->field($model, 'relSetsProducts[%set_product_id%][product_id]')
                         ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
-                        ->label(false); ?>
+                        ->label(false);
+                    ?>
                 </div>
 
                 <div class="col-md-2">
-                    <?= $form->field($model, 'relSetsProducts[' . $index . '][quantity]')
-                        ->textInput(['placeholder' => 'Quantity'])->label(false) ?>
+                    <?=
+                    $form->field($model, 'relSetsProducts[%set_product_id%][quantity]')
+                        ->textInput(['placeholder' => Yii::t('shop', 'Quantity')])->label(false)
+                    ?>
                 </div>
 
                 <div class="col-md-2">
-                    <div class="delete-product btn btn-danger btn-block">Delete</div>
+                    <div class="delete-product btn btn-danger btn-block"><?= Yii::t('yii', 'Delete') ?></div>
                 </div>
-
             </div>
 
-        <?php } ?>
-
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-    <div class="product-template hide">
-
-        <div class="row set-product">
-
-            <div class="col-md-8">
-                <?= $form->field($model, 'relSetsProducts[%set_product_id%][product_id]')
-                    ->dropDownList(ArrayHelper::map($products, 'id', 'name'))
-                    ->label(false); ?>
-            </div>
-
-            <div class="col-md-2">
-                <?= $form->field($model, 'relSetsProducts[%set_product_id%][quantity]')
-                    ->textInput(['placeholder' => 'Quantity'])->label(false) ?>
-            </div>
-
-            <div class="col-md-2">
-                <div class="delete-product btn btn-danger btn-block">Delete</div>
-            </div>
         </div>
 
     </div>
-
 </div>

@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160726_130845_create_countries_with_taxes extends Migration
 {
+
     public function up()
     {
         $this->createTable('countries', [
@@ -34,4 +35,5 @@ class m160726_130845_create_countries_with_taxes extends Migration
 
         $this->dropTable('countries');
     }
+
 }

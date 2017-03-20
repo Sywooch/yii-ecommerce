@@ -18,6 +18,7 @@ use webdoka\yiiecommerce\common\queries\OrderSetQuery;
  */
 class OrderSet extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -45,9 +46,9 @@ class OrderSet extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'order_id' => Yii::t('app', 'Order ID'),
-            'set_id' => Yii::t('app', 'Set ID'),
+            'id' => Yii::t('shop', 'ID'),
+            'order_id' => Yii::t('shop', 'Order ID'),
+            'set_id' => Yii::t('shop', 'Set ID'),
         ];
     }
 
@@ -104,4 +105,5 @@ class OrderSet extends \yii\db\ActiveRecord
 
         parent::afterSave($insert, $changedAttributes);
     }
+
 }

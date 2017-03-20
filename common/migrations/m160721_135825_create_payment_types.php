@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160721_135825_create_payment_types extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -31,4 +32,5 @@ class m160721_135825_create_payment_types extends Migration
 
         $this->dropTable('payment_types');
     }
+
 }

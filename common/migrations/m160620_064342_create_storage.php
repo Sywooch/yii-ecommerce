@@ -7,6 +7,7 @@ use yii\db\Migration;
  */
 class m160620_064342_create_storage extends Migration
 {
+
     /**
      * @inheritdoc
      */
@@ -33,4 +34,5 @@ class m160620_064342_create_storage extends Migration
     {
         $this->dropTable('storages');
     }
+
 }

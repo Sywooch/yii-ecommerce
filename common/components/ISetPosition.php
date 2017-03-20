@@ -8,6 +8,7 @@ namespace webdoka\yiiecommerce\common\components;
  */
 interface ISetPosition
 {
+
     /**
      * Returns position id
      * @return integer

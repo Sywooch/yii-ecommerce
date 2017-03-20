@@ -17,6 +17,7 @@ use Yii;
  */
 class FeatureProduct extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -45,10 +46,10 @@ class FeatureProduct extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'feature_id' => 'Feature ID',
-            'product_id' => 'Product ID',
-            'value' => 'Value',
+            'id' => Yii::t('shop', 'ID'),
+            'feature_id' => Yii::t('shop', 'Feature ID'),
+            'product_id' => Yii::t('shop', 'Product ID'),
+            'value' => Yii::t('shop', 'Value'),
         ];
     }
 
@@ -67,4 +68,5 @@ class FeatureProduct extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Feature::className(), ['id' => 'feature_id']);
     }
+
 }

@@ -7,6 +7,7 @@ use Yii;
 
 class Module extends \yii\base\Module implements BootstrapInterface
 {
+
     public function init()
     {
         parent::init();
@@ -23,4 +24,5 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ];
         }
     }
+
 }

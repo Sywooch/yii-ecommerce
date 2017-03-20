@@ -11,10 +11,10 @@ use webdoka\yiiecommerce\common\models\SetProduct;
  */
 class SetProductQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
+    /* public function active()
+      {
+      return $this->andWhere('[[status]]=1');
+      } */
 
     /**
      * @inheritdoc
@@ -33,4 +33,5 @@ class SetProductQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
 }

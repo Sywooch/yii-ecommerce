@@ -11,6 +11,7 @@ use webdoka\yiiecommerce\common\models\OrderItem;
  */
 class OrderItemQuery extends \yii\db\ActiveQuery
 {
+
     public function noSet()
     {
         return $this->andWhere('order_set_id IS NULL');
@@ -33,4 +34,5 @@ class OrderItemQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
 }

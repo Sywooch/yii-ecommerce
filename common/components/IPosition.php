@@ -8,6 +8,7 @@ namespace webdoka\yiiecommerce\common\components;
  */
 interface IPosition
 {
+
     /**
      * Returns position id
      * @return integer
@@ -38,6 +39,19 @@ interface IPosition
      * @return mixed
      */
     public function getCostWithDiscounters($quantity);
+
+    /**
+     * Returns position option id
+     * @return mixed
+     */
+    public function getOption_id();
+
+    /**
+     * Sets option id
+     * @param $quantity
+     * @return mixed
+     */
+    public function setOption_id($optid);
 
     /**
      * Returns position quantity

@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160729_060721_add_currency_abbr_and_account_default extends Migration
 {
+
     public function up()
     {
         $this->addColumn('currencies', 'abbr', 'VARCHAR(255)');
@@ -18,13 +19,13 @@ class m160729_060721_add_currency_abbr_and_account_default extends Migration
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
+      // Use safeUp/safeDown to run migration code within a transaction
+      public function safeUp()
+      {
+      }
 
-    public function safeDown()
-    {
-    }
-    */
+      public function safeDown()
+      {
+      }
+     */
 }

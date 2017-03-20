@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use webdoka\yiiecommerce\common\models\Country;
 
+//use Yii;
 /* @var $this yii\web\View */
 /* @var $cssClass string */
 
@@ -58,32 +59,31 @@ $this->registerJs('
         $selectCountryConfirm.modal("show");
     }
 ');
-
 ?>
 
-<?= Html::dropDownList('country', Yii::$app->session->get('country'), ArrayHelper::map(
-        Country::find()->orderBy(['name' => 'asc'])->all(),
-        'id',
-        'name'
-    ),
-    [
-        'prompt' => 'Choose country',
+<?=
+Html::dropDownList('country', Yii::$app->session->get('country'), ArrayHelper::map(
+    Country::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'
+), [
+        'prompt' => Yii::t('shop', 'Choose country'),
         'class' => $cssClass,
         'id' => 'select-country',
     ]
-) ?>
+)
+?>
 
 <div id="select-country-confirm" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Confirm country</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><?= Yii::t('shop', 'Confirm country') ?></h4>
             </div>
             <div class="modal-body"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success accept">Yes</button>
-                <button type="button" class="btn btn-danger cancel">No</button>
+                <button type="button" class="btn btn-success accept"><?= Yii::t('shop', 'Yes') ?></button>
+                <button type="button" class="btn btn-danger cancel"><?= Yii::t('shop', 'No') ?></button>
             </div>
         </div>
     </div>

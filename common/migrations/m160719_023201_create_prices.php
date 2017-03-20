@@ -4,6 +4,7 @@ use yii\db\Migration;
 
 class m160719_023201_create_prices extends Migration
 {
+
     public function safeUp()
     {
         $this->createTable('prices', [
@@ -36,4 +37,5 @@ class m160719_023201_create_prices extends Migration
         $this->dropForeignKey('fk-prices-auth_item_name-auth_item_name', 'prices');
         $this->dropTable('prices');
     }
+
 }

@@ -5,17 +5,16 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model \webdoka\yiiecommerce\common\models\Currency */
 
-$this->title = 'Update Currency: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Currencies', 'url' => ['index']];
+$this->title = Yii::t('yii', 'Update') . ' ' . Yii::t('shop_spec', 'Currency') . ': ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Currencies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('yii', 'Update');
 ?>
-<div class="currency-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?=
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+$this->render('_form', [
+    'model' => $model,
+])
+?>
 
-</div>
