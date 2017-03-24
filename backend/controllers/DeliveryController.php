@@ -103,7 +103,7 @@ class DeliveryController extends Controller
         $model->city = Yii::$app->request->get('city');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => $model->id]);
         } else {
             $url = Url::to(['create']);
             return $this->render('create', compact('model', 'url'));
@@ -133,7 +133,7 @@ class DeliveryController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             $url = Url::to(['update', 'id' => $id]);
             return $this->render('update', compact('model', 'url'));

@@ -39,6 +39,7 @@ class DeliveryForm extends Delivery
             'name' => Yii::t('shop', 'Name'),
             'cost' => Yii::t('shop', 'Cost'),
             'storage_id' => Yii::t('shop', 'Storage'),
+            'pak_id' => Yii::t('shop', 'Deliveries locations paks'),
         ];
     }
 

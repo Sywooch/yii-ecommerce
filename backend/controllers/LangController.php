@@ -92,13 +92,9 @@ class LangController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Lang::find(),
-        ]);
+        $dataProvider = new ActiveDataProvider(['query' => Lang::find()]);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 
     /**
@@ -107,14 +103,16 @@ class LangController extends Controller
      */
     public function actionTrindex()
     {
-
         $searchModel = new TranslateSourceMessage();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('trindex', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
-        ]);
+        return $this->render(
+            'trindex',
+            [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel
+            ]
+        );
     }
 
     /**
@@ -124,9 +122,12 @@ class LangController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->render(
+            'view',
+            [
+                'model' => $this->findModel($id),
+            ]
+        );
     }
 
     /**
@@ -138,13 +139,18 @@ class LangController extends Controller
     {
         $model = $this->findTRModel($id);
 
-        $dataProvider = new ArrayDataProvider([
-            'pagination' => false,
-            'allModels' => $model->translates,
-        ]);
-        return $this->render('trview', [
-            'model' => $model, 'dataProvider' => $dataProvider,
-        ]);
+        $dataProvider = new ArrayDataProvider(
+            [
+                'pagination' => false,
+                'allModels' => $model->translates,
+            ]
+        );
+        return $this->render(
+            'trview',
+            [
+                'model' => $model, 'dataProvider' => $dataProvider,
+            ]
+        );
     }
 
     /**
@@ -159,17 +165,13 @@ class LangController extends Controller
         $post = Yii::$app->request->post();
 
         if ($model->load($post) && $model->save()) {
-
             if ($post["Lang"]["default"] > 0) {
-
                 Lang::updateDefaultLang((int)$model->id);
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->render('create', ['model' => $model]);
         }
     }
 
@@ -182,26 +184,19 @@ class LangController extends Controller
     {
         $model = new TranslateSourceMessage();
 
-        $dataProvider = new ArrayDataProvider([
-            'pagination' => false,
-            'allModels' => $model->translates,
-        ]);
+        $dataProvider = new ArrayDataProvider(['pagination' => false, 'allModels' => $model->translates]);
 
         $post = Yii::$app->request->post();
 
         if ($model->load($post) && $model->save()) {
-
             $getTraslate = Yii::$app->request->post();
 
             foreach ($getTraslate['TranslateMessage'] as $key => $value) {
-
                 $getmodel = TranslateMessage::find()->where(['and', ['id' => $model->id, 'language' => $key]])->one();
 
                 if ($getmodel != null) {
-
                     $getmodel->translation = $value;
                 } else {
-
                     $getmodel = new TranslateMessage();
                     $getmodel->id = $model->id;
                     $getmodel->language = $key;
@@ -214,10 +209,11 @@ class LangController extends Controller
 
             return $this->redirect(['trview', 'id' => $model->id]);
         } else {
-            return $this->render('trcreate', [
-                'model' => $model,
-                'dataProvider' => $dataProvider,
-            ]);
+            return $this->render(
+                'trcreate',
+                ['model' => $model,
+                    'dataProvider' => $dataProvider]
+            );
         }
     }
 
@@ -235,17 +231,13 @@ class LangController extends Controller
 
 
         if ($model->load($post) && $model->save()) {
-
             if ($post["Lang"]["default"] > 0) {
-
                 Lang::updateDefaultLang((int)$id);
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model]);
         }
     }
 
@@ -259,24 +251,17 @@ class LangController extends Controller
     {
         $model = $this->findTRModel($id);
 
-        $dataProvider = new ArrayDataProvider([
-            'pagination' => false,
-            'allModels' => $model->translates,
-        ]);
+        $dataProvider = new ArrayDataProvider(['pagination' => false, 'allModels' => $model->translates]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
             $getTraslate = Yii::$app->request->post();
 
             foreach ($getTraslate['TranslateMessage'] as $key => $value) {
-
                 $getmodel = TranslateMessage::find()->where(['and', ['id' => (int)$id, 'language' => $key]])->one();
 
                 if ($getmodel != null) {
-
                     $getmodel->translation = $value;
                 } else {
-
                     $getmodel = new TranslateMessage();
                     $getmodel->id = $id;
                     $getmodel->language = $key;
@@ -289,9 +274,7 @@ class LangController extends Controller
 
             return $this->redirect(['trview', 'id' => $model->id]);
         } else {
-            return $this->render('trupdate', [
-                'model' => $model, 'dataProvider' => $dataProvider,
-            ]);
+            return $this->render('trupdate', ['model' => $model, 'dataProvider' => $dataProvider]);
         }
     }
 
@@ -302,11 +285,9 @@ class LangController extends Controller
      */
     public function actionAjax()
     {
-
         $post = Yii::$app->request->post();
 
         if ($post['type'] == 1 && isset($post['id']) && (int)$post['id'] > 0) {
-
             echo Json::encode(Lang::updateDefaultLang((int)$post['id']));
         }
     }
@@ -324,20 +305,16 @@ class LangController extends Controller
         $random = Lang::find()->where(['<>', 'id', $model->id])->one();
 
         if ($model->url == Lang::getCurrent()->url && $random != null) {
-
             Lang:: setCurrent($random->url);
         }
 
         if ($model->default > 0) {
-
             if ($random != null) {
-
                 Lang::updateDefaultLang($random->id);
 
                 $model->delete();
             }
         } else {
-
             $model->delete();
         }
 
@@ -355,15 +332,11 @@ class LangController extends Controller
         $model = new TranslateMessage();
 
         if ($model::find()->where(['id' => (int)$id])->one() != null) {
-
             if ($model->deleteAll(['id' => (int)$id])) {
-
                 $this->findTRModel($id)->delete();
             } else {
-
             }
         } else {
-
             $this->findTRModel($id)->delete();
         }
 
@@ -401,5 +374,4 @@ class LangController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
-
 }
