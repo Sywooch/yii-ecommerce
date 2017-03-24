@@ -105,6 +105,7 @@ class StorageForm extends Storage
     public static function getCountries()
     {
         return Location::find()
+            ->where(['type' =>Location::TYPE_STORAGE])
             ->select('country')
             ->indexBy('country')
             ->orderBy(['country' => 'asc'])
@@ -120,6 +121,7 @@ class StorageForm extends Storage
     {
         return Location::find()
             ->where(['country' => $country])
+            ->andWhere(['type' =>Location::TYPE_STORAGE])
             ->select('city')
             ->indexBy('city')
             ->orderBy(['city' => 'asc'])
@@ -138,6 +140,7 @@ class StorageForm extends Storage
                 'country' => $country,
                 'city' => $city,
             ])
+            ->andWhere(['type' =>Location::TYPE_STORAGE])
             ->select('address, id')
             ->indexBy('id')
             ->orderBy(['address' => 'asc'])
@@ -158,6 +161,7 @@ class StorageForm extends Storage
                 'l.country' => $country,
                 'l.city' => $city,
             ])
+            ->andWhere(['l.type' =>Location::TYPE_STORAGE])
             ->select('t.name as tname, t.id as tid')
             ->indexBy('tid')
             ->orderBy(['tname' => 'asc'])

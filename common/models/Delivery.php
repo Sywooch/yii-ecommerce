@@ -3,6 +3,7 @@
 namespace webdoka\yiiecommerce\common\models;
 
 use webdoka\yiiecommerce\common\queries\DeliveryQuery;
+use webdoka\yiiecommerce\common\models\DeliveriesLocationsPak;
 use Yii;
 
 /**
@@ -41,9 +42,10 @@ class Delivery extends UidModel
         return [
             [['name', 'cost'], 'required'],
             [['cost'], 'number'],
-            [['storage_id'], 'integer'],
+            [['storage_id','pak_id'], 'integer'],
             [['uid', 'name'], 'string', 'max' => 255],
             [['storage_id'], 'exist', 'skipOnError' => true, 'targetClass' => Storage::className(), 'targetAttribute' => ['storage_id' => 'id']],
+            [['pak_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveriesLocationsPak::className(), 'targetAttribute' => ['pak_id' => 'id']],
         ];
     }
 
@@ -58,6 +60,7 @@ class Delivery extends UidModel
             'name' => Yii::t('shop', 'Name'),
             'cost' => Yii::t('shop', 'Cost'),
             'storage_id' => Yii::t('shop', 'Storage ID'),
+            'pak_id' => Yii::t('shop', 'Deliveries locations paks'),
         ];
     }
 

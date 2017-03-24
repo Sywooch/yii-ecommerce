@@ -59,7 +59,20 @@ class Country extends \yii\db\ActiveRecord
         ];
     }
 
-        /**
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getCountryId($name)
+    {
+        $data = Country::find()->where('name LIKE "%' . $name . '%"')->one();
+        if ($data !== null) {
+            return $data->id;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getCities()
@@ -75,5 +88,4 @@ class Country extends \yii\db\ActiveRecord
     {
         return new CountryQuery(get_called_class());
     }
-
 }

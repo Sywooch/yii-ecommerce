@@ -9,11 +9,6 @@ $this->title = Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Location');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('shop', 'Locations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?=
 
-$this->render('_form', [
-    'model' => $model, 
-    'pakmodel' => $pakmodel
-])
-?>
+<?= $this->render('_formd', ['model' => $model, 'pakmodel' => $pakmodel]);
 

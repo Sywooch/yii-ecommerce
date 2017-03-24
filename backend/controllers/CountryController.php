@@ -62,13 +62,18 @@ class CountryController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
+        $dataProvider = new ActiveDataProvider(
+            [
             'query' => Country::find(),
-        ]);
+            ]
+        );
 
-        return $this->render('index', [
+        return $this->render(
+            'index',
+            [
             'dataProvider' => $dataProvider,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -94,72 +99,114 @@ class CountryController extends Controller
         $model = $this->findModel($id);
 
         $dataProvider = new ActiveDataProvider([
-            'query' => Cities::find()->where(['country_id'=>(int)$id]),
+            'query' => Cities::find()->where(['country_id' => (int)$id]),
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,'dataProvider'=>$dataProvider
-            ]);
+            return $this->render(
+                'update',
+                [
+                    'model' => $model, 'dataProvider' => $dataProvider
+                ]
+            );
         }
     }
 
-    /**
-     * Updates an existing Country model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionAjax()
+
+    public function actionCountryList($q = null)
     {
 
-        if(Yii::$app->request->post('action')=='city'){
-
-            $id=Yii::$app->request->post('id');
-            $value=Yii::$app->request->post('value');
-
-            $countrys=Cities::find()->select(['city as value', 'city as label','id'])->andWhere(['like','region',$value])->orWhere(['like','state',$value])->asArray()->all();
-
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            echo Json::encode($countrys,true);
+        $data = Country::find()->where('name LIKE "%' . $q . '%"')->all();
+        $out = [];
+        foreach ($data as $d) {
+            $out[] = ['value' => $d['name'], 'id' => $d['id']];
         }
+        echo Json::encode($out);
+    }
 
-         if(Yii::$app->request->post('action')=='city2'){
+    public function actionRegionList($cid, $q = null)
+    {
 
-            $id=Yii::$app->request->post('id');
-            $value=Yii::$app->request->post('value');
-
-            $countrys=Cities::find()->select(['city as value', 'city as label','id'])->where(['country_id'=>(int)$id])->asArray()->all();
-
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            echo Json::encode($countrys,true);
-        }       
-
-
-        if(Yii::$app->request->post('action')=='region'){
-
-            $id=Yii::$app->request->post('id');
-
-            $countrys=Cities::find()->select(['region as value', 'region as label','id'])->groupBy('region')->where(['country_id'=>(int)$id])->asArray()->all();
-
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            echo Json::encode($countrys,true);
+        $data = Cities::find()->where('region LIKE "%' . $q . '%"')
+        ->groupBy('region')
+        ->andWhere(['country_id' => (int)$cid])
+        ->all();
+        $out = [];
+        foreach ($data as $d) {
+            $out[] = ['value' => $d['region']];
         }
+        echo Json::encode($out);
+    }
 
 
-        if(Yii::$app->request->post('action')=='state'){
+    public function actionStateList($cid, $q = null)
+    {
 
-            $id=Yii::$app->request->post('id');
-
-            $countrys=Cities::find()->select(['state as value', 'state as label','id'])->groupBy('state')->where(['country_id'=>(int)$id])->asArray()->all();
-
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            echo Json::encode($countrys,true);
+        $data = Cities::find()->where('state LIKE "%' . $q . '%"')
+        ->groupBy('state')
+        ->andWhere(['country_id' => (int)$cid])
+        ->all();
+        $out = [];
+        foreach ($data as $d) {
+            $out[] = ['value' => $d['state']];
         }
+        echo Json::encode($out);
+    }
 
-    }    
+
+
+    public function actionBigcityList($cid, $q = null)
+    {
+
+        $data = Cities::find()->where(['region' => ''])
+        ->andWhere(['state' => ''])
+        ->andWhere(['country_id' => (int)$cid])
+        ->andWhere('city LIKE "%' . $q . '%"')
+        ->all();
+        $out = [];
+        foreach ($data as $d) {
+            $out[] = ['value' => $d['city']];
+        }
+        echo Json::encode($out);
+    }
+
+    public function actionCityList($cid, $q = null, $region = null)
+    {
+
+        $data = Cities::find()->where(['country_id' => (int)$cid])
+        ->andWhere('region LIKE "%' . $region . '%"')
+        ->andWhere('city LIKE "%' . $q . '%"')
+        ->all();
+        $out = [];
+        foreach ($data as $d) {
+            $out[] = ['value' => $d['city']];
+        }
+        echo Json::encode($out);
+    }
+
+
+
+
+    public function actionFormregion()
+    {
+        $cid = Yii::$app->request->post('cid', 0);
+        $type = Yii::$app->request->post('type', -1);
+        $q = Yii::$app->request->post('q');
+
+        return $this->renderAjax('_regionform', compact('cid', 'type', 'q'));
+    }
+
+    public function actionFormcity()
+    {
+        $cid = Yii::$app->request->post('cid', 0);
+        $region = Yii::$app->request->post('region');
+        $type=Yii::$app->request->post('type', -1);
+        $q = Yii::$app->request->post('q');
+
+        return $this->renderAjax('_cityform', compact('cid', 'region', 'type', 'q'));
+    }
 
     /**
      * Finds the Country model based on its primary key value.
@@ -176,5 +223,4 @@ class CountryController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
-
 }

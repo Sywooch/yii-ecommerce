@@ -4,6 +4,10 @@ namespace webdoka\yiiecommerce\backend\controllers;
 
 use Yii;
 use webdoka\yiiecommerce\common\models\Location;
+use webdoka\yiiecommerce\common\models\DeliveriesLocationsPak;
+use webdoka\yiiecommerce\common\models\LocationsPakDeliveries;
+use webdoka\yiiecommerce\common\models\Storage;
+use webdoka\yiiecommerce\common\models\Delivery;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -22,43 +26,43 @@ class LocationController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => [Location::LIST_LOCATION]
-                    ],
-                    [
-                        'actions' => ['view'],
-                        'allow' => true,
-                        'roles' => [Location::VIEW_LOCATION]
-                    ],
-                    [
-                        'actions' => ['create'],
-                        'allow' => true,
-                        'roles' => [Location::CREATE_LOCATION]
-                    ],
-                    [
-                        'actions' => ['update'],
-                        'allow' => true,
-                        'roles' => [Location::UPDATE_LOCATION]
-                    ],
-                    [
-                        'actions' => ['delete'],
-                        'allow' => true,
-                        'roles' => [Location::DELETE_LOCATION]
-                    ]
-                ],
+        'access' => [
+        'class' => AccessControl::className(),
+        'only' => ['index', 'view', 'create', 'update', 'delete'],
+        'rules' => [
+            [
+                'actions' => ['index'],
+                'allow' => true,
+                'roles' => [Location::LIST_LOCATION]
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+            [
+                'actions' => ['view'],
+                'allow' => true,
+                'roles' => [Location::VIEW_LOCATION]
             ],
+            [
+                'actions' => ['create'],
+                'allow' => true,
+                'roles' => [Location::CREATE_LOCATION]
+            ],
+            [
+                'actions' => ['update'],
+                'allow' => true,
+                'roles' => [Location::UPDATE_LOCATION]
+            ],
+            [
+                'actions' => ['delete'],
+                'allow' => true,
+                'roles' => [Location::DELETE_LOCATION]
+            ]
+        ],
+        ],
+        'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+            'delete' => ['POST'],
+        ],
+        ],
         ];
     }
 
@@ -68,14 +72,10 @@ class LocationController extends Controller
      */
     public function actionIndex()
     {
-    
-        $dataProvider = new ActiveDataProvider([
-            'query' => Location::find(),
-        ]);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        $dataProvider = new ActiveDataProvider(['query' => Location::find()]);
+
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 
     /**
@@ -85,9 +85,7 @@ class LocationController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->render('view', ['model' => $this->findModel($id)]);
     }
 
     /**
@@ -98,15 +96,55 @@ class LocationController extends Controller
     public function actionCreate()
     {
         $model = new Location();
+        $pakmodel = new DeliveriesLocationsPak();
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->render('create', ['model' => $model, 'pakmodel' => $pakmodel]);
         }
     }
+
+    /**
+     * Creates a new Location model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreated()
+    {
+        $model = new Location();
+        $pakmodel = new DeliveriesLocationsPak();
+        $pakrelation = new LocationsPakDeliveries();
+
+        $locationpost = Yii::$app->request->post();
+
+        if (isset($locationpost['Location']['bigcity']) && $locationpost['Location']['bigcity'] != "") {
+            $locationpost['Location']['city'] = $locationpost['Location']['bigcity'];
+        }
+
+        if ($model->load($locationpost) && $model->save()) {
+            if ($post = Yii::$app->request->post('DeliveriesLocationsPak')) {
+                if (isset($post['name'][1]) && $post['name'][1] != "") {
+                    $pakmodel->name = $post['name'][1];
+                    $pakmodel->save();
+
+                    $pakrelation->pak_id = $pakmodel->id;
+                    $pakrelation->locations_id = $model->id;
+                    $pakrelation->save();
+                } elseif (isset($post['name'][0])) {
+                    $pakrelation->pak_id = (int)$post['name'][0];
+                    $pakrelation->locations_id = $model->id;
+                    $pakrelation->save();
+                }
+            }
+
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('created', ['model' => $model, 'pakmodel' => $pakmodel]);
+        }
+    }
+
 
     /**
      * Updates an existing Location model.
@@ -118,12 +156,62 @@ class LocationController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $pakrelation = LocationsPakDeliveries::find()->where(['locations_id'=>$id])->one();
+
+        $pakmodel = new DeliveriesLocationsPak();
+
+        $locationpost = Yii::$app->request->post();
+
+        if (isset($locationpost['Location']['bigcity']) && $locationpost['Location']['bigcity'] != "") {
+            $locationpost['Location']['city'] = $locationpost['Location']['bigcity'];
+        }
+
+        if ($model->load($locationpost) && $model->save()) {
+            if ($post = Yii::$app->request->post('DeliveriesLocationsPak')) {
+                if (isset($post['name'][1]) && $post['name'][1] != "") {
+                    $pakmodel->name = $post['name'][1];
+                    $pakmodel->save();
+
+                    if (isset($pakrelation->pak_id)) {
+                        $pakexissts = LocationsPakDeliveries::find()
+                        ->where(['pak_id'=>$pakrelation->pak_id])
+                        ->andWhere(['locations_id'=>$model->id])
+                        ->one();
+                    } else {
+                        $pakexissts=null;
+                    }
+                    if ($pakexissts == null) {
+                        $pakrelation = new LocationsPakDeliveries();
+                        $pakrelation->pak_id = $pakmodel->id;
+                        $pakrelation->locations_id = $model->id;
+                        $pakrelation->save();
+                    } elseif ($pakexissts->pak_id != $pakmodel->id) {
+                        $pakexissts->pak_id = $pakmodel->id;
+                        $pakexissts->save();
+                    }
+                } elseif (isset($post['name'][0])) {
+                    if (isset($pakrelation->pak_id)) {
+                        $pakexissts = LocationsPakDeliveries::find()
+                        ->where(['pak_id'=>$pakrelation->pak_id])
+                        ->andWhere(['locations_id'=>$model->id])
+                        ->one();
+                    } else {
+                        $pakexissts=null;
+                    }
+                    if ($pakexissts === null) {
+                        $pakrelation = new LocationsPakDeliveries();
+                        $pakrelation->pak_id = (int)$post['name'][0];
+                        $pakrelation->locations_id = $model->id;
+                        $pakrelation->save();
+                    } elseif ($pakexissts->pak_id != (int)$post['name'][0]) {
+                        $pakexissts->pak_id = (int)$post['name'][0];
+                        $pakexissts->save();
+                    }
+                }
+            }
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model, 'pakmodel' => $pakmodel, 'pakrelation' => $pakrelation]);
         }
     }
 
@@ -135,7 +223,28 @@ class LocationController extends Controller
      */
     public function actionDelete($id)
     {
+
+
+        $model = $this->findModel($id);
+
+        if ($model->type == Location::TYPE_DELIVERY) {
+            $pakrelation = LocationsPakDeliveries::find()->where(['locations_id' => $id])->one();
+
+            $pak = DeliveriesLocationsPak::find()->where(['id' => $pakrelation->pak_id]);
+            $pakrelation->delete();
+            if ($pak->count() <= 1) {
+                $pak->one()->delete();
+            }
+        }
+
+        if ($storage=Storage::find()->where(['location_id' => $id])->one()) {
+            if ($delivery=Delivery::find()->where(['storage_id' => $storage->id])->one()) {
+                $delivery->delete();
+            }
+                   $storage->delete();
+        }
         $this->findModel($id)->delete();
+
 
         return $this->redirect(['index']);
     }
@@ -155,5 +264,4 @@ class LocationController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
-
 }

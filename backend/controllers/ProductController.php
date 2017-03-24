@@ -124,7 +124,7 @@ class ProductController extends Controller
         ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => $model->id]);
         } else {
             return $this->render('create', compact('model', 'dataProvider', 'priceDataProvider'));
         }
@@ -153,9 +153,9 @@ class ProductController extends Controller
             'pagination' => false,
             'allModels' => $model->pricesWithValues,
         ]);
-
+//var_dump(Yii::$app->request->post());exit;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('update', compact('model', 'dataProvider', 'priceDataProvider'));
         }

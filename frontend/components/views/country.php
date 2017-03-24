@@ -14,11 +14,24 @@ $url = Url::to(['country/change']);
 $confirm = false;
 $countryData = null;
 
+
+    $geo = new \jisoft\sypexgeo\Sypexgeo();
+    
+    $geo->get(); 
+   // $geo->get('213.111.167.152');
+
+    //var_dump($geo->country); echo '<br>';
+
+
+
+
+
+
 // If session has not valid country, get geo info and suggest confirm it to user
 if (!Yii::$app->session->get('country')) {
-    $geoInfo = Yii::$app->geolocation->getInfo();
-    if (is_array($geoInfo) && array_key_exists('countryCode', $geoInfo)) {
-        if ($country = Country::find()->where(['abbr' => $geoInfo['countryCode']])->asArray()->one()) {
+    $geoInfo = $geo->country;
+    if (is_array($geoInfo) && array_key_exists('name_ru', $geoInfo)) {
+        if ($country = Country::find()->where('name LIKE "%' . $geoInfo['name_ru'] . '%"')->asArray()->one()) {
             $countryData = $country;
             $confirm = true;
         }

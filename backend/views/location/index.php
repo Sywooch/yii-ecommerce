@@ -4,11 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use webdoka\yiiecommerce\common\models\Location;
+use webdoka\yiiecommerce\common\models\LocationsPakDeliveries;
+use webdoka\yiiecommerce\common\models\DeliveriesLocationsPak;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Locations';
+$this->title = Yii::t('shop', 'Locations');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -16,7 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-header with-border">
 
         <?php if (Yii::$app->user->can(Location::CREATE_LOCATION)) { ?>
-            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Location'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Storages location'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Deliveries location'), ['created'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
     </div>
     <div class="box-body">
@@ -29,9 +32,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'country',
+                'region',
                 'city',
                 'address',
                 'index',
+                [
+                    //'header' => Yii::t('shop', 'Type'),
+                    'attribute' => 'type',
+                    'format' => 'raw',
+                    'value' => function ($data) {
+                        return $data->type == Location::TYPE_STORAGE ? Yii::t('shop', 'Storages location') : Yii::t('shop', 'Deliveries location');
+                    }
+                ],
+                [
+                    'header' => Yii::t('shop', 'Pak'),
+                    'format' => 'raw',
+                    'value' => function ($data) {
+                        $location_id = LocationsPakDeliveries::find()->where(['locations_id' => $data->id])->one();
+                        if ($location_id != null) {
+                            $pak = DeliveriesLocationsPak::find()->where(['id' => $location_id->pak_id])->one();
+                        }
+                        return isset($pak->name) ? $pak->name : '';
+                    }
+                ],
+
+
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'buttons' => [

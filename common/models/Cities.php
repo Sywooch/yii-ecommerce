@@ -25,6 +25,7 @@ class Cities extends \yii\db\ActiveRecord
     const CREATE_COUNTRY = 'shopCreateCountry';
     const UPDATE_COUNTRY = 'shopUpdateCountry';
     const DELETE_COUNTRY = 'shopDeleteCountry';
+    const BIG_CITY = '1';
 
 
     /**

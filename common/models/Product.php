@@ -49,7 +49,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function rules()
     {
         return [
-            [['category_id', 'unit_id'], 'integer'],
+            [['category_id', 'unit_id', 'weight', 'height', 'width', 'length'], 'integer'],
             [['name', 'price', 'unit_id'], 'required'],
             [['price'], 'number'],
             [['name'], 'string', 'max' => 255],
@@ -70,6 +70,11 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'name' => Yii::t('shop', 'Name'),
             'price' => Yii::t('shop', 'Default Price'),
             'prices' => Yii::t('shop', 'Default Price'),
+            'length' => Yii::t('shop', 'Length'),
+            'width' => Yii::t('shop', 'Width'),
+            'height' => Yii::t('shop', 'Height'),
+            'weight' => Yii::t('shop', 'Weight'),
+            'relStorages' => Yii::t('shop', 'Storages')
         ];
     }
 
@@ -133,19 +138,14 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         $pricemin = [];
 
         foreach ($getoptprice as $key => $value) {
-
             $pricearray[$value->product_options_id] = $value->value;
 
 
             if (count($pricearray[$value->product_options_id]) >= 2) {
-
                 $pricemin[$value->product_options_id] = min($pricearray[$value->product_options_id]);
-
             } else {
-
                 $pricemin[$value->product_options_id] = $pricearray[$value->product_options_id];
             }
-
         }
 
         $baseprice = Price::getMinPrice($roles, $this->id) ?: $price;
@@ -181,10 +181,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition
 
 
         if ($optionid == 0 || $optionid == null) {
-
             $price = $this->realPrice;
         } else {
-
             $price = $this->getOptionPrice(explode(',', $optionid))["price"];
             //var_dump( $price );exit;
         }
@@ -280,6 +278,14 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     {
         return $this->hasMany(ProductPrice::className(), ['product_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductStorages()
+    {
+        return $this->hasMany(ProductsStorages::className(), ['product_id' => 'id']);
+    }    
 
     /**
      * @return \yii\db\ActiveQuery
@@ -462,6 +468,14 @@ class Product extends \yii\db\ActiveRecord implements IPosition
                 $this->link('productPrices', $price);
             }
         }
+        
+        if (array_key_exists('productStorages', $relatedRecords)) {
+            $this->unlinkAll('productStorages', true);
+            foreach ($relatedRecords['productStorages'] as $price) {
+                $this->link('productStorages', $price);
+            }
+        }
+
 
         if (array_key_exists('productDiscounts', $relatedRecords)) {
             $this->unlinkAll('productDiscounts', true);
@@ -470,5 +484,4 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             }
         }
     }
-
 }

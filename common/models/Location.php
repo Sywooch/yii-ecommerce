@@ -23,8 +23,11 @@ class Location extends UidModel
     const CREATE_LOCATION = 'shopCreateLocation';
     const UPDATE_LOCATION = 'shopUpdateLocation';
     const DELETE_LOCATION = 'shopDeleteLocation';
-    public $region;
+    const TYPE_DELIVERY = '1';
+    const TYPE_STORAGE = '0';
+
     public $state;
+    public $bigcity;
     /**
      * @inheritdoc
      */
@@ -39,9 +42,10 @@ class Location extends UidModel
     public function rules()
     {
         return [
-            [['country', 'city', 'address', 'index'], 'required'],
-            [['uid', 'country', 'city', 'address', 'index'], 'string', 'max' => 255],
-            [['country'], 'unique'],
+            [['country'], 'required'],
+            [['type'], 'integer'],
+            [['uid', 'country', 'region', 'city', 'address', 'index'], 'string', 'max' => 255],
+            //[['country'], 'unique'],
         ];
     }
 
@@ -60,6 +64,7 @@ class Location extends UidModel
             'index' => Yii::t('shop', 'Index'),
             'region' => Yii::t('shop', 'Region'),
             'state' => Yii::t('shop', 'State'),
+            'type' => Yii::t('shop', 'Type'),
         ];
     }
 
@@ -80,5 +85,4 @@ class Location extends UidModel
     {
         return sprintf('%s, %s, %s', $this->country, $this->city, $this->address);
     }
-
 }

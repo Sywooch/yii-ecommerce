@@ -9,6 +9,8 @@ use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\Feature;
 use webdoka\yiiecommerce\common\models\ProductDiscount;
 use webdoka\yiiecommerce\common\models\ProductPrice;
+use webdoka\yiiecommerce\common\models\ProductsStorages;
+use webdoka\yiiecommerce\common\models\Storage;
 use yii\helpers\ArrayHelper;
 use Yii;
 
@@ -18,6 +20,7 @@ class ProductForm extends Product
     public $_relFeatures = [];
     public $_relPrices = [];
     public $_relDiscounts = [];
+    public $_relStorages = [];
 
     /**
      * @inheritdoc
@@ -27,6 +30,7 @@ class ProductForm extends Product
         return ArrayHelper::merge([
             ['relFeatures', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Feature')],
             ['relPrices', 'each', 'rule' => ['string'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Price')],
+            ['relStorages', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Storages')],
             ['relDiscounts', 'each', 'rule' => ['integer'], 'skipOnEmpty' => true, 'message' => Yii::t('shop', 'Specify Discount')],
         ], parent::rules());
     }
@@ -71,12 +75,30 @@ class ProductForm extends Product
     }
 
     /**
+     * Buffer variable for related prices
+     * @return array
+     */
+    public function getRelStorages()
+    {
+        return $this->_relStorages;
+    }
+
+    /**
      * Set related prices
      * @param $types
      */
     public function setRelPrices($prices)
     {
         $this->_relPrices = $prices ?: [];
+    }
+
+    /**
+     * Set related prices
+     * @param $types
+     */
+    public function setRelStorages($storages)
+    {
+        $this->_relStorages = $storages ?: [];
     }
 
     /**
@@ -107,6 +129,7 @@ class ProductForm extends Product
         if (parent::beforeSave($insert)) {
             $this->saveFeaturesToRelation();
             $this->savePricesToRelation();
+            $this->saveStoragesToRelation();
             $this->saveDiscountsToRelation();
             return true;
         }
@@ -132,6 +155,26 @@ class ProductForm extends Product
         }
 
         $this->populateRelation('productFeatures', $features);
+    }
+
+
+    /**
+     * Populating prices to relation
+     */
+    private function saveStoragesToRelation()
+    {
+        $storages = [];
+
+        foreach ($this->_relStorages as $relStorages) {
+            if ($storage = Storage::findOne($relStorages)) {
+                $productStorages = new ProductsStorages();
+                $productStorages->storage_id = $storage->id;
+
+                $storages[] = $productStorages;
+            }
+        }
+
+        $this->populateRelation('productStorages', $storages);
     }
 
     /**
@@ -172,5 +215,4 @@ class ProductForm extends Product
 
         $this->populateRelation('productDiscounts', $discounts);
     }
-
 }
