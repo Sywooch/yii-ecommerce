@@ -1,0 +1,64 @@
+<?php
+namespace webdoka\yiiecommerce\common\models;
+
+use Yii;
+use yii\db\ActiveRecord;
+
+class ProductsOptionsImages extends ActiveRecord
+{
+    public $imageFiles;
+
+    public static function tableName()
+    {
+        return '{{%products_options_images}}';
+    }
+
+    public function rules()
+    {
+        return [
+            [['product_options_id', 'product_id'], 'required'],
+            [['product_options_id', 'product_id'], 'integer'],
+            [['image'], 'string'],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [['product_options_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductsOptions::className(), 'targetAttribute' => ['product_options_id' => 'id']],
+            [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 10],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('shop', 'ID'),
+            'product_options_id' => Yii::t('shop', 'Product Options ID'),
+            'price_id' => Yii::t('shop', 'Product ID'),
+            'image' => Yii::t('shop', 'Image'),
+        ];
+    }
+
+    public function getProduct()
+    {
+        return $this->hasOne(Product::className(), ['id' => 'product_id']);
+    }
+
+    public function getProductOptions()
+    {
+        return $this->hasOne(ProductsOptions::className(), ['id' => 'product_options_id']);
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            foreach ($this->imageFiles as $file) {
+                $filename = md5($file->baseName . time());
+                $path = Yii::getAlias('@webroot') . '/uploads/product-options-images/' . $filename . '.' . $file->extension;
+
+                $this->image = $filename . '.' . $file->extension;
+                $this->insert();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+}

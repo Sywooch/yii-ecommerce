@@ -5,6 +5,7 @@ namespace webdoka\yiiecommerce\backend\controllers;
 use Yii;
 use webdoka\yiiecommerce\common\models\ProductsOptions;
 use webdoka\yiiecommerce\common\models\ProductsOptionsPrices;
+use webdoka\yiiecommerce\common\models\ProductsOptionsImages;
 use webdoka\yiiecommerce\common\models\Price;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
@@ -275,6 +276,15 @@ class ProductsOptionsController extends Controller
                 $path = $imgmodel->imagef->baseName . '.' . $imgmodel->imagef->extension;
                 $node->image = $path;
             }
+        }
+
+        $productOptionsImages = new ProductsOptionsImages();
+        $productOptionsImages->product_id = (int)Yii::$app->request->get('pid');
+        $productOptionsImages->product_options_id = $id;
+        $productOptionsImages->imageFiles = UploadedFile::getInstances($productOptionsImages, 'imageFiles');
+        // var_dump(file_exists($productOptionsImages->imageFiles));exit;
+        if($productOptionsImages->imageFiles != null) {
+            $productOptionsImages->upload();
         }
 
         if (isset($data[$tag]["relPrices"])) {
