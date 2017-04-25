@@ -4,6 +4,7 @@ namespace webdoka\yiiecommerce\common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
+use webdoka\yiiecommerce\common\components\Thumb;
 
 class ProductsOptionsImages extends ActiveRecord
 {
@@ -74,8 +75,19 @@ class ProductsOptionsImages extends ActiveRecord
             return false;
         }
     }
-    public function getFullName()
+
+    public function getFullSize()
     {
         return Url::to('/uploads/product-options-images/'. $this->image);
+    }
+
+    public function getThumb($width, $height)
+    {
+        return Thumb::getImageAsBase64(
+            '@webroot/uploads/product-options-images',
+            $this->image,
+            $width,
+            $height
+        );
     }
 }
