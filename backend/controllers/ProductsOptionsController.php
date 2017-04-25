@@ -183,6 +183,18 @@ class ProductsOptionsController extends Controller
         return $this->render('upload', ['model' => $model]);
     }
 
+    public function actionImageDelete($id)
+    {
+        $model = ProductsOptionsImages::findOne($id);
+        if($model !== null) {
+            $model->delete();
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
+        }
+
+    }
+
     /**
      * Ajax options-price-product saver
      */

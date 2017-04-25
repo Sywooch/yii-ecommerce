@@ -14,9 +14,9 @@ $priceDataProvider = new ArrayDataProvider([
     'pagination' => false,
     'allModels' => (new ProductsOptions)->getPricesWithValues($node->id, $prid),
 ]);
-$imageDataProvider = new ArrayDataProvider([
+$imageDataProvider = new ActiveDataProvider([
     'pagination' => false,
-    'allModels' => ProductsOptionsImages::find()->where(['product_id' => $prid])->andWhere(['product_options_id' =>$node->id])->all(),
+    'query' => ProductsOptionsImages::find()->where(['product_id' => $prid])->andWhere(['product_options_id' =>$node->id]),
 ]);
 
 echo $form->field($node, 'description')->textarea(['rows' => 6]);
@@ -53,14 +53,37 @@ echo $form->field($node, 'imagef')->fileInput();
                 'multiple' => true,
                 'accept' => 'image/*']
             ) ?>
-            <button>Загрузить</button>
-
-        <?= ListView::widget([
-            'itemView' => '_image',
-            'dataProvider' => $priceDataProvider,
-            'summary' => false,
-        ]);
-        ?>
+            <?= ListView::widget([
+                'itemOptions' => ['class' => 'product-options-image'],
+                'itemView' => '_image',
+                'dataProvider' => $imageDataProvider,
+                'summary' => false,
+                'options' => ['class' => 'block-product-options-image' ]
+            ]);
+            ?>
     </div>
 
 <?php endif; ?>
+<?php
+$css = <<<CSS
+.block-product-options-image {
+    min-height:50px;
+}
+.block-product-options-image .product-options-image {
+    padding:10px;
+    display:inline-block;
+}
+// .block-product-options-image .product-options-image:after {
+//         content: "&nbsp;";
+//         display: block;
+//         clear: both;
+//         visibility: hidden;
+//         height: 0;
+//         line-height: 0;
+// }
+.block-product-options-image .product-options-image img {
+    height:50px;
+}
+CSS;
+$this->registerCss($css);
+?>

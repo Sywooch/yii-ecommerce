@@ -3,6 +3,7 @@ namespace webdoka\yiiecommerce\common\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 
 class ProductsOptionsImages extends ActiveRecord
 {
@@ -50,15 +51,31 @@ class ProductsOptionsImages extends ActiveRecord
         if ($this->validate()) {
             foreach ($this->imageFiles as $file) {
                 $filename = md5($file->baseName . time());
-                $path = Yii::getAlias('@webroot') . '/uploads/product-options-images/' . $filename . '.' . $file->extension;
+                $image = $filename . '.' . $file->extension;
 
-                $this->image = $filename . '.' . $file->extension;
-                $this->insert();
+                $data[] = [
+                    $this->product_id,
+                    $this->product_options_id,
+                    $image,
+                ];
+
+                $path = Yii::getAlias('@webroot') . '/uploads/product-options-images/' . $image;
+                $file->saveAs($path);
             }
+            Yii::$app->db->createCommand()
+                ->batchInsert($this::tableName(), [
+                    'product_id',
+                    'product_options_id',
+                    'image'
+                ], $data)
+                ->execute();
             return true;
         } else {
             return false;
         }
     }
-
+    public function getFullName()
+    {
+        return Url::to('/uploads/product-options-images/'. $this->image);
+    }
 }
