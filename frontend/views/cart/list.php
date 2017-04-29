@@ -121,9 +121,11 @@ $this->params['breadcrumbs'][] = Yii::t('shop', 'Cart');
                         class="price"><?= Yii::$app->formatter->asCurrency(Yii::$app->cart->getCost()) ?></span></li>
         </ul>
         <?php if (Yii::$app->cart->getCount() > 0) { ?>
-            <?= Html::a(Yii::t('shop', 'Create Order'),
-                ['order/create'],
-                ['class' => 'checkout-link'])
+            <?= Html::a(
+                Yii::t('shop', 'Create Order'),
+                ['order/welcome'],
+                ['class' => 'checkout-link']
+            )
             ?>
         <?php } ?>
     </div>

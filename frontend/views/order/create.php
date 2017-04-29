@@ -17,6 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> ' . Yii::t('shop', 'Return to cart'), ['cart/list'], ['class' => 'btn btn-default']) ?>
     </p>
-    <?= $this->render('_form', compact('model', 'orderModel', 'properties')) ?>
+    <?= $this->render('_form', compact('model', 'orderModel', 'properties','positions')) ?>
 
 </div>

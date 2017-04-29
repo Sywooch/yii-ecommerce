@@ -132,6 +132,10 @@ class DeliveryController extends Controller
             $model->city = Yii::$app->request->get('city');
         }
 
+        if (!Yii::$app->request->isPost) {
+            $model->populateRelation('relDiscounts', $model->discounts);
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
         } else {

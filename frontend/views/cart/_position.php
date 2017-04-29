@@ -71,9 +71,15 @@ foreach ($_GET as $key => $value) {
     </td>
 
     <td><p class="cart-price">
-            <?php if ($model->discounts) { ?>
+            <?php if ($model->discounts) { 
+$date = new DateTime();
+$currentDateTime = strtotime($date->format('Y-m-d H:i:s'));
+
+                ?>
 
                 <?php foreach ($model->availableDiscounts as $discount) {
+                   
+                    if($discount->count <= $model->quantity || (strtotime($discount->started_at) < $currentDateTime && strtotime($discount->finished_at) > $currentDateTime) ){
 
                     if ($discount->dimension == 'percent') {
                         $dimension = Html::encode($discount->value) . ' %';
@@ -85,7 +91,8 @@ foreach ($_GET as $key => $value) {
                     ?>
 
                     <span><?= $dimension ?> </span>
-                <?php } ?>
+                <?php }
+                } ?>
 
             <?php } ?>
 
@@ -120,11 +127,18 @@ foreach ($_GET as $key => $value) {
                     $branch .= Html::encode($parents['option']->name);
                 }
                 $pa = $parents['option']->parents(1)->one();
+                        if (is_array($detailprice['detailoptionsprice'][$value])) {
+            foreach ($detailprice['detailoptionsprice'][$value] as $value) {
+                $priceDetail = $value;
+            }
+        } else {
+                   $priceDetail = $detailprice['detailoptionsprice'][$value];
+        }
 
                 echo '
                                 <tr>
                                     <td>
-                                    ' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b>
+                                    ' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($priceDetail) . '</b>
                                     </td>
                                     <td>' .
 

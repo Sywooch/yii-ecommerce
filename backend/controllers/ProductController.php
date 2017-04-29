@@ -13,6 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use kartik\tree\models\Tree;
 use kartik\tree\TreeView;
+use yii\helpers\Json;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -74,6 +75,7 @@ class ProductController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find(),
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
         ]);
 
         return $this->render('index', [
@@ -123,6 +125,10 @@ class ProductController extends Controller
             'allModels' => $model->pricesWithValues,
         ]);
 
+        if ($model->load(Yii::$app->request->post()) && !$model->validate()) {
+            Yii::$app->session->setFlash('product_filed', $model->getErrors());
+        }        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->id]);
         } else {
@@ -141,8 +147,9 @@ class ProductController extends Controller
         $model = ProductForm::find()->where(['id' => $id])->one();
         $model->category_id = Yii::$app->request->get('category_id') ?: $model->category_id;
 
-        if (!Yii::$app->request->isPost)
+        if (!Yii::$app->request->isPost) {
             $model->populateRelation('relDiscounts', $model->discounts);
+        }
 
         $dataProvider = new ArrayDataProvider([
             'pagination' => false,
@@ -154,10 +161,37 @@ class ProductController extends Controller
             'allModels' => $model->pricesWithValues,
         ]);
 //var_dump(Yii::$app->request->post());exit;
+        if ($model->load(Yii::$app->request->post()) && !$model->validate()) {
+            Yii::$app->session->setFlash('product_filed', $model->getErrors());
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('update', compact('model', 'dataProvider', 'priceDataProvider'));
+        }
+    }
+
+    /**
+     * Deletes an existing Product model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionAjax()
+    {
+        $type = Yii::$app->request->post('type');
+        $integerIDs = Yii::$app->request->post('id');
+        $integerIDs = implode(',', $integerIDs);
+        $ids = array_map('intval', explode(',', $integerIDs));
+        //var_dump($ids);exit;
+        if ($type == 2) {
+            if (ProductForm::deleteAll(['IN', 'id', $ids])) {
+                echo Json::encode('ok');
+                exit;
+            } else {
+                echo Json::encode('Delete failed');
+                exit;
+            }
         }
     }
 
@@ -189,5 +223,4 @@ class ProductController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
-
 }

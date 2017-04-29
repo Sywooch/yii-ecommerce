@@ -14,7 +14,7 @@ $url = Url::to(['country/change']);
 $confirm = false;
 $countryData = null;
 
-
+mb_internal_encoding("8bit");
     $geo = new \jisoft\sypexgeo\Sypexgeo();
     
     $geo->get(); 
@@ -23,12 +23,9 @@ $countryData = null;
     //var_dump($geo->country); echo '<br>';
 
 
-
-
-
-
 // If session has not valid country, get geo info and suggest confirm it to user
-if (!Yii::$app->session->get('country')) {
+if (Yii::$app->request->cookies->getValue('country') ===null){
+//if (!Yii::$app->session->get('country')) {
     $geoInfo = $geo->country;
     if (is_array($geoInfo) && array_key_exists('name_ru', $geoInfo)) {
         if ($country = Country::find()->where('name LIKE "%' . $geoInfo['name_ru'] . '%"')->asArray()->one()) {
@@ -40,6 +37,7 @@ if (!Yii::$app->session->get('country')) {
 
 
 $this->registerJs('
+
     var confirm = ' . ($confirm ? 'true' : 'false') . ';
     var countryData = ' . json_encode($countryData) . ';
 
@@ -71,11 +69,18 @@ $this->registerJs('
         $selectCountryConfirmModalBody.html("Your country: <strong>" + countryData.name + "</strong>");
         $selectCountryConfirm.modal("show");
     }
+
+    $("#select-country-confirm").on("shown.bs.modal", function () {
+    var width = $(window).width();  
+    if(width < 480){
+        console.log(width);
+        $(this).modal("hide"); 
+    }
+});
 ');
 ?>
 
-<?=
-Html::dropDownList('country', Yii::$app->session->get('country'), ArrayHelper::map(
+<?= Html::dropDownList('country', Yii::$app->request->cookies->getValue('country'), ArrayHelper::map(
     Country::find()->orderBy(['name' => 'asc'])->all(), 'id', 'name'
 ), [
         'prompt' => Yii::t('shop', 'Choose country'),
@@ -83,6 +88,7 @@ Html::dropDownList('country', Yii::$app->session->get('country'), ArrayHelper::m
         'id' => 'select-country',
     ]
 )
+
 ?>
 
 <div id="select-country-confirm" class="modal fade" tabindex="-1" role="dialog">
@@ -101,4 +107,3 @@ Html::dropDownList('country', Yii::$app->session->get('country'), ArrayHelper::m
         </div>
     </div>
 </div>
-

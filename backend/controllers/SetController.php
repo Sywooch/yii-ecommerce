@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * SetController implements the CRUD actions for Set model.
@@ -111,6 +112,30 @@ class SetController extends Controller
                 'model' => $model,
                 'products' => $products,
             ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Product model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionAjax()
+    {
+        $type = Yii::$app->request->post('type');
+        $integerIDs = Yii::$app->request->post('id');
+        $integerIDs = implode(',', $integerIDs);
+        $ids = array_map('intval', explode(',', $integerIDs));
+        //var_dump($ids);exit;
+        if ($type == 2) {
+            if (SetForm::deleteAll(['IN', 'id', $ids])) {
+                echo Json::encode('ok');
+                exit;
+            } else {
+                echo Json::encode('Delete failed');
+                exit;
+            }
         }
     }
 

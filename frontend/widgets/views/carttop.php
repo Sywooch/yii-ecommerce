@@ -13,6 +13,13 @@ if (Yii::$app->cart->getCount() > 0) {
 $sets = Yii::$app->cart->getSets();
 $positions = Yii::$app->cart->getPositions();
 ?>
+<div class="language-currency language-currency-4 float-left hidden-lg hidden-sm">
+
+<?= Html::a('<span><i class="zmdi zmdi-shopping-cart"></i>'.$countprduct.'</span>', ['cart/list'],['class'=>"mini-cart-btn"]) ?>       
+</div>
+<div class="language-currency language-currency-4 float-left hidden-sm hidden-xs">
+
+
 <a href="#" data-toggle="dropdown" class="mini-cart-btn"><span><i
                 class="zmdi zmdi-shopping-cart"></i><?= $countprduct ?></span></a>
 
@@ -79,4 +86,5 @@ $positions = Yii::$app->cart->getPositions();
     <div class="mini-cart-checkout text-center">
         <?= Html::a(Yii::t('yii', 'View'), ['cart/list']) ?>
     </div>
+</div>
 </div>

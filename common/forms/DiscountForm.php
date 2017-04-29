@@ -58,7 +58,7 @@ class DiscountForm extends Discount
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $this->saveProductsToRelation();
+           // $this->saveProductsToRelation();
             return true;
         }
 

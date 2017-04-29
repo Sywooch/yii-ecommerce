@@ -108,7 +108,7 @@ class ProductsOptions extends \yii\db\ActiveRecord
             [['tree', 'lft', 'rgt', 'depth', 'status', 'icon_type', 'active', 'selected', 'disabled', 'readonly', 'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l', 'movable_r', 'removable', 'removable_all', 'root', 'lvl'], 'integer'],
             [['description'], 'string'],
             [['name', 'icon'], 'string', 'max' => 255],
-            [['imagef'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['imagef'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, jpeg'],
         ];
     }
 

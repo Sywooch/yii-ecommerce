@@ -4,6 +4,7 @@ namespace webdoka\yiiecommerce\frontend\controllers;
 
 use webdoka\yiiecommerce\common\models\Category;
 use webdoka\yiiecommerce\common\models\Product;
+use webdoka\yiiecommerce\common\models\Price;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -32,31 +33,21 @@ class CatalogController extends Controller
         $minprice = Yii::$app->request->get('first_price', -1);
         $maxprice = Yii::$app->request->get('last_price', -1);
 
-
+        $roles = [];
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
 
+        $checkpricerole = Price::find()->where(['in', 'auth_item_name', $roles])->all();
 
-        if (!empty($roles)) {
 
+        if (!empty($roles) && !empty($checkpricerole)) {
             $query->joinWith('prices');
 
             $query->andWhere(['in', 'auth_item_name', $roles]);
 
             $query->groupBy(['product_id']);
-
-
-            if ($minprice >= 0 && $maxprice > 0) {
-
-                $query->andWhere(['between', 'value', $minprice, $maxprice]);
-            }
-
-        } else {
-
-            if ($minprice >= 0 && $maxprice > 0) {
-
-                $query->andWhere(['between', 'price', $minprice, $maxprice]);
-            }
-
+        }
+        if ($minprice >= 0 && $maxprice > 0) {
+            $query->andWhere(['between', 'price', $minprice, $maxprice]);
         }
 
         $countQuery = clone $query;
@@ -74,27 +65,22 @@ class CatalogController extends Controller
             'default' => SORT_DESC,
         ];
 
-        if (!empty($roles)) {
-
+        if (!empty($roles)  && !empty($checkpricerole)) {
             $dataProvider->sort->attributes['price'] = [
                 'asc' => ['MIN(value)' => SORT_ASC],
                 'desc' => ['MIN(value)' => SORT_DESC],
                 'default' => SORT_ASC,
             ];
-
         } else {
-
             $dataProvider->sort->attributes['price'] = [
                 'asc' => ['price' => SORT_ASC],
                 'desc' => ['price' => SORT_DESC],
                 'default' => SORT_ASC,
             ];
-
         }
 
         $categories = Category::find()->orderBy(['parent_id' => 'asc'])->all();
 
         return $this->render('index', compact('currentCategory', 'dataProvider', 'categories', 'pages', 'query', 'category'));
     }
-
 }

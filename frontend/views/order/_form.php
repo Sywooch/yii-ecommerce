@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Property;
 use webdoka\yiiecommerce\common\models\PaymentType;
+use webdoka\yiiecommerce\common\models\Storage;
+use webdoka\yiiecommerce\common\components\PostApi;
 
 /* @var $this yii\web\View */
 /* @var $model \yii\base\DynamicModel */
@@ -35,6 +37,36 @@ use webdoka\yiiecommerce\common\models\PaymentType;
     <?php } ?>
 
     <hr>
+    <?php
+
+    $storages = Storage::find()->all();
+
+    foreach ($storages as $value) :?>
+<div class="cart-table table-responsive">
+    <h4>Склад: <?= $value->name ?></h4>
+    <table class="table text-center">
+    <thead>
+
+
+    </thead>
+    <tbody>
+        <?php foreach ($value->deliveries as $delivery) : ?>
+            <tr>
+                <td>
+                    <?= $delivery->name ?>
+                </td>
+                <td>
+                    <?= Yii::$app->formatter->asCurrency($delivery->cost) ?>
+                </td>
+                <td>
+                    <?= $delivery->getTypeLists()[$delivery->type] ?>
+                </td>
+            </tr>
+        <?php endforeach;?>
+       </tbody>
+    </table>
+</div>
+<?php endforeach;?>
 
     <?= $form->field($orderModel, 'payment_type_id')->dropDownList(PaymentType::find()->indexBy('id')->select('label')->column()) ?>
 

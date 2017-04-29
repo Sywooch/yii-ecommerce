@@ -36,9 +36,9 @@ class Discount extends \yii\db\ActiveRecord
     public static function getDimensions()
     {
         return [
-            self::PERCENT_DIMENSION => ucfirst(self::PERCENT_DIMENSION),
-            self::FIXED_DIMENSION => ucfirst(self::FIXED_DIMENSION),
-            self::SET_DIMENSION => ucfirst(self::SET_DIMENSION),
+            self::PERCENT_DIMENSION => Yii::t('shop', 'Percent'),
+            self::FIXED_DIMENSION => Yii::t('shop', 'Fixed'),
+            self::SET_DIMENSION => Yii::t('shop', 'Set'),
         ];
     }
 
@@ -61,6 +61,7 @@ class Discount extends \yii\db\ActiveRecord
             [['value'], 'number'],
             [['count'], 'integer'],
             [['started_at', 'finished_at'], 'default', 'value' => null],
+            //[['started_at', 'finished_at'],  'date',     'format' => 'yyyy-mm-dd'],
             [['name'], 'string', 'max' => 255],
         ];
     }

@@ -5,6 +5,8 @@ use yii\grid\GridView;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use webdoka\yiiecommerce\common\models\Order;
+use webdoka\yiiecommerce\common\models\Profiles;
+use yii\data\ArrayDataProvider;
 
 /* @var $this yii\web\View */
 /* @var $model webdoka\yiiecommerce\common\models\Order */
@@ -31,6 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab"
                                        data-toggle="tab"><?= Yii::t('shop', 'Transactions') ?></a></li>
+
+            <li role="presentation"><a href="#profiles" aria-controls="profiles" role="tab"
+                                       data-toggle="tab"><?= Yii::t('shop', 'Profiles') ?></a></li>
 
             <li role="presentation"><a href="#history" aria-controls="history" role="tab"
                                        data-toggle="tab"><?= Yii::t('shop', 'History') ?></a></li>
@@ -201,7 +206,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value' => function ($model) {
                                 $retu = '';
                                 if (!empty($model->option_id)) {
-
                                     $retu .= '<table class="table table-striped">
             <tbody>';
 
@@ -213,12 +217,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         $rootid = '';
                                         if ($parents != null) {
                                             foreach ($parents['branch'] as $parent) {
-
                                                 $branch .= Html::encode($parent->name) . ' » ';
                                                 if ($parent->lvl === 0) {
                                                     $rootid = $parent->id;
                                                 }
-
                                             }
                                             $branch .= Html::encode($parents['option']->name);
                                         }
@@ -237,24 +239,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     $retu .= '</tbody>
         </table>';
-
                                 }
 
 
                                 return $retu;
-
-
-                                /*if ($model->option_id > 0) {
-                                    $parents = $model->product->getBranchOption($model->option_id);
-                                    $branch = '';
-                                    if ($parents != null) {
-                                        foreach ($parents['branch'] as $parent) {
-
-                                            $branch .= Html::encode($parent->name) . ' » ';
-                                        }
-                                        return $branch .= Html::encode($parents['option']->name);
-                                    }
-                                }*/
                             },
                         ],
                         'quantity',
@@ -265,6 +253,80 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php \yii\widgets\Pjax::end(); ?>
             </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="profiles">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h4><?= Yii::t('shop', 'User info') ?></h4>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><b><?= Yii::t('shop', 'Name') ?></b></td>
+                                <td> <?= isset($model->profile->user->username) ? $model->profile->user->username : '' ?></td>
+                            </tr>
+                            <tr>
+                                <td><b><?= Yii::t('shop', 'Email') ?></b></td>
+                                <td> <?= isset($model->profile->user->email) ? $model->profile->user->email : '' ?></td>
+                            </tr>
+                            <tr>
+                                <td><b><?= Yii::t('shop', 'Confirm') ?></b></td>
+                                <td> <?= isset($model->profile->user->confirm_token) && $model->profile->user->confirm_token ? Yii::t('shop', 'No confirm') : Yii::t('shop', 'Confirm'); ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h4><?= Yii::t('shop', 'Profiles') ?></h4>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="col-md-6 col-xs-6">
+                            <h5><?= Yii::t('shop', 'Customer') ?></h5>
+
+                            <table class="table table-bordered">
+                                <?php if (isset($model->profile)) : ?>
+                                    <?php foreach ($model->profile as $key => $value) : ?>
+
+                                        <?php if ($key != 'status' && $key != 'user_id' && $key != 'parent_profile' && $key != 'id' && $key != 'default_account_id' && $key != 'image') : ?>
+
+                                            <tr>
+                                                <td>
+                                                 <b><?= $model->profile->attributeLabels()[$key] ?></b>
+                                                </td>
+                                                <td> <?= $value ?></td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6 col-xs-6">
+                            <h5><?= Yii::t('shop', 'Recipient') ?></h5>
+
+                            <table class="table table-bordered col-xs-6">
+                                <?php if (isset($model->recipient)) : ?>
+                                    <?php foreach ($model->recipient as $key => $value) : ?>
+
+                                        <?php if ($key != 'status' && $key != 'user_id' && $key != 'parent_profile' && $key != 'id' && $key != 'default_account_id' && $key != 'image') : ?>
+                                            <tr>
+                                                <td>
+                                                 <b><?= $model->recipient->attributeLabels()[$key] ?></b>
+                                                </td>
+                                                <td> <?= $value ?></td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
 
             <div role="tabpanel" class="tab-pane fade" id="transactions">
 

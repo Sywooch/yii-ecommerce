@@ -31,8 +31,8 @@ class Cart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['profile_id'], 'required'],
-            [['profile_id'], 'integer'],
+            [['profile_id','recipient_id'], 'required'],
+            [['profile_id','recipient_id'], 'integer'],
         ];
     }
 
@@ -98,11 +98,18 @@ class Cart extends \yii\db\ActiveRecord
     }
 
     /**
-     * Returns profile
+     * Returns profile customer
      */
     public function getProfile()
     {
         return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
 
+    /**
+     * Returns profile recipient
+     */
+    public function getRecipient()
+    {
+        return $this->hasOne(Profile::className(), ['id' => 'recipient_id']);
+    }
 }

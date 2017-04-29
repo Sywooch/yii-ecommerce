@@ -215,4 +215,24 @@ class ProductForm extends Product
 
         $this->populateRelation('productDiscounts', $discounts);
     }
+
+   /* public function beforeDelete()
+    {
+        foreach ($this->_relDiscounts as $relDiscount) {
+            $relDiscount->delete();
+        }
+
+        foreach ($this->_relPrices as $relPrice) {
+            $relPrice->delete();
+        }
+
+        foreach ($this->_relStorages as $relStorages) {
+            $relStorages->delete();
+        }
+
+        foreach ($this->_relFeatures as $relFeatures) {
+            $relFeatures->delete();
+        }
+        return parent::beforeDelete();
+    }*/
 }

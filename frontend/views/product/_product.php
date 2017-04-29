@@ -113,29 +113,43 @@ reset($option);
                     <a href="#" class="color-6"><span></span></a>
                     <a href="#" class="color-7"><span></span></a>
                 </div>-->
-
                 <div class="product-block-size">
                     <div class="pro-block-wrap-2 float-left">
-                        <h5><?= Yii::t('shop', 'Feature') ?>:</h5>
-
-                        <?php foreach ($model->fullFeatures as $featureProduct) { ?>
+                <table>
+                    <tbody>
+                     <tr>
+                        <td style="min-width: 150px;">
+                            <h5><?= Yii::t('shop', 'Feature') ?>:</h5>
+                        </td>
+                        <td>
+                            <?php foreach ($model->fullFeatures as $featureProduct) { ?>
 
                             <span>
-                            <?= Html::encode($featureProduct->feature->name) ?>:
+                                <?= Html::encode($featureProduct->feature->name) ?>:
                                 <?= Html::encode($featureProduct->value) ?>
-                        </span>
+                            </span>
 
-                        <?php } ?>
-                    </div>
-                </div>
-
-                <?php if ($model->discounts) { ?>
-
-                    <div class="product-block-size">
-                        <div class="pro-block-wrap-2 float-left">
+                            <?php } ?>
+                        </td>
+                    </tr> 
+                    <?php if ($model->discounts) { ?>
+                    <tr>
+                        <td>
                             <h5><?= Yii::t('shop', 'Discount') ?>:</h5>
+                        </td>
+                        <td>
                             <?php foreach ($model->availableDiscounts as $discount) {
 
+                                $condition = '';
+
+if($discount->count > 0 && $discount->started_at == ''){
+    $condition = $discount->count . $model->unit->name;
+}elseif($discount->started_at != '' && $discount->finished_at != '')
+{
+    $condition = Yii::t('shop', 'from'). ' ' . 
+    $discount->started_at . ' ' .Yii::t('shop', 'to'). ' ' .
+    $discount->finished_at;
+}
                                 if ($discount->dimension == 'percent') {
                                     $dimension = Html::encode($discount->value) . ' %';
                                 } elseif ($discount->dimension == 'fixed') {
@@ -145,27 +159,32 @@ reset($option);
                                 }
                                 ?>
 
-                                <span><?= $dimension ?> </span>
-                            <?php } ?>
+                                <span><?= $dimension ?> <?= Yii::t('shop', 'when ordering') ?> <?=$condition?> </span>
+                                <?php } ?>
+                            </td>
+                        </tr> 
+                        <?php } ?>
 
-                        </div>
-                    </div>
-                <?php } ?>
+                        <tr>
+                            <td>
+                                <h5><?= Yii::t('shop', 'Quantity') ?>:</h5>
+                            </td>
+                            <td style="min-width: 100px;">
 
+                                <div class="pro-qty-2">
+                                    <input value="1" name="qtybutton" type="text">
+                                </div>
 
-                <div class="product-quantity-size fix">
-                    <div class="pro-qty-wrap-2 float-left">
-                        <h5><?= Yii::t('shop', 'Quantity') ?>:</h5>
-                        <div class="pro-qty-2 fix">
-                            <input value="1" name="qtybutton" type="text">
-                        </div>
-                    </div>
+                            </td>
+                        </tr> 
 
+                        <tr>
+                            <td>
+                                <h5><?= Yii::t('shop', 'Options') ?>:</h5>
+                            </td>
+                            <td style="min-width: 100px;">
 
-                </div>
-                <div class="product-quantity-size fix">
-                    <div class="pro-qty-wrap-2">
-                        <?php
+                       <?php
 
                         $roots = ProductsOptions::find()->roots()->all();
                         foreach ($roots as $key => $value) {
@@ -215,6 +234,121 @@ reset($option);
                         }
                         ?>
 
+                            </td>
+                        </tr> 
+
+
+                    </tbody>
+                </table>
+                    </div>
+                </div>
+
+<?php /*
+                <div class="product-block-size">
+                    <div class="pro-block-wrap-2 float-left">
+                        <h5 style="min-width: 150px;"><?= Yii::t('shop', 'Feature') ?>:</h5>
+
+                        <?php foreach ($model->fullFeatures as $featureProduct) { ?>
+
+                            <span>
+                            <?= Html::encode($featureProduct->feature->name) ?>:
+                                <?= Html::encode($featureProduct->value) ?>
+                        </span>
+
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <?php if ($model->discounts) { ?>
+
+                    <div class="product-block-size">
+                        <div class="pro-block-wrap-2 float-left">
+                            <h5 style="min-width: 150px;"><?= Yii::t('shop', 'Discount') ?>:</h5>
+                            <?php foreach ($model->availableDiscounts as $discount) {
+
+                                if ($discount->dimension == 'percent') {
+                                    $dimension = Html::encode($discount->value) . ' %';
+                                } elseif ($discount->dimension == 'fixed') {
+                                    $dimension = Yii::$app->formatter->asCurrency(Html::encode($discount->value));
+                                } elseif ($discount->dimension == 'set') {
+                                    $dimension = Html::encode($discount->value) . ' set';
+                                }
+                                ?>
+
+                                <span><?= $dimension ?> </span>
+                            <?php } ?>
+
+                        </div>
+                    </div>
+                <?php } ?>
+
+
+                <div class="product-quantity-size fix">
+                    <div class="pro-qty-wrap-2 float-left">
+                        <h5><?= Yii::t('shop', 'Quantity') ?>:</h5>
+                        <div class="pro-qty-2 fix">
+                            <input value="1" name="qtybutton" type="text">
+                        </div>
+                    </div>
+
+
+                </div>
+*/ ?>
+
+
+                <div class="product-quantity-size fix" style="margin-top: 15px;">
+                    <div class="pro-qty-wrap-2">
+                        <?php
+/*
+                        $roots = ProductsOptions::find()->roots()->all();
+                        foreach ($roots as $key => $value) {
+
+                            $rootid = $value->id;
+
+                            $getchild = $value->children()->all();
+
+                            $child = [];
+
+                            foreach ($getchild as $children) {
+
+                                $child[] = $children->id;
+
+                            }
+
+
+                            $chk = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->andWhere(['in', 'product_options_id', $child])->all();
+                            ?>
+
+                            <?php if ($chk != null): ?>
+
+                                <div class="single-pro-size-2 float-left" style="margin-left:5px;">
+                                    <a id="element" data-container="body"
+                                       class="btn btn-default"
+                                       data-toggle="popover"
+                                       data-placement="bottom" data-popover-content="#a<?= $rootid ?>">
+                                        <?= $value->name ?>
+                                    </a>
+                                </div>
+
+                                <div class="hidden col-xs-12" id="a<?= $rootid ?>">
+                                    <div class="popover-heading">
+                                        <?= Yii::t('shop', 'Options from') ?>: <?= $model->name; ?>
+                                    </div>
+
+                                    <div class="popover-body">
+
+                                        <?= OptionWidget::widget(compact('model', 'rootid', 'child')); ?>
+
+                                    </div>
+                                </div>
+
+
+                                <?php
+                            endif;
+                        }
+                        */
+                        ?>
+
 
                     </div>
 
@@ -242,8 +376,17 @@ reset($option);
                                     }
                                     $branch .= Html::encode($parents['option']->name);
                                 }
+
+        if (is_array($detailprice['detailoptionsprice'][$value])) {
+            foreach ($detailprice['detailoptionsprice'][$value] as $value) {
+                $priceDetail = $value;
+            }
+        } else {
+                   $priceDetail = $detailprice['detailoptionsprice'][$value];
+        }
+                                
                                 $pa = $parents['option']->parents(1)->one();
-                                echo '<p>' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$value]) . '</b><a href="#" class="btn btn-box-tool remover" onclick="return false;" data-id="option' . $rootid . '-' . $pa->id . '=' . $value . '"><i class="zmdi zmdi-close-circle-o"></i></a></p>';
+                                echo '<p>' . $branch . ' <b>' . Yii::$app->formatter->asCurrency($priceDetail) . '</b><a href="#" class="btn btn-box-tool remover" onclick="return false;" data-id="option' . $rootid . '-' . $pa->id . '=' . $value . '"><i class="zmdi zmdi-close-circle-o"></i></a></p>';
                             }
 
                             $options_IDs = implode(',', $option);
@@ -314,10 +457,10 @@ $('.qtybtn-2').on('click', function() {
       var newVal = parseFloat(oldValue) + 1;
     } else {
        // Don't allow decrementing below zero
-      if (oldValue > 0) {
+      if (oldValue > 1) {
         var newVal = parseFloat(oldValue) - 1;
         } else {
-        newVal = 0;
+        newVal = 1;
       }
       }
       $('.pro-details-act-btn')

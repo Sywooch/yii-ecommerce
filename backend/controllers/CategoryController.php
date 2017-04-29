@@ -5,11 +5,14 @@ namespace webdoka\yiiecommerce\backend\controllers;
 use webdoka\yiiecommerce\common\forms\CategoryForm;
 use Yii;
 use webdoka\yiiecommerce\common\models\Category;
+use webdoka\yiiecommerce\common\models\Feature;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -99,7 +102,26 @@ class CategoryController extends Controller
     {
         $model = new CategoryForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $post = Yii::$app->request->post();
+
+        if (isset($post['Feature'])) {
+            if (isset($post["CategoryForm"]["relFeatures"])) {
+                $mergeFeatures = $post["CategoryForm"]["relFeatures"];
+            } else {
+                $mergeFeatures = [];
+            }
+
+            foreach ($post['Feature'] as $postfeature) {
+                    $newfeature = new Feature();
+                    $newfeature->name = $postfeature['name'];
+                    $newfeature->slug = $postfeature['slug'];
+                    $newfeature->save();
+                    $mergeFeatures = ArrayHelper::merge($mergeFeatures, [$newfeature->id]);
+            }
+            $post["CategoryForm"]["relFeatures"] = $mergeFeatures;
+        }     
+
+        if ($model->load($post) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -117,16 +139,62 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $model = CategoryForm::find()->where(['id' => $id])->one();
+        $modelfeatures = new Feature();
 
-        if (!Yii::$app->request->isPost)
+        $post = Yii::$app->request->post();
+
+       if (isset($post['Feature'])) {
+            if (isset($post["CategoryForm"]["relFeatures"])) {
+                $mergeFeatures = $post["CategoryForm"]["relFeatures"];
+            } else {
+                $mergeFeatures = [];
+            }
+
+            foreach ($post['Feature'] as $postfeature) {
+                    $newfeature = new Feature();
+                    $newfeature->name = $postfeature['name'];
+                    $newfeature->slug = $postfeature['slug'];
+                    $newfeature->save();
+                    $mergeFeatures = ArrayHelper::merge($mergeFeatures, [$newfeature->id]);
+            }
+            $post["CategoryForm"]["relFeatures"] = $mergeFeatures;
+        }
+
+        if (!Yii::$app->request->isPost) {
             CategoryForm::populateRecord($model, ['relFeatures' => $model->features]);
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($post) && $model->save()) {
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelfeatures' => $modelfeatures
             ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Product model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionAjax()
+    {
+        $type = Yii::$app->request->post('type');
+        $integerIDs = Yii::$app->request->post('id');
+        $integerIDs = implode(',', $integerIDs);
+        $ids = array_map('intval', explode(',', $integerIDs));
+        //var_dump($ids);exit;
+        if ($type == 2) {
+            if (CategoryForm::deleteAll(['IN', 'id', $ids])) {
+                echo Json::encode('ok');
+                exit;
+            } else {
+                echo Json::encode('Delete failed');
+                exit;
+            }
         }
     }
 
@@ -158,5 +226,4 @@ class CategoryController extends Controller
             throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
-
 }

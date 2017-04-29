@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'isAdmin' => ProductsOptions::isAdminTree(), // optional (toggle to enable admin mode)
                 'isAdmin' => false,
                 'displayValue' => 1, // initial display value
-                'softDelete' => true, // defaults to true
+                'softDelete' => false, // defaults to true
                 'cacheSettings' => [
                     'enableCache' => false   // defaults to true
                 ],

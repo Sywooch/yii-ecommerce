@@ -129,7 +129,9 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     {
         // Default price
         $price = $this->price;
+        $roles = [];
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
+        $checkpricerole = Price::find()->where(['in', 'auth_item_name', $roles])->all();
 
         // Get min price
         $getoptprice = Price::getOptPrice($roles, $this->id, $optid);
@@ -138,26 +140,41 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         $pricemin = [];
 
         foreach ($getoptprice as $key => $value) {
-            $pricearray[$value->product_options_id] = $value->value;
+            $pricearray[$value->product_options_id][] = $value->value;
 
-
-            if (count($pricearray[$value->product_options_id]) >= 2) {
-                $pricemin[$value->product_options_id] = min($pricearray[$value->product_options_id]);
+            if (count($pricearray[$value->product_options_id]) > 1) {
+                if (!empty($checkpricerole)) {
+                    $pricemin[$value->product_options_id] = min($pricearray[$value->product_options_id]);
+                } else {
+                    $pricemin[$value->product_options_id] = max($pricearray[$value->product_options_id]);
+                }
             } else {
                 $pricemin[$value->product_options_id] = $pricearray[$value->product_options_id];
+            }
+        }
+        $pm = [];
+        if (count($pricemin, COUNT_RECURSIVE) == count($pricemin)) {
+            $pm = $pricemin;
+        } else {
+            foreach ($pricemin as $key => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $data) {
+                        $pm[$key]=$data;
+                    }
+                }
             }
         }
 
         $baseprice = Price::getMinPrice($roles, $this->id) ?: $price;
 
-        $price = $baseprice + array_sum($pricemin);
+        $price = $baseprice + array_sum($pm);
 
         // Price + VAT
         if ($country = Country::find()->where(['id' => Yii::$app->session->get('country'), 'exists_tax' => 1])->one()) {
             $price += $price * $country->tax / 100;
         }
 
-        $detailprice = ['price' => $price, 'baseprice' => $baseprice, 'optionsprice' => array_sum($pricemin), 'detailoptionsprice' => $pricemin];
+        $detailprice = ['price' => $price, 'baseprice' => $baseprice, 'optionsprice' => array_sum($pm), 'detailoptionsprice' => $pm];
 
         return $detailprice;
     }
@@ -184,7 +201,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             $price = $this->realPrice;
         } else {
             $price = $this->getOptionPrice(explode(',', $optionid))["price"];
-            //var_dump( $price );exit;
+            //var_dump( $optionid );exit;
         }
 
         $discounts = $this->availableDiscounts;
@@ -285,7 +302,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     public function getProductStorages()
     {
         return $this->hasMany(ProductsStorages::className(), ['product_id' => 'id']);
-    }    
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -465,7 +482,9 @@ class Product extends \yii\db\ActiveRecord implements IPosition
         if (array_key_exists('productPrices', $relatedRecords)) {
             $this->unlinkAll('productPrices', true);
             foreach ($relatedRecords['productPrices'] as $price) {
-                $this->link('productPrices', $price);
+                if (!empty($price->value)) {
+                    $this->link('productPrices', $price);
+                }
             }
         }
         

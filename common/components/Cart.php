@@ -316,20 +316,10 @@ class Cart extends Component
 
         $id = $position->getId();
 
-        /* if ($oldoption == 0) {
-             $oldoption='';
-         } */
-
-
         $position->setQuantity((int)$quant);
 
         $position->setOptid($option);
-        /*
-        echo "<pre>";
-        var_dump($this->_positions[$id . '-' .$option]);
-        echo "</pre>";
-        exit;
-        */
+
         if (isset($this->_positions[$id . '-' . $oldoption]) && isset($this->_positions[$id . '-' . $option])) {
             if (isset($quant)) {
                 $this->_positions[$id . '-' . $option]->setQuantity($this->_positions[$id . '-' . $option]->getQuantity() + (int)$quant);

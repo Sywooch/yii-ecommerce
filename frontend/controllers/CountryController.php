@@ -31,8 +31,16 @@ class CountryController extends \yii\web\Controller
     public function actionChange()
     {
         if ($country = Country::findOne(Yii::$app->request->post('country'))) {
-            Yii::$app->session->set('country', $country->id);
+                Yii::$app->response->cookies->add(new \yii\web\Cookie([
+        'name' => 'country',
+        'value' => $country->id,
+        'expire' => time() + 30*24*60*60,
+    ]));
+            //Yii::$app->session->set('country', $country->id);
         }
-    }
 
+        /*if ($country = Country::findOne(Yii::$app->request->post('country'))) {
+            Yii::$app->session->set('country', $country->id);
+        }*/
+    }
 }

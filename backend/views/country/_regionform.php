@@ -3,7 +3,6 @@ use yii\web\JsExpression;
 use kartik\typeahead\TypeaheadBasic;
 use kartik\typeahead\Typeahead;
 use yii\helpers\Url;
-use Yii;
 
 if ($type == 1) {
     $form='Storages';

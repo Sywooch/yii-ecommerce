@@ -18,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-header with-border">
 
         <?php if (Yii::$app->user->can(Location::CREATE_LOCATION)) { ?>
-            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Storages location'), ['create'], ['class' => 'btn btn-success']) ?>
-            <?= Html::a(Yii::t('app', 'Create') . ' ' . Yii::t('shop', 'Deliveries location'), ['created'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') .' '. mb_strtolower (Yii::t('shop_spec', 'Locations storages'),'UTF8'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Create') .' '. mb_strtolower (Yii::t('shop_spec', 'Locations deliveries'),'UTF8'), ['created'], ['class' => 'btn btn-success']) ?>
         <?php } ?>
     </div>
     <div class="box-body">

@@ -30,7 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
                     'id',
                     'name',
-                    'dimension',
+                   // 'dimension',
+                    [
+                    'attribute' => 'dimension',
+                    'format' => 'html',
+                    'value' => function ($data) {
+                        if (isset($data->dimension)) {
+                            return $data->getDimensions()[$data->dimension];
+                        } else {
+                            return '';
+                        }
+                    },
+                    // 'filter'=>Profiles::getTypeLists(),
+                    ],
                     'value',
                     'started_at',
                     'finished_at',

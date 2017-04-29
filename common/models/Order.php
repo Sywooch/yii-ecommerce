@@ -2,7 +2,7 @@
 
 namespace webdoka\yiiecommerce\common\models;
 
-use app\models\Profile;
+use webdoka\yiiecommerce\common\models\Profiles;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -66,7 +66,7 @@ class Order extends \yii\db\ActiveRecord
             [['created_at', 'updated_at', 'profile_id', 'payment_type_id'], 'integer'],
             [['status'], 'string', 'max' => 255],
             [['payment_type_id'], 'exist', 'skipOnError' => false, 'targetClass' => PaymentType::className(), 'targetAttribute' => ['payment_type_id' => 'id']],
-            [['profile_id'], 'exist', 'skipOnError' => false, 'targetClass' => Profile::className(), 'targetAttribute' => ['profile_id' => 'id']],
+            [['profile_id'], 'exist', 'skipOnError' => false, 'targetClass' => Profiles::className(), 'targetAttribute' => ['profile_id' => 'id']],
             [['total'], 'safe']
         ];
     }
@@ -104,8 +104,17 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getProfile()
     {
-        return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
+        return $this->hasOne(Profiles::className(), ['id' => 'profile_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRecipient()
+    {
+        return $this->hasOne(Profiles::className(), ['id' => 'recipient_id']);
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

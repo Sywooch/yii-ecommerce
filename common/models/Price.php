@@ -113,7 +113,18 @@ class Price extends \yii\db\ActiveRecord
         foreach ($role as $rules) {
             $arrroles[] = $rules->id;
         }
-        return ProductsOptionsPrices::find()->andWhere(['product_id' => $productId])->andWhere(['in', 'product_options_id', $optid])->andWhere(['in', 'price_id', $arrroles])->all();
-    }
 
+        if (!empty($role)) {
+            return ProductsOptionsPrices::find()
+            ->andWhere(['product_id' => $productId])
+            ->andWhere(['in', 'product_options_id', $optid])
+            ->andWhere(['in', 'price_id', $arrroles])
+            ->all();
+        } else {
+            return ProductsOptionsPrices::find()
+            ->andWhere(['product_id' => $productId])
+            ->andWhere(['in', 'product_options_id', $optid])
+            ->all();
+        }
+    }
 }

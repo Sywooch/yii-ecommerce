@@ -113,7 +113,17 @@ $this->registerJs('
 
 ');
 ?>
-
+<?php if (Yii::$app->session->hasFlash('product_filed')) { ?>
+    <div class="alert alert-danger alert-dismissible">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <h4><i class="icon fa fa-ban"></i> <?=Yii::t('shop', 'Error.') ?></h4>
+        <?php 
+        foreach (Yii::$app->session->getFlash('product_filed') as $key => $value) {
+         echo $value[0].'<br>';
+     }
+     ?>
+ </div>
+ <?php } ?>            
 <div class="box box-primary">
     <div class="box-header with-border">
 
@@ -147,7 +157,10 @@ $this->registerJs('
 
                                 <div class="product-form">
 
-                                    <?php $form = ActiveForm::begin(); ?>
+                                    <?php $form = ActiveForm::begin([
+                                    'enableClientValidation' => false,
+                                    'enableAjaxValidation' => false,
+                                    ]); ?>
 
                                     <?= Html::hiddenInput('action', $model->isNewRecord ? 'create' : 'update') ?>
 
@@ -268,10 +281,6 @@ $this->registerJs('
                                             ?>
                                         </div>
 
-
-                                        <?php
-                //echo $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]);
-                                        ?>
                                         <?=
                                         $form->field($model, 'relDiscounts')->widget(Select2::classname(), [
                                             'data' => ArrayHelper::map(Discount::find()->all(), 'id', 'name'),

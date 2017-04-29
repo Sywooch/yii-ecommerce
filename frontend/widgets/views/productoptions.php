@@ -7,7 +7,9 @@ use webdoka\yiiecommerce\common\models\ProductsOptions;
 use webdoka\yiiecommerce\common\models\ProductsOptionsPrices;
 
 $this->registerJs('
+   
     $(function(){
+
         $("[data-toggle=popover]").popover({
             html : true,
             content: function() {
@@ -17,9 +19,28 @@ $this->registerJs('
           title: function() {
               var title = $(this).attr("data-popover-content");
               return $(title).children(".popover-heading").html();
-          }
-      });
-  });    
+          },
+          trigger: "manual"
+      }).click(function(e) {
+
+var isVisible = $(this).data("bs.popover").tip().hasClass("in");
+
+  $(".marked-as-having-a-popover").each(function() {
+
+            $(this).removeClass("marked-as-having-a-popover");
+            $(this).popover("hide");
+       }); 
+
+if(isVisible == false){
+    $(this).addClass("marked-as-having-a-popover");
+    $(this).popover("toggle");
+}else{
+    $(this).removeClass("marked-as-having-a-popover");
+    $(this).popover("hide");  
+}
+
+});
+  });   
   ');
 
 //$all = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->all();
@@ -36,7 +57,6 @@ $optionItem = ProductsOptions::findOne(['id' => $rootid]);
 $getchild = $optionItem->children()->all();
 
 foreach ($child as $value) {
-
 //foreach ($all as $value) {
 
     //$optionItem = ProductsOptions::findOne(['id' => $value->product_options_id]);
@@ -49,13 +69,10 @@ foreach ($child as $value) {
 
 
     if ($leaves == null && $all != null) {
-
         $leaves = $optionItem->parents()->all();
 
         foreach ($leaves as $value) {
-
             if (!in_array($value->id, $search)) {
-
                 $search[] = $value->id;
 
                 if ($value->lvl == 1 || $value->lvl == 2) {
@@ -71,12 +88,10 @@ foreach ($child as $value) {
         $parent = $optionItem->parents(1)->one();
 
         if ($parent != null && $parent_id != $parent->id) {
-
             $parent_id = $parent->id;
             echo '<div class="reset"></div>';
         }
         if ($parent == null) {
-
             echo '<div class="reset"></div>';
         }
 
@@ -87,35 +102,27 @@ foreach ($child as $value) {
         }
 
         if (isset($model->quantity)) {
-
             $urlparam = [$url, 'id' => $model->id,
                 'option' . $rootid . '-' . $parent->id => $optionItem->id,
                 'quant' => Html::encode($model->quantity),
                 'change' => implode(',', $oldoption)
             ];
             $onclick = '';
-
         } else {
-
             $urlparam = [$url, 'id' => $model->id,
                 'option[' . $rootid . ']' => $optionItem->id
             ];
             $onclick = 'js:return false;';
-
         }
 
         if (isset($parent->id) && isset($_GET['option' . $rootid . '-' . $parent->id])) {
-
             $curentoption = $_GET['option' . $rootid . '-' . $parent->id];
 
             $chk = 1;
-
         } else {
-
             $curentoption = 0;
 
             $chk = 0;
-
         }
 
         if ($optionItem->id == $curentoption || (in_array($optionItem->id, $oldoption))) {
@@ -126,7 +133,19 @@ foreach ($child as $value) {
 
         $detailprice = $model->getOptionPrice($optionItem->id);
 
-        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<span>' .Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$optionItem->id]) .'</span>'. $img . '</div>', $urlparam, ['class' => 'selectoption optionclick' . $rootid, 'onclick' => $onclick, 'data-id' => $optionItem->id, 'data-parent' => $parent->id]);
+        //if (isset($detailprice['detailoptionsprice'][$optionItem->id])) {
+         //   $detailprice = $detailprice['detailoptionsprice'][$optionItem->id];
+       // } else {
+          //  $detailprice = $detailprice['price'];
+       // }
+        if (is_array($detailprice['detailoptionsprice'][$optionItem->id])) {
+            foreach ($detailprice['detailoptionsprice'][$optionItem->id] as $value) {
+                $priceDetail = $value;
+            }
+        } else {
+                   $priceDetail = $detailprice['detailoptionsprice'][$optionItem->id];
+        }
+        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<span>' .Yii::$app->formatter->asCurrency($priceDetail) .'</span>'. $img . '</div>', $urlparam, ['class' => 'selectoption optionclick' . $rootid, 'onclick' => $onclick, 'data-id' => $optionItem->id, 'data-parent' => $parent->id]);
     }
 }
 ?>
@@ -170,5 +189,3 @@ $(document).on('click','.optionclick$rootid',function() {
 });
 JS;
 $this->registerJs($app_js);
-
-?>

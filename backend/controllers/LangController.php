@@ -207,7 +207,7 @@ class LangController extends Controller
             }
 
 
-            return $this->redirect(['trview', 'id' => $model->id]);
+            return $this->redirect(['trindex', 'id' => $model->id]);
         } else {
             return $this->render(
                 'trcreate',

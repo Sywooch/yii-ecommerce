@@ -65,6 +65,7 @@ class OrderController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Order::find(),
+            'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
         ]);
 
         return $this->render('index', [

@@ -158,8 +158,10 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         </div>
         <?php
 
-
+        $roles = [];
         $roles = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
+
+        $checkpricerole = webdoka\yiiecommerce\common\models\Price::find()->where(['in', 'auth_item_name', $roles])->all();
 
         $currentCategory = null;
 
@@ -169,23 +171,19 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
             $max->where(['category_id' => $currentCategory->id]);
         }
 
-        if (!empty($roles)) {
-
+        if (!empty($roles)  && !empty($checkpricerole)) {
             $max->joinWith('prices');
 
             $max->andWhere(['in', 'auth_item_name', $roles]);
 
             $max->orderBy(['products_prices.value' => SORT_DESC]);
-
         } else {
-
             $max->orderBy(['price' => SORT_DESC]);
         }
 
         $maxminimum = $max->one();
 
-        if (!empty($roles)) {
-
+        if (!empty($roles)  && !empty($checkpricerole)) {
             $minmaxx = webdoka\yiiecommerce\common\models\ProductPrice::find();
 
 
@@ -195,9 +193,7 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
 
 
             if (isset($maxminimum->id)) {
-
                 $minmaxx->andWhere(['product_id' => $maxminimum->id]);
-
             }
 
 
@@ -205,7 +201,6 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
 
 
             $maximum = $minmaxx->one();
-
         }
 
         $min = webdoka\yiiecommerce\common\models\Product::find();
@@ -215,12 +210,10 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         }
 
 
-        if (!empty($roles)) {
-
+        if (!empty($roles)  && !empty($checkpricerole)) {
             $min->joinWith('prices');
             $min->andWhere(['in', 'auth_item_name', $roles]);
             $min->orderBy(['products_prices.value' => SORT_ASC]);
-
         } else {
             $min->orderBy(['price' => SORT_ASC]);
         }
@@ -228,30 +221,21 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
         $minimum = $min->one();
 
 
-        if (!empty($roles)) {
+        if (!empty($roles)  && !empty($checkpricerole)) {
             if (isset($minimum['productPrices'][0]->value)) {
-
                 $minprice = $minimum['productPrices'][0]->value;
-
             } else {
-
                 $minprice = 0;
             }
 
             if (isset($maximum->value)) {
-
                 $maxprice = $maximum->value;
-
             } else {
-
                 $maxprice = 0;
             }
         } else {
-
             $maxprice = $maxminimum->price;
             $minprice = $minimum->price;
-
-
         }
 
 
@@ -264,11 +248,8 @@ $vatIncluded = Country::find()->where(['id' => Yii::$app->session->get('country'
 $sort = Yii::$app->request->get('sort');
 
 if (empty($sort)) {
-
     $chksort = 0;
-
 } else {
-
     $chksort = 1;
 }
 

@@ -30,6 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
                     'name',
                     'cost',
+
+                                        //'storage.name:text:Storage',
+                    [
+                        'header' => Yii::t('shop', 'Type'),
+                        'attribute' => 'type',
+                        'format' => 'text',
+                        'value' => function ($data) {
+                            if (isset($data->type)) {
+                                return Delivery::getTypeLists()[$data->type];
+                            } else {
+                                return '';
+                            }
+                        },
+                    ],
                     //'storage.name:text:Storage',
                     [
                         'header' => Yii::t('shop', 'Storage'),
@@ -49,7 +63,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             $return .= '<b>'.$pak->name.'</b><br>';
                             
                             foreach ($locations as $value) {
-
                                 if ($value->locations->region && $value->locations->city) {
                                     $region = $value->locations->region;
                                     $city = $value->locations->city;
@@ -59,7 +72,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 } elseif (!$value->locations->region && $value->locations->city) {
                                     $region = null;
                                     $city = $value->locations->city;
-
                                 } else {
                                     $region = Yii::t('shop', 'Across');
                                     $city = null;
@@ -69,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $return .= ($region != null) ? (' >> '.$region) : ('');
                                 $return .= ($city != null) ? (' >> '.$city) : ('');
                                 $return .= '<br>';
-
                             }
                         }
                         return $return;
