@@ -32,7 +32,7 @@ $this->registerJs('
 
        sessionStorage["tabPage"] = $(this).attr("href");
 
-   }); 
+   });
    ');
 
 if (!$model->isNewRecord) {
@@ -68,7 +68,7 @@ $this->registerJs('
               return $(title).children(".popover-heading").html();
           }
       });
-  });    
+  });
   ');
 
 $this->registerJs('
@@ -218,10 +218,10 @@ $this->registerJs('
                 </div>
 
 
-                <?php 
-                //echo $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]); 
+                <?php
+                //echo $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]);
                 ?>
-<?= 
+<?=
 $form->field($model, 'relDiscounts')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Discount::find()->all(), 'id', 'name'),
     'options' => [
