@@ -52,6 +52,11 @@ if (!$model->isNewRecord) {
         return false;
         });
 
+    $(document).on("click",".nav-tabs a[href=\"#variants\"]", function(event, key) {
+        alert("' . Yii::t('shop', 'Create prduct first!') . '");
+        return false;
+        });
+
         ');
 }
 
@@ -132,6 +137,10 @@ $this->registerJs('
                                                                                                    aria-controls="options"
                                                                                                    role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Product Options') ?></a>
             </li>
+            <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation" onclick="$.pjax.reload({container: '#product-variants'});"><a href="#variants"
+                                                                                                   aria-controls="variants"
+                                                                                                   role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Variants') ?></a>
+            </li>
 
 
         </ul>
@@ -151,6 +160,8 @@ $this->registerJs('
                     <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($model, 'vendor_code')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
@@ -286,6 +297,20 @@ $form->field($model, 'relDiscounts')->widget(Select2::classname(), [
 
                 </div>
 
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="variants">
+                <?php \yii\widgets\Pjax::begin(['id' => 'product-variants']); ?>
+                <?php
+                $productsOptionsPrices = ProductsOptionsPrices::find()
+                    ->where(['product_id' => $model->id])
+                    ->andWhere(['status' => 1])
+                    ->one();
+                ?>
+                <?php if (!$model->isNewRecord and $productsOptionsPrices !=null): ?>
+                    <?= $this->render('_variants', ['product' => $model]) ?>
+                <?php endif; ?>
+                <?php \yii\widgets\Pjax::end(); ?>
             </div>
 
         </div>

@@ -171,7 +171,7 @@ class ProductsOptions extends \yii\db\ActiveRecord
      */
     public function getProductsOptionsPrices()
     {
-        return $this->hasMany(ProductsOptionsPrices::className(), ['product_options_id' => 'id'])->where('status = 1');
+        return $this->hasMany(ProductsOptionsPrices::className(), ['product_options_id' => 'id'])->where(ProductsOptionsPrices::tableName().'.status = 1');
     }
 
     public function isDisabled()

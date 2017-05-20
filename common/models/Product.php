@@ -50,10 +50,18 @@ class Product extends \yii\db\ActiveRecord implements IPosition
     {
         return [
             [['category_id', 'unit_id'], 'integer'],
-            [['name', 'price', 'unit_id'], 'required'],
+            [['name', 'price', 'unit_id', 'vendor_code'], 'required'],
             [['price'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+
+            [['vendor_code'], 'string', 'max' => 255],
+            [['vendor_code'], 'unique'],
+            [['vendor_code'], function ($attribute) {
+                if (!preg_match("~[0-9]+$~", $this->$attribute)) {
+                    $this->addError($attribute, Yii::t('shop', 'The string must end with a number'));
+                }
+            }],
         ];
     }
 
@@ -70,6 +78,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'name' => Yii::t('shop', 'Name'),
             'price' => Yii::t('shop', 'Default Price'),
             'prices' => Yii::t('shop', 'Default Price'),
+            'vendor_code' => Yii::t('shop', 'Vendor Code'),
         ];
     }
 
@@ -469,6 +478,11 @@ class Product extends \yii\db\ActiveRecord implements IPosition
                 $this->link('productDiscounts', $discount);
             }
         }
+    }
+
+    public function getVariants()
+    {
+        return $this->hasMany(ProductsVariants::className(), ['product_id' => 'id']);
     }
 
 }

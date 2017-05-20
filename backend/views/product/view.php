@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'category_id',
                 'name',
                 'price',
+                'vendor_code',
                 'unit.name:html:Unit',
                 'discountImplode:text:Discounts',
             ],
