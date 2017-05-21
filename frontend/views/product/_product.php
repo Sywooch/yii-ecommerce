@@ -74,7 +74,9 @@ reset($option);
                 <div class="single-product-price-ratting fix">
                     <h3 class="single-pro-price float-left">
                     <span class="new">
-
+                        <?php if ($model->fictitious_price !== null): ?>
+                            <small style="text-decoration:line-through"><?= Yii::$app->formatter->asCurrency($model->fictitious_price)?></small>
+                        <?php endif; ?>
                         <?php
                         if (!empty($option)): ?>
                             <?php $detailprice = $model->getOptionPrice($option) ?>

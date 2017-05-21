@@ -64,6 +64,7 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             }],
             [['short_description'], 'string', 'max' => 512],
             [['description'], 'string'],
+            [['fictitious_price'], 'number', 'numberPattern' => '/^[0-9]{1,10}(\.[0-9]{0,2})?$/'],
         ];
     }
 
@@ -83,6 +84,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'vendor_code' => Yii::t('shop', 'Vendor Code'),
             'short_description' => Yii::t('shop', 'Short Description'),
             'description' => Yii::t('shop', 'Description'),
+            'description' => Yii::t('shop', 'Description'),
+            'fictitious_price' => Yii::t('shop', 'Fictitious price'),
         ];
     }
 

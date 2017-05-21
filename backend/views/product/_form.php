@@ -233,6 +233,16 @@ $this->registerJs('
                         </div>
                     </div>"
                     ])->textInput() ?>
+                    <?= $form->field($model, 'fictitious_price', [
+                        'template' => "<div class='form-group'>
+                        <div class='row'>
+                            <div class='col-xs-2'>{label} </div>
+                            <div class='col-xs-10'>{input}\n{hint}\n{error}
+                            </div>
+                        </div>
+                    </div>"
+                    ])->textInput()
+                    ->hint(Yii::t('shop', 'Note Fictitious Price for input in backend')) ?>
                     <?=
                     ListView::widget([
                         'itemView' => '_price',
