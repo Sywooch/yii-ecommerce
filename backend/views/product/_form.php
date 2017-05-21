@@ -126,7 +126,8 @@ $this->registerJs('
 
             <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab"
                                                       data-toggle="tab"><?= Yii::t('shop', 'Product') ?></a></li>
-
+            <li role="presentation"><a href="#description" aria-controls="characteristics" role="tab"
+                                         data-toggle="tab"><?= Yii::t('shop', 'Description') ?></a></li>
             <li role="presentation"><a href="#characteristics" aria-controls="characteristics" role="tab"
                                        data-toggle="tab"><?= Yii::t('shop', 'Сharacteristics') ?></a></li>
 
@@ -172,6 +173,19 @@ $this->registerJs('
 
                 </div>
 
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="description">
+
+
+                <?= $form->field($model, 'short_description')->textInput(['maxlength' => true]) ?>
+
+                <?= $form->field($model, 'description')->textarea(['rows' => '6']) ?>
+
+
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
             </div>
 
 

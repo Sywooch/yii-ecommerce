@@ -62,6 +62,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition
                     $this->addError($attribute, Yii::t('shop', 'The string must end with a number'));
                 }
             }],
+            [['short_description'], 'string', 'max' => 512],
+            [['description'], 'string'],
         ];
     }
 
@@ -79,6 +81,8 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             'price' => Yii::t('shop', 'Default Price'),
             'prices' => Yii::t('shop', 'Default Price'),
             'vendor_code' => Yii::t('shop', 'Vendor Code'),
+            'short_description' => Yii::t('shop', 'Short Description'),
+            'description' => Yii::t('shop', 'Description'),
         ];
     }
 
