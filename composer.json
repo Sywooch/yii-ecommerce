@@ -9,11 +9,19 @@
       "email": "shockedbear@gmail.com"
     }
   ],
+  "repositories": [
+        {
+            "url": "https://github.com/webdoka/yii2-file-storage",
+            "type": "git"
+        }
+    ],
   "require": {
     "yiisoft/yii2": ">=2.0.4",
     "yiisoft/yii2-bootstrap": "*",
     "yiisoft/yii2-jui": "~2.0.0",
-    "rodzadra/geolocation": "*"
+    "rodzadra/geolocation": "*",
+    "yiisoft/yii2-imagine": "^2.1",
+    "webdoka/yii2-file-storage": "dev-master"
   },
   "autoload": {
     "psr-4": {

@@ -8,71 +8,75 @@ use kartik\tree\Module;
 use webdoka\yiiecommerce\common\models\ProductsOptions;
 use webdoka\yiiecommerce\common\models\Product;
 use webdoka\yiiecommerce\common\models\ProductsOptionsPrices;
+use webdoka\yiiecommerce\common\models\ProductsOptionsImages;
 use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
 
 /*
  * @var $model \webdoka\yiiecommerce\common\models\Product
  * @var $vatIncluded boolean
  */
+
+$option = [];
+
+foreach ($_GET as $key => $value) {
+
+ if (stripos($key, 'option') !== false)
+
+     $option[] = urldecode($value);
+
+}
+asort($option);
+$images = ProductsOptionsImages::find()
+    ->where(['product_id' => $model->id])
+    ->andWhere(['product_options_id' => end($option)])
+    ->limit(4)
+    ->all();
+reset($option);
+
+
 ?>
     <div class="col-xs-12">
         <div class="single-product-wrap">
             <div class="single-product-image">
                 <div class="pro-thumb float-left">
-                    <div class="sin-item"><a href="#pro-img-1" data-toggle="tab"><img
+                    <?php if (!empty($images)): ?>
+                        <?php foreach ($images as $key => $image): ?>
+                            <div class="sin-item"><a<?=$key==0 ? ' class="active"':''?> href="#pro-img-<?=$key+1?>" data-toggle="tab"><img
+                                            src="<?=$image->getThumb(72, 82)?>"
+                                            alt=""/></a></div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="sin-item"><a class="active" href="#pro-img-1" data-toggle="tab"><img
                                     src="/frontend/img/single-product/1.1.jpg"
                                     alt=""/></a></div>
-                    <div class="sin-item"><a href="#pro-img-2" data-toggle="tab"><img
-                                    src="/frontend/img/single-product/2.1.jpg"
-                                    alt=""/></a></div>
-                    <div class="sin-item"><a class="active" href="#pro-img-3" data-toggle="tab"><img
-                                    src="/frontend/img/single-product/3.1.jpg" alt=""/></a></div>
-                    <div class="sin-item"><a href="#pro-img-4" data-toggle="tab"><img
-                                    src="/frontend/img/single-product/4.1.jpg"
-                                    alt=""/></a></div>
+                    <?php endif; ?>
                 </div>
                 <div class="product-big-image product-big-image-2 tab-content float-left">
-                    <div class="tab-pane" id="pro-img-1">
-                        <img src="/frontend/img/single-product/1.jpg" alt=""/>
-                        <a class="pro-img-popup" href="/frontend/img/single-product/1.jpg"><i
-                                    class="zmdi zmdi-search"></i></a>
-                    </div>
-                    <div class="tab-pane" id="pro-img-2">
-                        <img src="/frontend/img/single-product/2.jpg" alt=""/>
-                        <a class="pro-img-popup" href="/frontend/img/single-product/2.jpg"><i
-                                    class="zmdi zmdi-search"></i></a>
-                    </div>
-                    <div class="tab-pane active" id="pro-img-3">
-                        <img src="/frontend/img/single-product/3.jpg" alt=""/>
-                        <a class="pro-img-popup" href="/frontend/img/single-product/3.jpg"><i
-                                    class="zmdi zmdi-search"></i></a>
-                    </div>
-                    <div class="tab-pane" id="pro-img-4">
-                        <img src="/frontend/img/single-product/4.jpg" alt=""/>
-                        <a class="pro-img-popup" href="/frontend/img/single-product/4.jpg"><i
-                                    class="zmdi zmdi-search"></i></a>
-                    </div>
+                    <?php if (!empty($images)): ?>
+                        <?php foreach ($images as $key => $image): ?>
+                            <div class="tab-pane<?=$key==0 ? ' active':''?>" id="pro-img-<?=$key+1?>>">
+                                <img src="<?=$image->getThumb(370, 431)?>" alt=""/>
+                                <a class="pro-img-popup" href="<?=$image->fullSize?>"><i
+                                            class="zmdi zmdi-search"></i></a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="tab-pane active" id="pro-img-1">
+                           <img src="/frontend/img/single-product/1.jpg" alt=""/>
+                           <a class="pro-img-popup" href="/frontend/img/single-product/1.jpg"><i
+                                       class="zmdi zmdi-search"></i></a>
+                       </div>
+                   <?php endif; ?>
                 </div>
             </div>
-            <?php
-            $option = [];
-
-            foreach ($_GET as $key => $value) {
-
-                if (stripos($key, 'option') !== false)
-
-                    $option[] = urldecode($value);
-
-            }
-            asort($option);
-
-            ?>
             <div class="single-product-content fix">
                 <h3 class="single-pro-title"><?= Html::encode($model->name) ?></h3>
                 <div class="single-product-price-ratting fix">
                     <h3 class="single-pro-price float-left">
-                    <span class="new">                    
-
+                    <span class="new">
+                        <?php if ($model->fictitious_price !== null): ?>
+                            <small style="text-decoration:line-through"><?= Yii::$app->formatter->asCurrency($model->fictitious_price)?></small>
+                        <?php endif; ?>
                         <?php
                         if (!empty($option)): ?>
                             <?php $detailprice = $model->getOptionPrice($option) ?>
@@ -286,16 +290,16 @@ use webdoka\yiiecommerce\frontend\widgets\ProductsOptions as OptionWidget;
 $app_js = <<<JS
 
 
-$(document).on('click','.remover',function() {      
+$(document).on('click','.remover',function() {
 
     var value = $( this ).data('id');
-  
+
     var url = window.location.toString();
 
         var pattern = new RegExp('&' + value,'gim');
 
         var newUrl = url.replace(pattern, "");
-    
+
     location.href = newUrl;
 });
 JS;

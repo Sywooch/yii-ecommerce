@@ -32,7 +32,7 @@ $this->registerJs('
 
        sessionStorage["tabPage"] = $(this).attr("href");
 
-   }); 
+   });
    ');
 
 if (!$model->isNewRecord) {
@@ -48,6 +48,11 @@ if (!$model->isNewRecord) {
     $this->registerJs('
 
     $(document).on("click",".nav-tabs a[href=\"#options\"]", function(event, key) {
+        alert("' . Yii::t('shop', 'Create prduct first!') . '");
+        return false;
+        });
+
+    $(document).on("click",".nav-tabs a[href=\"#variants\"]", function(event, key) {
         alert("' . Yii::t('shop', 'Create prduct first!') . '");
         return false;
         });
@@ -68,7 +73,7 @@ $this->registerJs('
               return $(title).children(".popover-heading").html();
           }
       });
-  });    
+  });
   ');
 
 $this->registerJs('
@@ -121,7 +126,8 @@ $this->registerJs('
 
             <li role="presentation" class="active"><a href="#products" aria-controls="products" role="tab"
                                                       data-toggle="tab"><?= Yii::t('shop', 'Product') ?></a></li>
-
+            <li role="presentation"><a href="#description" aria-controls="characteristics" role="tab"
+                                         data-toggle="tab"><?= Yii::t('shop', 'Description') ?></a></li>
             <li role="presentation"><a href="#characteristics" aria-controls="characteristics" role="tab"
                                        data-toggle="tab"><?= Yii::t('shop', 'Сharacteristics') ?></a></li>
 
@@ -131,6 +137,10 @@ $this->registerJs('
             <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation"><a href="#options"
                                                                                                    aria-controls="options"
                                                                                                    role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Product Options') ?></a>
+            </li>
+            <li class="<?= ($model->isNewRecord) ? ('disabled') : (''); ?>" role="presentation" onclick="$.pjax.reload({container: '#product-variants'});"><a href="#variants"
+                                                                                                   aria-controls="variants"
+                                                                                                   role="tab" <?= (!$model->isNewRecord) ? ('data-toggle="tab"') : (''); ?> ><?= Yii::t('shop', 'Variants') ?></a>
             </li>
 
 
@@ -152,6 +162,8 @@ $this->registerJs('
 
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+                    <?= $form->field($model, 'vendor_code')->textInput(['maxlength' => true]) ?>
+
                     <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name'), ['class' => 'form-control']) ?>
 
 
@@ -161,6 +173,19 @@ $this->registerJs('
 
                 </div>
 
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="description">
+
+
+                <?= $form->field($model, 'short_description')->textInput(['maxlength' => true]) ?>
+
+                <?= $form->field($model, 'description')->textarea(['rows' => '6']) ?>
+
+
+                <div class="form-group">
+                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('yii', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                </div>
             </div>
 
 
@@ -208,6 +233,16 @@ $this->registerJs('
                         </div>
                     </div>"
                     ])->textInput() ?>
+                    <?= $form->field($model, 'fictitious_price', [
+                        'template' => "<div class='form-group'>
+                        <div class='row'>
+                            <div class='col-xs-2'>{label} </div>
+                            <div class='col-xs-10'>{input}\n{hint}\n{error}
+                            </div>
+                        </div>
+                    </div>"
+                    ])->textInput()
+                    ->hint(Yii::t('shop', 'Note Fictitious Price for input in backend')) ?>
                     <?=
                     ListView::widget([
                         'itemView' => '_price',
@@ -218,10 +253,10 @@ $this->registerJs('
                 </div>
 
 
-                <?php 
-                //echo $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]); 
+                <?php
+                //echo $form->field($model, 'relDiscounts')->dropDownList(ArrayHelper::map(Discount::find()->all(), 'id', 'name'), ['multiple' => true]);
                 ?>
-<?= 
+<?=
 $form->field($model, 'relDiscounts')->widget(Select2::classname(), [
     'data' => ArrayHelper::map(Discount::find()->all(), 'id', 'name'),
     'options' => [
@@ -286,6 +321,20 @@ $form->field($model, 'relDiscounts')->widget(Select2::classname(), [
 
                 </div>
 
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade" id="variants">
+                <?php \yii\widgets\Pjax::begin(['id' => 'product-variants']); ?>
+                <?php
+                $productsOptionsPrices = ProductsOptionsPrices::find()
+                    ->where(['product_id' => $model->id])
+                    ->andWhere(['status' => 1])
+                    ->one();
+                ?>
+                <?php if (!$model->isNewRecord and $productsOptionsPrices !=null): ?>
+                    <?= $this->render('_variants', ['product' => $model]) ?>
+                <?php endif; ?>
+                <?php \yii\widgets\Pjax::end(); ?>
             </div>
 
         </div>
