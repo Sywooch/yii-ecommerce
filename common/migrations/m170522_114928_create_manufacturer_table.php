@@ -10,7 +10,7 @@ class m170522_114928_create_manufacturer_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(64),
             'description' => $this->text(),
-            'logo' => $this->integer(),
+            'logo' => $this->string(64),
         ]);
     }
 

@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="discount-index">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
+                'summaryOptions' => ['class' => 'well'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
