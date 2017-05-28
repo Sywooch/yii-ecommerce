@@ -20,8 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
                     'name',
                     'description:ntext',
-                    'logo',
-
+                    [
+                        'attribute' => 'logo',
+                        'value' => function($model) {
+                            if(!empty($model->logoFile)) {
+                                return Html::img($model->logoImg,['width'=>'150px']);
+                            }
+                        },
+                        'format' => 'html'
+                    ],
                     ['class' => 'yii\grid\ActionColumn'],
                 ],
             ]); ?>
