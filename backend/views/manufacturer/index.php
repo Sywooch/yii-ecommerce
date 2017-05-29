@@ -24,10 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'logo',
                         'value' => function($model) {
                             if(!empty($model->logoFile)) {
-                                return Html::img($model->logoImg,['width'=>'150px']);
+                                return $model->logoFile->getImageAsBase64(150, 70);
                             }
                         },
-                        'format' => 'html'
+                        'format' => 'image'
                     ],
                     ['class' => 'yii\grid\ActionColumn'],
                 ],

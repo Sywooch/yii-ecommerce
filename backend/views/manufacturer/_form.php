@@ -14,9 +14,11 @@ use yii\widgets\ActiveForm;
 
 
     <?php ActiveForm::end(); ?>
-    <?= $form->field($model, 'logo')->widget('\webdoka\filestorage\widgets\Upload',[
-        'formId' => 'manufacturer'
-    ]); ?>
+    <div class="form-group">
+        <?= $form->field($model, 'logo')->widget('\webdoka\filestorage\widgets\Upload',[
+            'formId' => 'manufacturer'
+        ]); ?>
+    </div>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), [
             'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
