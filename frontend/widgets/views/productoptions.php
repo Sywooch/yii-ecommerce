@@ -19,7 +19,7 @@ $this->registerJs('
               return $(title).children(".popover-heading").html();
           }
       });
-  });    
+  });
   ');
 
 //$all = ProductsOptionsPrices::find()->groupBy('product_options_id')->where(['product_id' => $model->id])->andWhere('[[status]]=1')->all();
@@ -126,7 +126,15 @@ foreach ($child as $value) {
 
         $detailprice = $model->getOptionPrice($optionItem->id);
 
-        echo Html::a('<div ' . $cssclass . '>' . $optionItem->name . '<span>' .Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$optionItem->id]) .'</span>'. $img . '</div>', $urlparam, ['class' => 'selectoption optionclick' . $rootid, 'onclick' => $onclick, 'data-id' => $optionItem->id, 'data-parent' => $parent->id]);
+        echo Html::a(
+            '<div ' . $cssclass . '>' . $optionItem->name .
+                '<span>' . Yii::$app->formatter->asCurrency($detailprice['detailoptionsprice'][$optionItem->id]) .'</span>'.
+                $img .
+            '</div>', $urlparam, [
+                'class' => 'selectoption optionclick' . $rootid,
+                'onclick' => $onclick, 'data-id' => $optionItem->id,
+                'data-parent' => $parent->id
+            ]);
     }
 }
 ?>
@@ -142,7 +150,7 @@ function getUrlVars() {
     return vars;
 }
 
-$(document).on('click','.optionclick$rootid',function() {      
+$(document).on('click','.optionclick$rootid',function() {
 
     var value = $( this ).data('id');
     var parent = $( this ).data('parent');
@@ -163,9 +171,9 @@ $(document).on('click','.optionclick$rootid',function() {
 
         params[select]=value ;
 
-        var newUrl = url + ( url.indexOf('?') >= 0 ? '&' : '?' ) + jQuery.param( params );   
+        var newUrl = url + ( url.indexOf('?') >= 0 ? '&' : '?' ) + jQuery.param( params );
     }
-    
+
     location.href = newUrl;
 });
 JS;
