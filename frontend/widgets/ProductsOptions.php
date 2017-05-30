@@ -17,7 +17,13 @@ class ProductsOptions extends \yii\base\Widget
 
     public function run()
     {
-        return $this->render('productoptions', ['model' => $this->model, 'url' => $this->url, 'rootid' => $this->rootid, 'child' => $this->child, 'oldoption' => $this->oldoption]);
+        return $this->render('productoptions', [
+            'model' => $this->model,
+            'url' => $this->url,
+            'rootid' => $this->rootid,
+            'child' => $this->child,
+            'oldoption' => $this->oldoption
+        ]);
     }
 
 }

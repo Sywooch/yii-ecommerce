@@ -173,7 +173,12 @@ class Product extends \yii\db\ActiveRecord implements IPosition
             $price += $price * $country->tax / 100;
         }
 
-        $detailprice = ['price' => $price, 'baseprice' => $baseprice, 'optionsprice' => array_sum($pricemin), 'detailoptionsprice' => $pricemin];
+        $detailprice = [
+            'price' => $price,
+            'baseprice' => $baseprice,
+            'optionsprice' => array_sum($pricemin),
+            'detailoptionsprice' => $pricemin
+        ];
 
         return $detailprice;
     }
