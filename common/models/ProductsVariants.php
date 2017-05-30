@@ -18,7 +18,7 @@ class ProductsVariants extends \yii\db\ActiveRecord
     {
         return [
             [['product_id', 'price', 'vendor_code',], 'required'],
-            [['vendor_code'], 'unique'],
+            [['vendor_code'], 'unique', 'targetAttribute' => ['product_id', 'vendor_code'], 'message' => 'Артикул должен быть уникальным'],
             [['product_id', 'quantity_stock', 'vendor_code'], 'integer'],
             [['price'], 'number', 'numberPattern' => '/^[0-9]{1,10}(\.[0-9]{0,2})?$/'],
             [['fields', 'values'], 'safe'],

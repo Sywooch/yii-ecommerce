@@ -34,7 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
 
                                 return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                            'title' => Yii::t('app', 'lead-delete'),
+                                    'title' => Yii::t('app', 'lead-delete'),
+                                    'data' => [
+                                        'confirm' => 'Are you absolutely sure ?',
+                                        'method' => 'post',
+                                    ],
                                 ]);
                             }
                         ]
